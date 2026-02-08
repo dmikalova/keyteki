@@ -102,7 +102,7 @@ class PlayCreatureAction extends BasePlayAction {
             }
         }
 
-        choices.push('Back');
+        choices.push({ text: 'Cancel', type: 'cancel' });
 
         game.promptWithHandlerMenu(player, {
             activePromptTitle: 'Which flank do you want to place this creature on?',
@@ -110,7 +110,7 @@ class PlayCreatureAction extends BasePlayAction {
             source: card,
             choices: choices,
             choiceHandler: (choice) => {
-                if (choice === 'Back') {
+                if (choice.type === 'cancel') {
                     // Don't proceed with the play
                     return;
                 }
