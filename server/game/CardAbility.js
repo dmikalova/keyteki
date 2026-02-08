@@ -57,35 +57,8 @@ class CardAbility extends ThenAbility {
     }
 
     handleThenAbilities(context, actions, allEvents) {
-        let then = this.properties.then;
-        if (then && typeof then === 'function') {
-            then = then(context);
-        }
-
-        if (then) {
-            this.game.queueSimpleStep(() => {
-                if (then.alwaysTriggers || allEvents.every((event) => !event.cancelled)) {
-                    const ThenAbility = require('./ThenAbility');
-                    let thenAbility = new ThenAbility(this.game, this.card, then);
-                    let thenContext = thenAbility.createContext(context.player);
-                    thenContext.preThenEvents = allEvents;
-                    thenContext.preThenEvent = allEvents[0];
-                    if (
-                        !thenAbility.meetsRequirements(thenContext, []) &&
-                        thenAbility.condition(thenContext)
-                    ) {
-                        this.game.resolveAbility(thenContext);
-                    }
-                }
-            });
-        }
-
-        for (let action of actions) {
-            if (action.postHandler) {
-                action.postHandler(context, action);
-            }
-        }
-
+        this.resolveThenIfNeeded(context, allEvents);
+        this.runPostHandlers(actions, context);
         this.game.queueSimpleStep(() => this.game.checkGameState());
     }
 
