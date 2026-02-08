@@ -19,6 +19,8 @@ describe('Omega Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Unlocked Gateway',
                 'player1 uses Unlocked Gateway to destroy Ember Imp and Troll',
+                'Ember Imp is destroyed',
+                'Troll is destroyed',
                 'player1 played Unlocked Gateway which has Omega, ending this step',
                 'player1 draws 6 cards to their maximum of 6',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',

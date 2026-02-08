@@ -15,7 +15,8 @@ describe('Fight Messages', function () {
         it('should log correct message when fighting', function () {
             this.player1.fightWith(this.troll, this.gangerChieftain);
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Troll to make Troll fight Ganger Chieftain'
+                'player1 uses Troll to make Troll fight Ganger Chieftain',
+                'Ganger Chieftain is destroyed'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -38,7 +39,8 @@ describe('Fight Messages', function () {
             this.player1.fightWith(this.firespitter, this.troll);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Firespitter to make Firespitter fight Troll',
-                'player1 uses Firespitter to deal 1 damage to each enemy creature'
+                'player1 uses Firespitter to deal 1 damage to each enemy creature',
+                'Firespitter is destroyed'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

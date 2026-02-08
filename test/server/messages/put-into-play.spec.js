@@ -43,6 +43,7 @@ describe('Put Into Play Messages', function () {
             this.player1.clickPrompt('Left');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Governor Gridelk to make Governor Gridelk fight Flaxia',
+                'Flaxia is destroyed',
                 'player1 uses Governor Gridelk to put Flaxia into play',
                 'player1 plays Flaxia'
             ]);

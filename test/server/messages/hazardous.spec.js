@@ -16,7 +16,8 @@ describe('Hazardous Messages', function () {
             this.player1.fightWith(this.troll, this.briarGrubbling);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Troll to make Troll fight Briar Grubbling',
-                'player2 uses Briar Grubbling to deal 5 damage to Troll'
+                'player2 uses Briar Grubbling to deal 5 damage to Troll',
+                'Briar Grubbling is destroyed'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

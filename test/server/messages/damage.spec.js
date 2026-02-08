@@ -15,7 +15,8 @@ describe('Damage Messages', function () {
         it('should log correct message when fighting', function () {
             this.player1.fightWith(this.troll, this.emberImp);
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Troll to make Troll fight Ember Imp'
+                'player1 uses Troll to make Troll fight Ember Imp',
+                'Ember Imp is destroyed'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -40,7 +41,8 @@ describe('Damage Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Punch',
                 "player1 gains an amber due to Punch's bonus icon",
-                'player1 uses Punch to deal 3 damage to Ember Imp'
+                'player1 uses Punch to deal 3 damage to Ember Imp',
+                'Ember Imp is destroyed'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
