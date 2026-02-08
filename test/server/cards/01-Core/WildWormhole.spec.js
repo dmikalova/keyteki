@@ -32,11 +32,11 @@ describe('Wild Wormhole', function () {
             expect(this.player1).isReadyToTakeAction();
         });
 
-        it('should not have a Back button when playing a creature not from hand', function () {
+        it('should not have a Cancel button when playing a creature not from hand', function () {
             this.player1.moveCard(this.dextre, 'deck');
             this.player1.play(this.wildWormhole);
             expect(this.player1).toHavePrompt('Dextre');
-            expect(this.player1).not.toHavePromptButton('Back');
+            expect(this.player1).not.toHavePromptButton('Cancel');
             this.player1.clickPrompt('Right');
             expect(this.dextre.location).toBe('play area');
             expect(this.player1).isReadyToTakeAction();

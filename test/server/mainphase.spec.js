@@ -129,21 +129,21 @@ describe('main phase', function () {
             expect(this.inkaTheSpider.exhausted).toBe(true);
         });
 
-        it('should allow going back from the flank selection and return the creature to hand', function () {
+        it('should allow canceling from the flank selection and return the creature to hand', function () {
             expect(this.player1.amber).toBe(0);
             this.inkaTheSpider.enhancements = ['amber'];
             this.inkaTheSpider = this.player1.clickCard('inka-the-spider');
             this.player1.clickPrompt('Play this creature');
             expect(this.player1).toHavePrompt('Which flank do you want to place this creature on?');
-            expect(this.player1).toHavePromptButton('Back');
-            this.player1.clickPrompt('Back');
+            expect(this.player1).toHavePromptButton('Cancel');
+            this.player1.clickPrompt('Cancel');
             expect(this.inkaTheSpider.location).toBe('hand');
             expect(this.player1.hand).toContain(this.inkaTheSpider);
             expect(this.player1.amber).toBe(0);
             expect(this.player1).isReadyToTakeAction();
         });
 
-        it('should allow playing another alpha card after going back from flank selection on an alpha creature', function () {
+        it('should allow playing another alpha card after canceling flank selection on an alpha creature', function () {
             this.player1.moveCard('inka-the-spider', 'deck');
             this.player1.moveCard('nepenthe-seed', 'deck');
             this.bumblebird = this.player1.findCardByName('bumblebird');
@@ -152,7 +152,7 @@ describe('main phase', function () {
             this.player1.clickCard(this.bumblebird);
             this.player1.clickPrompt('Play this creature');
             expect(this.player1).toHavePrompt('Which flank do you want to place this creature on?');
-            this.player1.clickPrompt('Back');
+            this.player1.clickPrompt('Cancel');
             expect(this.bumblebird.location).toBe('hand');
 
             this.player1.clickCard(this.glimmer);

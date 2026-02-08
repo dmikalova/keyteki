@@ -110,8 +110,8 @@ const ActivePlayerPrompt = (props) => {
             }
 
             const buttonClass =
-                button.type === 'Cancel'
-                    ? 'btn btn-primary prompt-button btn-stretch'
+                button.type === 'cancel'
+                    ? 'btn btn-default btn-cancel prompt-button btn-stretch'
                     : 'btn btn-default prompt-button btn-stretch';
 
             let option = (
