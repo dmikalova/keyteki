@@ -12,36 +12,33 @@ class DrawnDown extends Card {
             },
             gameAction: ability.actions.sequential([
                 ability.actions.conditional({
+                    // Only show the discard prompt if there is at least 1 card in the opponent's deck
                     condition: (context) => context.player.opponent.deck.length >= 1,
-                    trueGameAction: ability.actions.discard((context) => {
-                        const cards = context.player.opponent.deck.slice(0, 3);
-                        return {
-                            promptWithHandlerMenu: {
-                                activePromptTitle: 'Choose a card to discard',
-                                cards: cards
-                            }
-                        };
-                    })
+                    trueGameAction: ability.actions.discard((context) => ({
+                        promptWithHandlerMenu: {
+                            activePromptTitle: 'Choose a card to discard',
+                            cards: context.player.opponent.deck.slice(0, 3)
+                        }
+                    }))
                 }),
                 ability.actions.conditional({
-                    condition: (context) => context.player.opponent.deck.length >= 2,
-                    trueGameAction: ability.actions.moveToBottom((context) => {
-                        const cards = context.player.opponent.deck.slice(0, 2);
-                        return {
-                            promptWithHandlerMenu: {
-                                activePromptTitle: 'Choose a card to put on bottom of deck',
-                                cards: cards,
-                                message: "{0} uses {1} to put a card on the bottom of {3}'s deck",
-                                messageArgs: [context.player.opponent]
-                            }
-                        };
-                    })
+                    // Only show the move to bottom prompt if there were at least 2 cards in the opponent's deck (1 was already discarded and 1 to move to bottom so condition on 1)
+                    condition: (context) => context.player.opponent.deck.length >= 1,
+                    trueGameAction: ability.actions.moveToBottom((context) => ({
+                        promptWithHandlerMenu: {
+                            activePromptTitle: 'Choose a card to put on bottom of deck',
+                            cards: context.player.opponent.deck.slice(0, 2),
+                            message: "{0} uses {1} to put a card on the bottom of {3}'s deck",
+                            messageArgs: [context.player.opponent]
+                        }
+                    }))
                 })
             ]),
             then: {
+                // If there were at least 3 cards in the opponent's deck (1 was already discard, and another put on the bottom, so condition on 2), show a message that the remaining card was automatically put back on top
                 alwaysTriggers: true,
-                condition: (context) => context.player.opponent.deck.length >= 3,
-                message: "{0} uses {1} to put a card to the top of {3}'s deck",
+                condition: (context) => context.player.opponent.deck.length >= 2,
+                message: "{0} uses {1} to put a card on top of {3}'s deck",
                 messageArgs: (context) => [context.player.opponent]
             }
         });
