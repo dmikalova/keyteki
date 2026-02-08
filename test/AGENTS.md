@@ -7,7 +7,7 @@ This guide covers writing and running tests for the Keyteki codebase.
 -   Run all tests: `DEBUG_TEST=1 npm test`
 -   Run specific test file: `DEBUG_TEST=1 npm test -- test/server/cards/<Set>/<CardName>.spec.js`
 -   Run multiple test files: `DEBUG_TEST=1 npm test -- test/server/cards/<Set1>/<CardName1>.spec.js test/server/cards/<set2>/<CardName2>.spec.js`
--   Run tests matching a pattern: `DEBUG_TEST=1 npm test -- --filter='<pattern>'`
+-   Run tests matching a pattern: `DEBUG_TEST=1 npm test -- --testNamePattern '<pattern>'`
 
 ## Viewing Test Output
 
