@@ -198,11 +198,11 @@ class Player extends GameObject {
     }
 
     /**
-     * Called when a player goes to draw with an empty deck. Shuffles the discard pile back into the deck and displays a message in chat
+     * Called when a player atttempts to draw with an empty deck. Shuffles the discard pile back into the deck and displays a message in chat
      */
     drawWithEmptyDeck() {
         this.game.addMessage(
-            '{0} goes to draw with an empty deck, so they shuffle their discard pile to reset their deck',
+            '{0} attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
             this
         );
         for (let card of this.discard) {
