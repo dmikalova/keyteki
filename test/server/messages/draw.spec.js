@@ -60,7 +60,7 @@ describe('Draw Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Phase Shift',
                 'player1 uses Phase Shift to allow them to play one non-Logos card this turn',
-                'player1 draws 6 cards to their maximum of 6',
+                'player1 draws 6 cards to refill their hand to 6 cards',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key.  They have 0 amber.  The current cost is 6 amber'
             ]);

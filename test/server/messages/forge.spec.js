@@ -16,7 +16,7 @@ describe('Forge Messages', function () {
             this.player2.forgeKey('Red');
             this.player2.clickPrompt('untamed');
             expect(this).toHaveAllChatMessagesBe([
-                'player1 draws 6 cards to their maximum of 6',
+                'player1 draws 6 cards to refill their hand to 6 cards',
                 'player1: 0 amber (0 keys) player2: 6 amber (0 keys)',
                 'player2 forges the forgedkeyred, paying 6 amber',
                 'player2 chooses untamed as their active house this turn'
@@ -46,7 +46,7 @@ describe('Forge Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 "player1 uses Lash of Broken Dreams to increase key cost by 3 during player2's next turn",
                 'player1 readies their cards',
-                'player1 draws 6 cards to their maximum of 6',
+                'player1 draws 6 cards to refill their hand to 6 cards',
                 'player1: 0 amber (0 keys) player2: 9 amber (0 keys)',
                 'player2 forges the forgedkeyred, paying 9 amber',
                 'player2 chooses untamed as their active house this turn'

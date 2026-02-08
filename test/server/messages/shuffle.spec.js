@@ -35,8 +35,8 @@ describe('Shuffle Messages', function () {
             this.player1.player.deck = [];
             this.player1.endTurn();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 draws 6 cards to their maximum of 6',
-                "player1's deck has run out of cards, so they shuffle",
+                'player1 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
+                'player1 draws 3 cards',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key.  They have 0 amber.  The current cost is 6 amber '
             ]);
@@ -63,8 +63,8 @@ describe('Shuffle Messages', function () {
                 'player1 plays Timetraveller',
                 "player1 gains an amber due to Timetraveller's bonus icon",
                 'player1 uses Timetraveller to draw 2 cards',
-                'player1 draws 2 cards',
-                "player1's deck has run out of cards, so they shuffle"
+                'player1 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
+                'player1 draws 2 cards'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
