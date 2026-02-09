@@ -118,8 +118,7 @@ describe('Capture Messages', function () {
             this.player1.clickPrompt('steal');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Scrivener Favian to resolve Anomaly Exploiter's capture bonus icon to steal 1 amber",
-                "player1 uses Anomaly Exploiter's replaced bonus icon to steal 1 amber"
+                "player1 uses Scrivener Favian to resolve Anomaly Exploiter's capture bonus icon to steal 1 amber"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

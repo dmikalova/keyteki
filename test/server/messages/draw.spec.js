@@ -139,4 +139,30 @@ describe('Draw Messages', function () {
             expect(this.player1).isReadyToTakeAction();
         });
     });
+
+    describe('quantum mouse replacing draw bonus icon', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'logos',
+                    hand: ['anomaly-exploiter', 'batdrone'],
+                    inPlay: ['quantum-mouse']
+                },
+                player2: {}
+            });
+        });
+
+        it('should log correct message when draw bonus icon is replaced with discard', function () {
+            this.anomalyExploiter.enhancements = ['draw'];
+            this.player1.play(this.anomalyExploiter);
+            this.player1.clickPrompt('discard');
+            this.player1.clickCard(this.batdrone);
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 plays Anomaly Exploiter',
+                "player1 uses Quantum Mouse to resolve Anomaly Exploiter's draw bonus icon as a discard bonus icon",
+                "player1 uses Anomaly Exploiter's discard bonus icon to discard Batdrone"
+            ]);
+            expect(this.player1).isReadyToTakeAction();
+        });
+    });
 });

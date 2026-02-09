@@ -5,7 +5,7 @@ class WhimsicalConjuror extends Card {
     // instead.
     setupCardAbilities(ability) {
         this.persistentEffect({
-            effect: ability.effects.mayResolveBonusIconsAs('tokenCreature', 'amber')
+            effect: ability.effects.mayResolveBonusIconsAs('token-creature', 'amber')
         });
     }
 }

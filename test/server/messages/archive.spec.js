@@ -86,7 +86,6 @@ describe('Archive Messages', function () {
             this.player1.endTurn();
             this.player2.clickPrompt('logos');
             this.player2.endTurn();
-            // Novu Dynamo prompts: "Destroy or Discard a Logos Card" - select Dextre
             this.player1.clickCard(this.dextre);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 readies their cards',

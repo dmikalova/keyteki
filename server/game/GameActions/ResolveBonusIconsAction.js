@@ -10,12 +10,12 @@ class ResolveBonusIconsAction extends CardGameAction {
         // Ability replacements resolve to do an action rather than another bonus icon. They cannot be further replaced by bonus icon replacements.
         this.abilityReplacements = {
             steal: 'steal 1 amber',
-            tokenCreature: 'make a token creature'
+            'token-creature': 'make a token creature'
         };
 
         // Display names for prompt buttons
         this.displayNames = {
-            tokenCreature: 'Token Creature'
+            'token-creature': 'Token Creature'
         };
     }
 
@@ -127,8 +127,7 @@ class ResolveBonusIconsAction extends CardGameAction {
 
         if (choices.length > 1) {
             context.game.promptWithHandlerMenu(context.player, {
-                activePromptTitle:
-                    'How do you wish to resolve this ' + currentIcon + ' bonus icon?',
+                activePromptTitle: `How do you wish to resolve this ${currentIcon} bonus icon?`,
                 choices: choices.map((c) => this.getDisplayName(c)),
                 context: context,
                 handlers: handlers,
@@ -239,14 +238,9 @@ class ResolveBonusIconsAction extends CardGameAction {
                             context.player.opponent,
                             context.game.getFrameworkContext(context.player)
                         );
-                    context.game.addMessage(
-                        "{0} uses {1}'s replaced bonus icon to steal 1 amber",
-                        context.player,
-                        event.card
-                    );
                 }
                 break;
-            case 'tokenCreature':
+            case 'token-creature':
                 if (context.player.tokenCard) {
                     context.game.actions
                         .makeTokenCreature()
@@ -254,11 +248,6 @@ class ResolveBonusIconsAction extends CardGameAction {
                             context.player.deck[0],
                             context.game.getFrameworkContext(context.player)
                         );
-                    context.game.addMessage(
-                        "{0} uses {1}'s replaced bonus icon to make a token creature",
-                        context.player,
-                        event.card
-                    );
                 }
                 break;
             default:
