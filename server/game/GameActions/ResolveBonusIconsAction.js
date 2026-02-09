@@ -1,3 +1,4 @@
+const Constants = require('../../constants');
 const { EVENTS } = require('../Events/types');
 const CardGameAction = require('./CardGameAction');
 
@@ -266,6 +267,11 @@ class ResolveBonusIconsAction extends CardGameAction {
             { card: card, context: context },
             (event) => {
                 for (const icon of event.card.bonusIcons) {
+                    // House enhancements are not resolvable bonus icons
+                    if (Constants.Houses.includes(icon.toLowerCase())) {
+                        continue;
+                    }
+
                     const resolveCount = card.sumEffects('resolveBonusIconsAdditionalTime') + 1;
 
                     for (let rc = 0; rc < resolveCount; ++rc) {

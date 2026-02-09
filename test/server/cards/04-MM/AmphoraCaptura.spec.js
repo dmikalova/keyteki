@@ -73,6 +73,34 @@ describe('Amphora Captura', function () {
         });
     });
 
+    describe('with house enhancements', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'untamed',
+                    inPlay: ['amphora-captura', 'senator-shrix'],
+                    hand: ['ancient-bear']
+                },
+                player2: {
+                    amber: 2
+                }
+            });
+
+            this.ancientBear.enhancements = ['amber', 'saurian'];
+        });
+
+        it('should not replace house enhancements with capture', function () {
+            this.player1.playCreature(this.ancientBear);
+            expect(this.player1).toHavePrompt('How do you wish to resolve this amber bonus icon?');
+            expect(this.player1).toHavePromptButton('amber');
+            expect(this.player1).toHavePromptButton('capture');
+            this.player1.clickPrompt('amber');
+            expect(this.player1.amber).toBe(1);
+            // Should NOT prompt for house enhancement
+            expect(this.player1).isReadyToTakeAction();
+        });
+    });
+
     describe('with two Amphora Capturas', function () {
         beforeEach(function () {
             this.setupTest({
