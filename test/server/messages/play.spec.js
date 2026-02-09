@@ -12,8 +12,8 @@ describe('Play Messages', function () {
 
         it('should log correct message when playing a creature', function () {
             this.player1.play(this.troll);
-            expect(this).toHaveAllChatMessagesBe(['player1 plays Troll']);
             expect(this.player1).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe(['player1 plays Troll']);
         });
     });
 
@@ -30,12 +30,12 @@ describe('Play Messages', function () {
 
         it('should log correct message when playing a creature with amber bonus', function () {
             this.player1.play(this.dustPixie);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
                 "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
                 "player1 uses Dust Pixie's amber bonus icon to gain 1 amber"
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -71,11 +71,11 @@ describe('Play Messages', function () {
 
         it('should log correct message when playing an upgrade on a creature', function () {
             this.player1.playUpgrade(this.silentDagger, this.silvertooth);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Silent Dagger attaching it to Silvertooth',
                 "player1 uses Silent Dagger's amber bonus icon to gain 1 amber"
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -95,12 +95,12 @@ describe('Play Messages', function () {
         it('should log correct message when playing an action', function () {
             this.player1.play(this.punch);
             this.player1.clickCard(this.troll);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Punch',
                 "player1 uses Punch's amber bonus icon to gain 1 amber",
                 'player1 uses Punch to deal 3 damage to Troll'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -118,11 +118,11 @@ describe('Play Messages', function () {
 
         it('should log correct message when playing a creature with play ability', function () {
             this.player1.play(this.flaxia);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Flaxia',
                 'player1 uses Flaxia to gain 2 amber'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -139,12 +139,12 @@ describe('Play Messages', function () {
 
         it('should log correct message when playing an artifact with play ability', function () {
             this.player1.play(this.ceaseforge);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ceaseforge',
                 "player1 uses Ceaseforge's amber bonus icon to gain 1 amber",
                 'player1 uses Ceaseforge to place 2 time on Ceaseforge'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 });

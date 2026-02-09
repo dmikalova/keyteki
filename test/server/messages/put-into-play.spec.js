@@ -16,11 +16,11 @@ describe('Put Into Play Messages', function () {
             this.player1.clickCard(this.mindwarper);
             this.player1.clickCard(this.yxiliMarauder);
             this.player1.clickPrompt('Right');
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Swap Widget to return Mindwarper to their hand',
                 'player1 puts Yxili Marauder into play using Swap Widget, and readies it'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -40,6 +40,7 @@ describe('Put Into Play Messages', function () {
         it('should log correct message when putting creature from discard into play', function () {
             this.player1.fightWith(this.governorGridelk, this.flaxia);
             this.player1.clickPrompt('Left');
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Governor Gridelk to make Governor Gridelk fight Flaxia',
                 'Flaxia is destroyed',
@@ -83,7 +84,6 @@ describe('Put Into Play Messages', function () {
                 'Troll is destroyed',
                 'Headhunter is destroyed'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 });

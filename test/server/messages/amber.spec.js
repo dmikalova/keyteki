@@ -12,10 +12,10 @@ describe('Amber Messages', function () {
 
         it('should log correct message when reaping for amber', function () {
             this.player1.reap(this.gangerChieftain);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Ganger Chieftain to reap with Ganger Chieftain'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -32,6 +32,7 @@ describe('Amber Messages', function () {
 
         it('should log correct message when gaining amber from bonus icon', function () {
             this.player1.play(this.dustPixie);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
                 "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
@@ -96,7 +97,6 @@ describe('Amber Messages', function () {
                 'player1 puts Niffle Brute into play',
                 "player1 uses Dust Pixie's amber bonus icon to gain 1 amber"
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -114,13 +114,13 @@ describe('Amber Messages', function () {
 
         it('should log correct message when gaining amber from card ability', function () {
             this.player1.play(this.dustPixie);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
                 "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
                 "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
                 'player1 uses Hunting Witch to gain 1 amber'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -179,11 +179,11 @@ describe('Amber Messages', function () {
 
         it('should log correct message when opponent loses amber', function () {
             this.player1.play(this.rotgrub);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Rotgrub',
                 'player1 uses Rotgrub to make player2 lose 1 amber'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
@@ -203,11 +203,11 @@ describe('Amber Messages', function () {
 
         it('should log correct message when transferring amber', function () {
             this.player1.reap(this.dextre);
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 uses Dextre to reap with Dextre',
                 'player1 uses Dextre to transfer 1 amber from player1'
             ]);
-            expect(this.player1).isReadyToTakeAction();
         });
     });
 
