@@ -29,6 +29,7 @@ npm test -- test/server/cards/<Set>/<CardName>.spec.js 2>&1 | tail -5
 
 -   Tests should be added to a new `<CardName>.spec.js` file for the card under `test/server/cards/<Set>/<CardName>.spec.js` that corresponds to the card being tested.
     -   Example: [BadOmen.spec.js](server/cards/12-PV/BadOmen.spec.js).
+-   **Never create test files outside the `test/` directory** (e.g., in `/tmp/`). The test framework only recognizes files within the project's test directory structure, and external files will not work with the setup helpers.
 -   New tests should follow the patterns of existing tests, e.g. no imports.
 -   Tests should be auto-run after being written, to ensure they pass.
 -   If more log data is needed to debug a test, you can set `DEBUG_TEST=1` in the environment before running the test.
