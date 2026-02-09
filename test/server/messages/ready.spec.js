@@ -17,7 +17,7 @@ describe('Ready Messages', function () {
             this.player1.clickCard(this.helichopper);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ghoul-keeping',
-                "player1 gains an amber due to Ghoul-keeping's bonus icon",
+                "player1 uses Ghoul-keeping's amber bonus icon to gain 1 amber",
                 'player1 uses Ghoul-keeping to ready a friendly Geistoid creature.'
             ]);
             expect(this.player1).isReadyToTakeAction();

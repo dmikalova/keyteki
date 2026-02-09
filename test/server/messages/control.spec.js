@@ -40,7 +40,7 @@ describe('Control Messages', function () {
             this.player1.clickCard(this.senatorShrix);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Exile',
-                "player1 gains an amber due to Exile's bonus icon",
+                "player1 uses Exile's amber bonus icon to gain 1 amber",
                 'player1 uses Exile to give control of Senator Shrix to player2'
             ]);
             expect(this.player1).isReadyToTakeAction();

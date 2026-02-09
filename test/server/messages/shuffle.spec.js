@@ -61,7 +61,7 @@ describe('Shuffle Messages', function () {
             this.player1.play(this.timetraveller);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timetraveller',
-                "player1 gains an amber due to Timetraveller's bonus icon",
+                "player1 uses Timetraveller's amber bonus icon to gain 1 amber",
                 'player1 uses Timetraveller to draw 2 cards',
                 'player1 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
                 'player1 draws 2 cards'

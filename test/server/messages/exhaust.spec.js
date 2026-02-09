@@ -18,7 +18,7 @@ describe('Exhaust Messages', function () {
             this.player1.clickPrompt('Done');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Nocturnal Maneuver',
-                "player1 gains an amber due to Nocturnal Maneuver's bonus icon",
+                "player1 uses Nocturnal Maneuver's amber bonus icon to gain 1 amber",
                 'player1 uses Nocturnal Maneuver to exhaust Dextre'
             ]);
             expect(this.player1).isReadyToTakeAction();

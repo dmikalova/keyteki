@@ -7,11 +7,20 @@ class ResolveBonusIconsAction extends CardGameAction {
         this.name = 'resolveBonusIcons';
         this.effectMsg = "resolve {0}'s bonus icons";
 
-        // Terminal replacements resolve to actions rather than icons - they cannot be further replaced
-        this.terminalReplacements = {
+        // Ability replacements resolve to do an action rather than another bonus icon. They cannot be further replaced by bonus icon replacements.
+        this.abilityReplacements = {
             steal: 'steal 1 amber',
-            token: 'make a token creature'
+            tokenCreature: 'make a token creature'
         };
+
+        // Display names for prompt buttons
+        this.displayNames = {
+            tokenCreature: 'Token Creature'
+        };
+    }
+
+    getDisplayName(icon) {
+        return this.displayNames[icon] || icon;
     }
 
     getAvailableReplacements(player, currentIcon, usedSources) {
@@ -43,7 +52,7 @@ class ResolveBonusIconsAction extends CardGameAction {
         // Terminal replacements are actions, not icons and can no longer be
         // chained - eg Amphora Capture can be replaced by Scrivener Favian, but
         // not vice versa
-        if (currentIcon in this.terminalReplacements) {
+        if (currentIcon in this.abilityReplacements) {
             this.resolveIcon(context, event, currentIcon);
             return;
         }
@@ -70,18 +79,28 @@ class ResolveBonusIconsAction extends CardGameAction {
                 handlers.push(() => {
                     // Print the replacement message
                     if (replacement.source) {
-                        if (this.terminalReplacements[replacement.newIcon]) {
+                        const bonusIcons = ['amber', 'capture', 'damage', 'draw', 'discard'];
+                        if (bonusIcons.includes(replacement.newIcon)) {
+                            context.game.addMessage(
+                                "{0} uses {1} to resolve {2}'s {3} bonus icon as a {4} bonus icon",
+                                context.player,
+                                replacement.source,
+                                event.card,
+                                currentIcon,
+                                replacement.newIcon
+                            );
+                        } else if (this.abilityReplacements[replacement.newIcon]) {
                             context.game.addMessage(
                                 "{0} uses {1} to resolve {2}'s {3} bonus icon to {4}",
                                 context.player,
                                 replacement.source,
                                 event.card,
                                 currentIcon,
-                                this.terminalReplacements[replacement.newIcon]
+                                this.abilityReplacements[replacement.newIcon]
                             );
                         } else {
                             context.game.addMessage(
-                                "{0} uses {1} to resolve {2}'s {3} bonus icon as a {4} bonus icon",
+                                "{0} uses {1} to resolve {2}'s {3} bonus icon as {4}",
                                 context.player,
                                 replacement.source,
                                 event.card,
@@ -110,7 +129,7 @@ class ResolveBonusIconsAction extends CardGameAction {
             context.game.promptWithHandlerMenu(context.player, {
                 activePromptTitle:
                     'How do you wish to resolve this ' + currentIcon + ' bonus icon?',
-                choices: choices,
+                choices: choices.map((c) => this.getDisplayName(c)),
                 context: context,
                 handlers: handlers,
                 source: event.card
@@ -221,13 +240,13 @@ class ResolveBonusIconsAction extends CardGameAction {
                             context.game.getFrameworkContext(context.player)
                         );
                     context.game.addMessage(
-                        "{0} uses {1}'s steal bonus icon to steal 1 amber",
+                        "{0} uses {1}'s replaced bonus icon to steal 1 amber",
                         context.player,
                         event.card
                     );
                 }
                 break;
-            case 'token':
+            case 'tokenCreature':
                 if (context.player.tokenCard) {
                     context.game.actions
                         .makeTokenCreature()
@@ -236,7 +255,7 @@ class ResolveBonusIconsAction extends CardGameAction {
                             context.game.getFrameworkContext(context.player)
                         );
                     context.game.addMessage(
-                        "{0} uses {1}'s token bonus icon to make a token creature",
+                        "{0} uses {1}'s replaced bonus icon to make a token creature",
                         context.player,
                         event.card
                     );
