@@ -83,11 +83,12 @@ class ResolveBonusIconsAction extends CardGameAction {
                         const bonusIcons = ['amber', 'capture', 'damage', 'draw', 'discard'];
                         if (bonusIcons.includes(replacement.newIcon)) {
                             context.game.addMessage(
-                                "{0} uses {1} to resolve {2}'s {3} bonus icon as a {4} bonus icon",
+                                "{0} uses {1} to resolve {2}'s {3} bonus icon as {4} {5} bonus icon",
                                 context.player,
                                 replacement.source,
                                 event.card,
                                 currentIcon,
+                                'aeiou'.includes(replacement.newIcon.toLowerCase()) ? 'an' : 'a',
                                 replacement.newIcon
                             );
                         } else if (this.abilityReplacements[replacement.newIcon]) {
