@@ -77,15 +77,14 @@ class UiPrompt extends BaseStep {
     }
 
     onMenuCommand(player, arg, uuid, method) {
-        if (!this.activeCondition(player) || !this.isValidPromptUuid(uuid)) {
+        if (
+            !this.activeCondition(player) ||
+            (uuid !== this.uuid && !(typeof uuid === 'string' && uuid.startsWith(`${this.uuid}:`)))
+        ) {
             return false;
         }
 
         return this.menuCommand(player, arg, method);
-    }
-
-    isValidPromptUuid(uuid) {
-        return uuid === this.uuid || (typeof uuid === 'string' && uuid.startsWith(`${this.uuid}:`));
     }
 
     // eslint-disable-next-line no-unused-vars
