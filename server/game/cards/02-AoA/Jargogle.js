@@ -23,12 +23,15 @@ class Jargogle extends Card {
             effect: '{1}{2}',
             effectArgs: (context) => {
                 const isActive = context.game.activePlayer === context.player;
-                const verb = isActive ? 'play ' : 'archive ';
-                if (context.source.childCards.length === 1) {
-                    return [verb, context.source.childCards[0]];
+                if (!isActive) {
+                    return ['archive ', 'a card'];
                 }
 
-                return [verb + 'a card from under ', context.source];
+                if (context.source.childCards.length === 1) {
+                    return ['play ', context.source.childCards[0]];
+                }
+
+                return ['play a card from under ', context.source];
             },
             gameAction: ability.actions.conditional({
                 condition: (context) => context.game.activePlayer === context.player,
