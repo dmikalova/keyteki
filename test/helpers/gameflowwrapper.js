@@ -99,8 +99,17 @@ class GameFlowWrapper {
         for (let i = 0; i < this.game.messages.length && i < numBack; i++) {
             let result = '';
             let chatMessage = this.game.messages[this.game.messages.length - i - 1];
-            for (let j = 0; j < chatMessage.message.length; j++) {
-                result += getChatString(chatMessage.message[j]);
+            // Regular messages (`addMessage`) store an array fragment list;
+            // alerts (`addAlert`) store a single `{ alert: { ... } }` object.
+            // Normalise both shapes through getChatString so manual-mode
+            // alerts (e.g. "player1 manually places ...") are visible to
+            // tests using getChatLogs / toHaveAllChatMessagesBe.
+            if (Array.isArray(chatMessage.message)) {
+                for (let j = 0; j < chatMessage.message.length; j++) {
+                    result += getChatString(chatMessage.message[j]);
+                }
+            } else {
+                result = getChatString(chatMessage.message);
             }
 
             results.push(result);
@@ -116,6 +125,17 @@ class GameFlowWrapper {
                     return item.name;
                 } else if (item.message) {
                     return getChatString(item.message);
+                } else if (item.alert) {
+                    // Most alerts (phase boundaries, success/info/warning)
+                    // are visual chrome that existing message tests don't
+                    // expect to see. Surface only `danger`-type alerts so
+                    // manual-mode admin actions ("player1 manually ...")
+                    // can be asserted via toHaveAllChatMessagesBe without
+                    // forcing every other test to account for phase markers.
+                    if (item.alert.type === 'danger') {
+                        return getChatString(item.alert.message);
+                    }
+                    return '';
                 }
             }
 

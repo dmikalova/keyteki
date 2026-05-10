@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDrag } from 'react-dnd';
 
@@ -8,6 +8,30 @@ import { ItemTypes } from '../../constants';
 import SquishableCardPanel from './SquishableCardPanel';
 
 import { useTranslation } from 'react-i18next';
+
+// Module-level coordinator so that opening one card menu closes any other
+// card menu that is currently open. Each Card subscribes on mount and
+// dispatches when it opens its menu; subscribers ignore their own events.
+const cardMenuCoordinator = (() => {
+    const target = typeof EventTarget !== 'undefined' ? new EventTarget() : null;
+    let nextId = 0;
+    return {
+        nextId: () => ++nextId,
+        announceOpen(id) {
+            target?.dispatchEvent(new CustomEvent('cardmenu:open', { detail: id }));
+        },
+        subscribe(id, onOtherOpen) {
+            if (!target) return () => {};
+            const handler = (event) => {
+                if (event.detail !== id) {
+                    onOtherOpen();
+                }
+            };
+            target.addEventListener('cardmenu:open', handler);
+            return () => target.removeEventListener('cardmenu:open', handler);
+        }
+    };
+})();
 
 const Card = ({
     canDrag,
@@ -36,6 +60,33 @@ const Card = ({
     };
 
     const [showMenu, setShowMenu] = useState(false);
+    const cardFrameRef = useRef(null);
+    const menuIdRef = useRef(null);
+    if (menuIdRef.current === null) {
+        menuIdRef.current = cardMenuCoordinator.nextId();
+    }
+
+    // Close this card's menu when another card opens its menu, and when
+    // the user mousedowns anywhere outside our card-frame (CardMenu stops
+    // its own mousedown so clicks inside the menu don't close it).
+    useEffect(() => {
+        if (!showMenu) {
+            return;
+        }
+        const unsubscribe = cardMenuCoordinator.subscribe(menuIdRef.current, () =>
+            setShowMenu(false)
+        );
+        const onDocMouseDown = (event) => {
+            if (cardFrameRef.current && !cardFrameRef.current.contains(event.target)) {
+                setShowMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', onDocMouseDown);
+        return () => {
+            unsubscribe();
+            document.removeEventListener('mousedown', onDocMouseDown);
+        };
+    }, [showMenu]);
 
     const [{ dragOffset, isDragging }, drag, preview] = useDrag({
         type: ItemTypes.CARD,
@@ -56,7 +107,11 @@ const Card = ({
         event.stopPropagation();
 
         if (isAllowedMenuSource() && card.menu && card.menu.length !== 0) {
-            setShowMenu(!showMenu);
+            const opening = !showMenu;
+            setShowMenu(opening);
+            if (opening) {
+                cardMenuCoordinator.announceOpen(menuIdRef.current);
+            }
             return;
         }
 
@@ -100,6 +155,7 @@ const Card = ({
                     halfSize={halfSize}
                     hasActiveHouse={hasActiveHouse}
                     isMe={isMe}
+                    isSpectating={isSpectating}
                 />
             );
 
@@ -238,7 +294,13 @@ const Card = ({
             </div>
         ) : null;
         return (
-            <div className='card-frame' ref={drag}>
+            <div
+                className='card-frame'
+                ref={(node) => {
+                    drag(node);
+                    cardFrameRef.current = node;
+                }}
+            >
                 {getDragFrame(image)}
                 {getCardOrdering()}
                 <div

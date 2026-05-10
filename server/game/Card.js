@@ -96,7 +96,11 @@ class Card extends EffectSource {
             { command: 'remAmber', text: 'Remove 1 amber', menu: 'tokens' },
             { command: 'stun', text: 'Stun/Remove Stun', menu: 'tokens' },
             { command: 'ward', text: 'Ward/Remove Ward', menu: 'tokens' },
-            { command: 'enrage', text: 'Enrage/Remove Enrage', menu: 'tokens' }
+            { command: 'enrage', text: 'Enrage/Remove Enrage', menu: 'tokens' },
+            { command: 'under', text: 'Modify cards under', menu: 'main' },
+            { command: 'main', text: 'Back', menu: 'under' },
+            { command: 'placeFaceup', text: 'Place card faceup', menu: 'under' },
+            { command: 'placeFacedown', text: 'Place card facedown', menu: 'under' }
         ];
 
         this.endRound();
@@ -826,7 +830,7 @@ class Card extends EffectSource {
         }
     }
 
-    getMenu() {
+    getMenu(activePlayer) {
         var menu = [];
 
         // Special handling for prophecy cards in manual mode
@@ -859,9 +863,51 @@ class Card extends EffectSource {
             return [{ command: 'reveal', text: 'Reveal', menu: 'main' }];
         }
 
+        // Upgrades / cards-under-cards have a parent; the only sensible
+        // manual-mode action on them is to return them to hand. Skip
+        // the rest of the menu (exhaust, tokens, place-under, etc.)
+        // which doesn't apply to attachments.
+        if (this.parent) {
+            menu.push({ command: 'returnToHand', text: 'Return to hand', menu: 'main' });
+            return menu;
+        }
+
         menu.push({ command: 'click', text: 'Select Card', menu: 'main' });
         if (this.location === 'play area') {
-            menu = menu.concat(this.menu);
+            // Render the static menu, but rewrite a few toggle entries to
+            // reflect the card's current state instead of the generic
+            // 'X/Remove X' wording.
+            const dynamicLabels = {
+                exhaust: this.exhausted ? 'Ready' : 'Exhaust',
+                stun: this.stunned ? 'Remove Stun' : 'Stun',
+                ward: this.warded ? 'Remove Ward' : 'Ward',
+                enrage: this.enraged ? 'Remove Enrage' : 'Enrage'
+            };
+            menu = menu.concat(
+                this.menu.map((item) =>
+                    dynamicLabels[item.command]
+                        ? { ...item, text: dynamicLabels[item.command] }
+                        : item
+                )
+            );
+            // Dynamic 'take' entries, one per card currently placed
+            // beneath this card. Players can see facedown cards they
+            // placed themselves, so always label by name in the menu;
+            // log lines hide the name for opponent visibility.
+            // Only the controller of the host card can take cards out
+            // from under it: opponents can place cards under enemy
+            // creatures (e.g. as a referee aid) but cannot retrieve
+            // them, and shouldn't even see what's stashed there.
+            if (!activePlayer || activePlayer === this.controller) {
+                for (const child of this.childCards) {
+                    menu.push({
+                        command: 'takeChild',
+                        arg: child.uuid,
+                        text: 'Take ' + child.name,
+                        menu: 'under'
+                    });
+                }
+            }
         }
 
         return menu;
@@ -1434,7 +1480,7 @@ class Card extends EffectSource {
             location: this.location,
             locale: this.locale,
             number: tokenCardOrThis.cardData.number,
-            menu: this.getMenu(),
+            menu: this.getMenu(activePlayer),
             name: this.name,
             new: this.new,
             printedHouse: tokenCardOrThis.printedHouse,
