@@ -19,7 +19,6 @@ describe('Cards-under-cards (manual mode)', function () {
             expect(commands).toContain('under');
             expect(commands).toContain('placeFaceup');
             expect(commands).toContain('placeFacedown');
-            // Place items live inside the 'under' submenu, not 'main'.
             const placeFaceup = menu.find((item) => item.command === 'placeFaceup');
             expect(placeFaceup.menu).toBe('under');
         });
@@ -50,10 +49,7 @@ describe('Cards-under-cards (manual mode)', function () {
             expect(this.niffleApe.childCards).toContain(this.titanMechanic);
         });
 
-        it('only allows selecting cards from the choosing player\u2019s hand', function () {
-            // Sanity-check that the prompt rejects out-of-hand cards by
-            // confirming the same card from the discard pile is not
-            // accepted as a target.
+        it("only allows selecting cards from the choosing player's hand", function () {
             this.player1.moveCard(this.lamindra, 'discard');
             this.player1.menuClick(this.niffleApe, {
                 command: 'placeFaceup',
@@ -157,13 +153,12 @@ describe('Cards-under-cards (manual mode)', function () {
         });
 
         it('shows only Return to hand on the upgrade menu', function () {
-            // Upgrades shouldn't expose exhaust/tokens/place-under options;
-            // those don't make sense on an attachment.
+            // Upgrades shouldn't expose exhaust/tokens/place-under options.
             const upgradeCommands = this.kirbySBlaster.getMenu().map((item) => item.command);
             expect(upgradeCommands).toEqual(['returnToHand']);
 
-            // The host creature (which has no parent) should NOT show this
-            // option - it's strictly an "I am attached to something" action.
+            // The host creature should NOT show this
+            // option - it is strictly for upgrades.
             const hostCommands = this.comOfficerKirby.getMenu().map((item) => item.command);
             expect(hostCommands).not.toContain('returnToHand');
             // ...but the host still has the standard manual-mode menu.
@@ -209,7 +204,7 @@ describe('Cards-under-cards (manual mode)', function () {
         });
 
         it('keeps upgrades and childCards in distinct arrays', function () {
-            // Place a card under the same creature via the new manual-mode
+            // Place a card under the same creature via the manual-mode
             // menu. Upgrades must stay on .upgrades and the placed card
             // must land on .childCards - never both.
             this.player1.menuClick(this.comOfficerKirby, {
@@ -223,8 +218,6 @@ describe('Cards-under-cards (manual mode)', function () {
             expect(this.comOfficerKirby.childCards).toEqual([this.titanMechanic]);
 
             // The pre-existing upgrade lives on .upgrades, NOT .childCards.
-            // A hypothetical "move all cards under X to Y" ability that
-            // iterates childCards would correctly leave the upgrade behind.
             expect(this.comOfficerKirby.upgrades).toEqual([this.kirbySBlaster]);
             expect(this.comOfficerKirby.childCards).not.toContain(this.kirbySBlaster);
             expect(this.comOfficerKirby.upgrades).not.toContain(this.titanMechanic);
@@ -253,7 +246,7 @@ describe('Cards-under-cards (manual mode)', function () {
 
         it('lets a player place a card under an opponent-controlled creature', function () {
             // The active player should still see the place options on
-            // an enemy creature - manual mode is a referee tool.
+            // an enemy creature.
             const enemyCommands = this.niffleApe.getMenu(this.player1.player).map((i) => i.command);
             expect(enemyCommands).toContain('placeFaceup');
             expect(enemyCommands).toContain('placeFacedown');
@@ -269,8 +262,6 @@ describe('Cards-under-cards (manual mode)', function () {
         });
 
         it("hides takeChild entries on an opponent's card and rejects the command", function () {
-            // Seed a card under the enemy creature so there's something
-            // to (try to) take.
             this.player1.menuClick(this.niffleApe, {
                 command: 'placeFaceup',
                 menu: 'under'
@@ -299,10 +290,6 @@ describe('Cards-under-cards (manual mode)', function () {
         });
 
         it("returns a taken card to its owner's hand even when the host is enemy-controlled", function () {
-            // player1 places their own Titan Mechanic under player2's
-            // Niffle Ape; player2 (the host's controller) then takes
-            // it back. The card belongs to player1, so it must land
-            // in player1's hand - not player2's.
             this.player1.menuClick(this.niffleApe, {
                 command: 'placeFaceup',
                 menu: 'under'

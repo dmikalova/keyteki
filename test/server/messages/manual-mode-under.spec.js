@@ -138,6 +138,7 @@ describe('Manual Mode Place/Take Under Messages', function () {
                 arg: this.titanMechanic.uuid,
                 menu: 'under'
             });
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 manually places Titan Mechanic faceup under Snufflegator',
                 'player2 manually takes Titan Mechanic from under Snufflegator into their hand'
@@ -155,6 +156,7 @@ describe('Manual Mode Place/Take Under Messages', function () {
                 arg: this.titanMechanic.uuid,
                 menu: 'under'
             });
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 manually places a card facedown under Snufflegator',
                 'player2 manually takes a facedown card from under Snufflegator into their hand'
@@ -174,6 +176,7 @@ describe('Manual Mode Place/Take Under Messages', function () {
                 arg: this.titanMechanic.uuid,
                 menu: 'under'
             });
+            expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 manually places Titan Mechanic faceup under Niffle Ape'
             ]);
@@ -202,7 +205,7 @@ describe('Manual Mode Place/Take Under Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Kirby’s Blaster attaching it to Com. Officer Kirby',
-                "player1 uses Kirby’s Blaster's amber bonus icon to gain 1 amber",
+                "player1 gains an amber due to Kirby’s Blaster's bonus icon",
                 'player1 uses Kirby’s Blaster to draw 2 cards',
                 'player1 draws 2 cards',
                 'player1 manually returns Kirby’s Blaster to their hand'

@@ -67,8 +67,7 @@ const Card = ({
     }
 
     // Close this card's menu when another card opens its menu, and when
-    // the user mousedowns anywhere outside our card-frame (CardMenu stops
-    // its own mousedown so clicks inside the menu don't close it).
+    // the user mousedowns anywhere outside our card-frame.
     useEffect(() => {
         if (!showMenu) {
             return;

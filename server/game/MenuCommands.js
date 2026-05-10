@@ -128,8 +128,6 @@ class MenuCommands {
                         (facedown ? 'facedown ' : 'faceup ') +
                         'under ' +
                         card.name,
-                    // Restricted to hand to avoid the discard/deck pop-up
-                    // panes that would otherwise appear in manual mode.
                     location: 'hand',
                     controller: 'self',
                     cardCondition: (selected) => selected !== card && selected.parent !== card,
@@ -162,7 +160,7 @@ class MenuCommands {
                 if (!game.manualMode || card.location !== 'play area') {
                     break;
                 }
-                // Only the controller of the host card may pull cards
+                // Only the controller of the parent card may pull cards
                 // out from under it. The menu also hides this option
                 // for opponents; this is the server-side backstop.
                 if (card.controller !== player) {

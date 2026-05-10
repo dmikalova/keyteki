@@ -863,10 +863,7 @@ class Card extends EffectSource {
             return [{ command: 'reveal', text: 'Reveal', menu: 'main' }];
         }
 
-        // Upgrades / cards-under-cards have a parent; the only sensible
-        // manual-mode action on them is to return them to hand. Skip
-        // the rest of the menu (exhaust, tokens, place-under, etc.)
-        // which doesn't apply to attachments.
+        // Upgrades should only be returned to hand - they cannot be otherwise interacted with while attached to a creature, and don't need their own menu options
         if (this.parent) {
             menu.push({ command: 'returnToHand', text: 'Return to hand', menu: 'main' });
             return menu;
@@ -896,8 +893,8 @@ class Card extends EffectSource {
             // log lines hide the name for opponent visibility.
             // Only the controller of the host card can take cards out
             // from under it: opponents can place cards under enemy
-            // creatures (e.g. as a referee aid) but cannot retrieve
-            // them, and shouldn't even see what's stashed there.
+            // creatures but cannot take them, and shouldn't be able to
+            // see what cards are under a card.
             if (!activePlayer || activePlayer === this.controller) {
                 for (const child of this.childCards) {
                     menu.push({
