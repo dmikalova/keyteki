@@ -865,6 +865,7 @@ class Card extends EffectSource {
 
         // Upgrades should only be returned to hand - they cannot be otherwise interacted with while attached to a creature, and don't need their own menu options
         if (this.parent) {
+            menu.push({ command: 'click', text: 'Select Card', menu: 'main' });
             menu.push({ command: 'returnToHand', text: 'Return to hand', menu: 'main' });
             return menu;
         }
