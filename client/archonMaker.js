@@ -952,7 +952,6 @@ export const buildCard = async (
             // cards the rendered image is just the art.
             const artTop = 30;
             const artBottom = 200;
-            // const artBottom = halfSize ? 210 : 220;
             const artLeft = 30;
             const artRight = 270;
             const artWidth = artRight - artLeft;
@@ -971,7 +970,7 @@ export const buildCard = async (
             // cols for a more compact arrangement).
             let cols = 1;
             let rows = total;
-            let tokenWidth = Math.min(preferredTokenWidth, artWidth, artHeight / total);
+            let tokenWidth = -Infinity;
             for (let c = 1; c <= total; c++) {
                 const r = Math.ceil(total / c);
                 const tw = Math.min(preferredTokenWidth, artWidth / c, artHeight / r);
