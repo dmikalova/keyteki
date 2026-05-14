@@ -2051,7 +2051,7 @@ pre {
   width: 0.55em;
 }
 .stat-digit-one {
-  text-indent: 0.12em;
+  transform: translateX(0.12em);
 }
 
 .btn-stat {
