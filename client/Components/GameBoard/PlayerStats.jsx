@@ -11,13 +11,13 @@ import {
     faCopy,
     faWrench,
     faCogs,
-    faComment
+    faComment,
+    faMinus,
+    faPlus
 } from '@fortawesome/free-solid-svg-icons';
 
 import Avatar from '../Site/Avatar';
 import { Constants } from '../../constants';
-import Minus from '../../assets/img/Minus.png';
-import Plus from '../../assets/img/Plus.png';
 
 import Keys from './Keys';
 import IdentityCard from './IdentityCard';
@@ -73,6 +73,15 @@ const PlayerStats = ({
         return stats[stat] || 0;
     };
 
+    const renderStatValue = (value) =>
+        String(value)
+            .split('')
+            .map((ch, i) => (
+                <span key={i} className={`stat-digit${ch === '1' ? ' stat-digit-one' : ''}`}>
+                    {ch}
+                </span>
+            ));
+
     const getHouse = (house) => {
         let houseTitle = t(house);
         return houseTitle[0].toUpperCase() + houseTitle.slice(1);
@@ -89,10 +98,10 @@ const PlayerStats = ({
                             dispatch(gameSendMessage('changeStat', statToSet, -1));
                         }}
                     >
-                        <img src={Minus} title='-' alt='-' />
+                        <Icon icon={faMinus} title='-' />
                     </a>
                 ) : null}
-                <div className='stat-value'>{getStatValueOrDefault(stat)}</div>
+                <div className='stat-value'>{renderStatValue(getStatValueOrDefault(stat))}</div>
                 <div className={`stat-image ${stat}`} />
                 {showControls ? (
                     <a
@@ -102,7 +111,7 @@ const PlayerStats = ({
                             dispatch(gameSendMessage('changeStat', statToSet, 1));
                         }}
                     >
-                        <img src={Plus} title='+' alt='+' />
+                        <Icon icon={faPlus} title='+' />
                     </a>
                 ) : null}
             </div>
@@ -112,7 +121,9 @@ const PlayerStats = ({
     const getKeyCost = () => {
         return (
             <div className='state' title={t('Current Key Cost')}>
-                <div className='stat-value'>{getStatValueOrDefault('keyCost')}</div>
+                <div className='stat-value'>
+                    {renderStatValue(getStatValueOrDefault('keyCost'))}
+                </div>
                 <div className='stat-image keyCost' />
             </div>
         );

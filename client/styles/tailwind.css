@@ -2039,6 +2039,48 @@ pre {
 .stat-value {
   font-family: Bombardier, serif;
   font-size: 1.8rem;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.stat-digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.55em;
+  letter-spacing: 0;
+}
+.stat-digit-one {
+  text-indent: 0.12em;
+}
+
+.btn-stat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--foreground);
+  color: #000000;
+  border: 1.5px solid #000000;
+  font-size: 12px;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.btn-stat svg {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  stroke-width: 40 !important;
+}
+.btn-stat:hover {
+  background-color: #f5c518;
+}
+.btn-stat:focus {
+  outline: 0;
 }
 
 .active-player .state svg {
