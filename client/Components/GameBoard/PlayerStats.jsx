@@ -1,29 +1,29 @@
+import {
+    faCogs,
+    faComment,
+    faCopy,
+    faEye,
+    faEyeSlash,
+    faMinus,
+    faPlus,
+    faWrench
+} from '@fortawesome/free-solid-svg-icons';
+import { toast } from '@heroui/react';
+import classNames from 'classnames';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { gameSendMessage } from '../../redux/socketActions';
-import { toast } from '@heroui/react';
-import classNames from 'classnames';
 import Icon from '../Icon';
-import {
-    faEye,
-    faEyeSlash,
-    faCopy,
-    faWrench,
-    faCogs,
-    faComment,
-    faMinus,
-    faPlus
-} from '@fortawesome/free-solid-svg-icons';
 
-import Avatar from '../Site/Avatar';
 import { Constants } from '../../constants';
+import Avatar from '../Site/Avatar';
 
-import Keys from './Keys';
-import IdentityCard from './IdentityCard';
 import CardPileLink from './CardPileLink';
-import Droppable from './Droppable';
 import DrawDeck from './DrawDeck';
+import Droppable from './Droppable';
+import IdentityCard from './IdentityCard';
+import Keys from './Keys';
 
 const PlayerStats = ({
     activeHouse,
@@ -77,7 +77,7 @@ const PlayerStats = ({
         String(value)
             .split('')
             .map((ch, i) => (
-                <span key={i} className={`stat-digit${ch === '1' ? ' stat-digit-one' : ''}`}>
+                <span key={i} className='stat-digit'>
                     {ch}
                 </span>
             ));
