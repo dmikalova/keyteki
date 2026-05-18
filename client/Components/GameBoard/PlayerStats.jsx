@@ -93,7 +93,7 @@ const PlayerStats = ({
                 {showControls ? (
                     <a
                         href='#'
-                        className='btn-stat'
+                        className='btn-stat btn-stat--minus'
                         onClick={() => {
                             dispatch(gameSendMessage('changeStat', statToSet, -1));
                         }}
@@ -106,7 +106,7 @@ const PlayerStats = ({
                 {showControls ? (
                     <a
                         href='#'
-                        className='btn-stat'
+                        className='btn-stat btn-stat--plus'
                         onClick={() => {
                             dispatch(gameSendMessage('changeStat', statToSet, 1));
                         }}
