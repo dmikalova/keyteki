@@ -62,6 +62,7 @@ class Effect {
 
     addTarget(target) {
         this.targets.push(target);
+        this._targetsDirty = true;
         this.effect.duration = this.duration;
         this.effect.apply(target);
     }
@@ -73,6 +74,7 @@ class Effect {
     removeTargets(targets) {
         targets.forEach((target) => this.effect.unapply(target));
         this.targets = this.targets.filter((x) => !targets.includes(x));
+        this._targetsDirty = true;
     }
 
     hasTarget(target) {
@@ -82,6 +84,7 @@ class Effect {
     cancel() {
         this.targets.forEach((target) => this.effect.unapply(target));
         this.targets = [];
+        this._targetsDirty = true;
     }
 
     isEffectActive() {

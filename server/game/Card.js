@@ -114,6 +114,7 @@ class Card extends EffectSource {
 
         this._persistentEffectsCache = null;
         this._persistentEffectsCacheBlank = null;
+        this._keywordCache = null;
 
         this.endRound();
         this.modifiedPower = undefined;
@@ -123,12 +124,14 @@ class Card extends EffectSource {
         super.addEffect(effect);
         this._persistentEffectsCache = null;
         this._persistentEffectsCacheBlank = null;
+        this._keywordCache = null;
     }
 
     removeEffect(effect) {
         super.removeEffect(effect);
         this._persistentEffectsCache = null;
         this._persistentEffectsCacheBlank = null;
+        this._keywordCache = null;
     }
 
     getTopCard() {
@@ -1020,7 +1023,18 @@ class Card extends EffectSource {
 
     getKeywordValue(keyword) {
         keyword = keyword.toLowerCase();
+        if (this._keywordCache) {
+            let cached = this._keywordCache[keyword];
+            if (cached !== undefined) {
+                return cached;
+            }
+        }
+
         if (this.getEffects('removeKeyword').includes(keyword)) {
+            if (!this._keywordCache) {
+                this._keywordCache = Object.create(null);
+            }
+            this._keywordCache[keyword] = 0;
             return 0;
         }
 
@@ -1035,10 +1049,19 @@ class Card extends EffectSource {
             baseValue = baseKeywords[keyword] || 0;
         }
 
-        return this.getEffects('addKeyword').reduce(
+        let result = this.getEffects('addKeyword').reduce(
             (total, keywords) => total + (keywords[keyword] ? keywords[keyword] : 0),
             baseValue
         );
+
+        // Don't cache for gigantic creatures as composedPart can change
+        if (!this.gigantic) {
+            if (!this._keywordCache) {
+                this._keywordCache = Object.create(null);
+            }
+            this._keywordCache[keyword] = result;
+        }
+        return result;
     }
 
     createSnapshot() {

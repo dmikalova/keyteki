@@ -106,10 +106,22 @@ class EffectEngine {
             if (effect.duration !== 'persistentEffect') {
                 continue;
             }
+            if (!effect._targetsDirty && effect._lastSnapshot !== undefined) {
+                if (!effect._targetHistory) {
+                    effect._targetHistory = [];
+                }
+                effect._targetHistory.push(effect._lastSnapshot);
+                if (effect._targetHistory.length > 4) {
+                    effect._targetHistory.shift();
+                }
+                continue;
+            }
             const snapshot = effect.targets
                 .map((t) => (t && t.uuid) || '')
                 .sort()
                 .join('|');
+            effect._lastSnapshot = snapshot;
+            effect._targetsDirty = false;
             if (!effect._targetHistory) {
                 effect._targetHistory = [];
             }
