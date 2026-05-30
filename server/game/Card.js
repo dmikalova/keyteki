@@ -1,5 +1,3 @@
-const _ = require('underscore');
-
 const AbilityDsl = require('./abilitydsl.js');
 const CardAction = require('./cardaction.js');
 const Constants = require('../constants.js');
@@ -181,9 +179,8 @@ class Card extends EffectSource {
 
         let actions = this.abilities.actions;
         if (this.anyEffect('copyCard')) {
-            let mostRecentEffect = _.last(
-                this.effects.filter((effect) => effect.type === 'copyCard')
-            );
+            let copyEffects = this.effects.filter((effect) => effect.type === 'copyCard');
+            let mostRecentEffect = copyEffects[copyEffects.length - 1];
             actions = mostRecentEffect.value.getActions(this);
         }
 
@@ -205,9 +202,8 @@ class Card extends EffectSource {
         const TriggeredAbilityTypes = ['interrupt', 'reaction'];
         let reactions = this.abilities.reactions;
         if (this.anyEffect('copyCard')) {
-            let mostRecentEffect = _.last(
-                this.effects.filter((effect) => effect.type === 'copyCard')
-            );
+            let copyEffects = this.effects.filter((effect) => effect.type === 'copyCard');
+            let mostRecentEffect = copyEffects[copyEffects.length - 1];
             reactions = mostRecentEffect.value.getReactions(this);
         }
 
@@ -245,9 +241,8 @@ class Card extends EffectSource {
 
         let persistentEffects = this.abilities.persistentEffects;
         if (this.anyEffect('copyCard')) {
-            let mostRecentEffect = _.last(
-                this.effects.filter((effect) => effect.type === 'copyCard')
-            );
+            let copyEffects = this.effects.filter((effect) => effect.type === 'copyCard');
+            let mostRecentEffect = copyEffects[copyEffects.length - 1];
             persistentEffects = mostRecentEffect.value.getPersistentEffects(this);
         }
 
@@ -625,7 +620,7 @@ class Card extends EffectSource {
             throw new Error(`'${location}' is not a supported effect location.`);
         }
 
-        let ability = _.extend(
+        let ability = Object.assign(
             {
                 abilityType: 'persistentEffect',
                 duration: 'persistentEffect',
@@ -664,7 +659,7 @@ class Card extends EffectSource {
         }
         let copyEffect = this.mostRecentEffect('copyCard');
         let traits = copyEffect ? copyEffect.traits : this.getBottomCard().traits;
-        return _.uniq(traits.concat(this.getEffects('addTrait')));
+        return [...new Set(traits.concat(this.getEffects('addTrait')))];
     }
 
     getHouseEnhancements() {
@@ -722,7 +717,7 @@ class Card extends EffectSource {
     }
 
     applyAnyLocationPersistentEffects() {
-        _.each(this.persistentEffects, (effect) => {
+        this.persistentEffects.forEach((effect) => {
             if (effect.location === 'any') {
                 effect.ref = this.addEffectToEngine(effect);
             }
@@ -794,7 +789,7 @@ class Card extends EffectSource {
     }
 
     updateAbilityEvents(from, to) {
-        _.each(this.getReactions(true), (reaction) => {
+        this.getReactions(true).forEach((reaction) => {
             if (reaction.location.includes(to) && !reaction.location.includes(from)) {
                 reaction.registerEvents();
             } else if (!reaction.location.includes(to) && reaction.location.includes(from)) {
@@ -810,7 +805,7 @@ class Card extends EffectSource {
 
         let effectLocations = ['play area', 'discard'];
 
-        _.each(this.getPersistentEffects(true), (effect) => {
+        this.getPersistentEffects(true).forEach((effect) => {
             if (effect.location !== 'any') {
                 if (
                     effectLocations.includes(effect.location) &&
@@ -932,7 +927,7 @@ class Card extends EffectSource {
             return;
         }
 
-        if (_.isUndefined(this.tokens[type])) {
+        if (this.tokens[type] === undefined) {
             this.tokens[type] = 0;
         }
 
@@ -1028,8 +1023,8 @@ class Card extends EffectSource {
 
         clone.clonedType = clone.type;
         clone.upgrades = this.upgrades.map((upgrade) => upgrade.createSnapshot());
-        clone.effects = _.clone(this.effects);
-        clone.tokens = _.clone(this.tokens);
+        clone.effects = [...this.effects];
+        clone.tokens = { ...this.tokens };
         clone.controller = this.controller;
         clone.clonedPurgedCards = this.purgedCards;
         clone.exhausted = this.exhausted;
