@@ -1,43 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
-function getDirectories(srcpath) {
-    let fullPath = path.join(__dirname, srcpath);
-    return fs.readdirSync(fullPath).filter(function (file) {
-        return fs.statSync(path.join(fullPath, file)).isDirectory();
-    });
-}
+let cards = {};
 
-function loadFiles(directory) {
-    let fullPath = path.join(__dirname, directory);
-    let files = fs.readdirSync(fullPath).filter((file) => {
-        return !fs.statSync(path.join(fullPath, file)).isDirectory();
-    });
-
-    for (let file of files) {
-        let card = require('./' + directory + '/' + file);
-
-        cards[card.id] = card;
+function loadDirectory(dirPath) {
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    for (const entry of entries) {
+        const fullPath = path.join(dirPath, entry.name);
+        if (entry.isDirectory()) {
+            loadDirectory(fullPath);
+        } else if (entry.name.endsWith('.js') && entry.name !== 'index.js') {
+            const card = require(fullPath);
+            cards[card.id] = card;
+        }
     }
 }
 
-function loadCards(directory) {
-    let cards = {};
-
-    loadFiles(directory);
-
-    getDirectories(directory).forEach((dir) => {
-        cards = Object.assign(cards, loadCards(path.join(directory, dir)));
-    });
-
-    return cards;
-}
-
-let cards = {};
-let directories = getDirectories('.');
-
-for (let directory of directories) {
-    cards = Object.assign(cards, loadCards(directory));
-}
+loadDirectory(__dirname);
 
 module.exports = cards;
