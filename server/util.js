@@ -125,23 +125,20 @@ function wrapAsync(fn) {
 }
 
 function detectBinary(state, path = '', results = []) {
-    const allowedTypes = ['Array', 'Boolean', 'Date', 'Number', 'Object', 'String'];
-
-    if (!state) {
+    if (!state || typeof state !== 'object') {
         return results;
     }
 
-    let type = state.constructor.name;
-
-    if (!allowedTypes.includes(type)) {
-        results.push({ path: path, type: type });
+    const ctor = state.constructor;
+    if (ctor !== Object && ctor !== Array && ctor !== Date) {
+        results.push({ path: path, type: ctor ? ctor.name : typeof state });
     }
 
-    if (type === 'Object') {
+    if (ctor === Object) {
         for (let key in state) {
             detectBinary(state[key], `${path}.${key}`, results);
         }
-    } else if (type === 'Array') {
+    } else if (ctor === Array) {
         for (let i = 0; i < state.length; ++i) {
             detectBinary(state[i], `${path}[${i}]`, results);
         }

@@ -740,7 +740,10 @@ class PlayerInteractionWrapper {
     }
 
     checkUnserializableGameState() {
-        let state = this.game.getState(this.player.name);
+        let state = this.game.getState(this.player.name, {
+            skipCanPlayCheck: true,
+            skipDeckData: true
+        });
         let results = detectBinary(state);
 
         if (results.length !== 0) {

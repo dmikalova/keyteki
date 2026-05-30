@@ -1442,7 +1442,7 @@ class Card extends EffectSource {
         return result;
     }
 
-    getSummary(activePlayer, hideWhenFaceup) {
+    getSummary(activePlayer, hideWhenFaceup, options = {}) {
         const isController = activePlayer === this.controller;
         const selectionState = activePlayer.getCardSelectionState(this);
 
@@ -1459,8 +1459,12 @@ class Card extends EffectSource {
         }
 
         const childCards = this.childCards
-            .map((card) => card.getSummary(activePlayer, hideWhenFaceup))
-            .concat(this.purgedCards.map((card) => card.getSummary(activePlayer, hideWhenFaceup)));
+            .map((card) => card.getSummary(activePlayer, hideWhenFaceup, options))
+            .concat(
+                this.purgedCards.map((card) =>
+                    card.getSummary(activePlayer, hideWhenFaceup, options)
+                )
+            );
 
         const tokenCard = this.isToken() && this.tokenCard();
         const tokenCardOrThis = tokenCard ? tokenCard : this;
@@ -1469,12 +1473,14 @@ class Card extends EffectSource {
             anomaly: tokenCardOrThis.anomaly,
             enhancements: tokenCardOrThis.enhancements,
             image: tokenCardOrThis.image,
-            canPlay: !!(
-                activePlayer === this.game.activePlayer &&
-                this.game.activePlayer.activeHouse &&
-                isController &&
-                this.getLegalActions(activePlayer, false).length > 0
-            ),
+            canPlay:
+                !options.skipCanPlayCheck &&
+                !!(
+                    activePlayer === this.game.activePlayer &&
+                    this.game.activePlayer.activeHouse &&
+                    isController &&
+                    this.getLegalActions(activePlayer, false).length > 0
+                ),
             cardback: this.owner.deckData.cardback,
             childCards: childCards,
             controlled: this.owner !== this.controller,
@@ -1508,7 +1514,7 @@ class Card extends EffectSource {
             type: this.getType(),
             gigantic: this.gigantic,
             upgrades: this.upgrades.map((upgrade) => {
-                return upgrade.getSummary(activePlayer, hideWhenFaceup);
+                return upgrade.getSummary(activePlayer, hideWhenFaceup, options);
             }),
             uuid: this.uuid, // TODO - fix vulnerability with token cards
             isToken: !!tokenCard,

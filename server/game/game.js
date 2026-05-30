@@ -1560,13 +1560,13 @@ class Game extends EventEmitter {
     /*
      * This information is sent to the client
      */
-    getState(activePlayerName) {
+    getState(activePlayerName, options = {}) {
         let activePlayer = this.playersAndSpectators[activePlayerName] || new AnonymousSpectator();
         let playerState = {};
 
         if (this.started) {
             for (const player of this.getPlayers()) {
-                playerState[player.name] = player.getState(activePlayer);
+                playerState[player.name] = player.getState(activePlayer, options);
             }
 
             this.timeLimit.checkForTimeLimitReached();

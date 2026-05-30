@@ -724,9 +724,9 @@ class Player extends GameObject {
         this.promptState.clearPromptedPiles();
     }
 
-    getSummaryForCardList(list, activePlayer, hideWhenFaceup) {
+    getSummaryForCardList(list, activePlayer, hideWhenFaceup, options = {}) {
         return list.map((card) => {
-            return card.getSummary(activePlayer, hideWhenFaceup);
+            return card.getSummary(activePlayer, hideWhenFaceup, options);
         });
     }
 
@@ -1460,17 +1460,22 @@ class Player extends GameObject {
      * @param {Player} activePlayer
      */
 
-    getState(activePlayer) {
+    getState(activePlayer, options = {}) {
         let isActivePlayer = activePlayer === this;
         let promptState = isActivePlayer ? this.promptState.getState() : {};
         let state = {
             activeHouse: this.activeHouse,
             cardPiles: {
-                archives: this.getSummaryForCardList(this.archives, activePlayer),
-                cardsInPlay: this.getSummaryForCardList(this.cardsInPlay, activePlayer),
-                discard: this.getSummaryForCardList(this.discard, activePlayer),
-                hand: this.getSummaryForCardList(this.hand, activePlayer, true),
-                purged: this.getSummaryForCardList(this.purged, activePlayer)
+                archives: this.getSummaryForCardList(this.archives, activePlayer, false, options),
+                cardsInPlay: this.getSummaryForCardList(
+                    this.cardsInPlay,
+                    activePlayer,
+                    false,
+                    options
+                ),
+                discard: this.getSummaryForCardList(this.discard, activePlayer, false, options),
+                hand: this.getSummaryForCardList(this.hand, activePlayer, true, options),
+                purged: this.getSummaryForCardList(this.purged, activePlayer, false, options)
             },
             cardback: 'cardback',
             disconnected: !!this.disconnectedAt,
@@ -1495,9 +1500,14 @@ class Player extends GameObject {
                 role: this.user.role,
                 avatar: this.user.avatar
             },
-            deckData: this.deckData,
+            deckData: options.skipDeckData ? undefined : this.deckData,
             tokenCard: this.tokenCard && this.tokenCard.getShortSummary(),
-            prophecyCards: this.getSummaryForCardList(this.prophecyCards, activePlayer),
+            prophecyCards: this.getSummaryForCardList(
+                this.prophecyCards,
+                activePlayer,
+                false,
+                options
+            ),
             wins: this.wins
         };
 
@@ -1516,11 +1526,16 @@ class Player extends GameObject {
 
                 return 0;
             });
-            state.cardPiles.deck = this.getSummaryForCardList(sortedDeck, activePlayer, true);
+            state.cardPiles.deck = this.getSummaryForCardList(
+                sortedDeck,
+                activePlayer,
+                true,
+                options
+            );
         }
 
         if (this.isTopCardShown()) {
-            state.deckTopCard = this.deck[0].getSummary(activePlayer);
+            state.deckTopCard = this.deck[0].getSummary(activePlayer, false, options);
         }
 
         if (this.clock) {
