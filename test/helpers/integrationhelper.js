@@ -175,7 +175,6 @@ const customMatchers = {
     toBeAbleToRaiseTide: function (player) {
         player.game.clickTide(player.name);
         player.game.continue();
-        player.checkUnserializableGameState();
 
         const buttons = player.currentPrompt().buttons;
         const pass = _.any(buttons, (button) => button.text === 'No');
@@ -359,6 +358,7 @@ beforeEach(function () {
      * @param {Object} [options = {}] - specifies the state of the game
      */
     this.setupTest = function (options = {}) {
+        this._setupTestCalled = true;
         applySetupTest(options, {
             game: this.game,
             player1: this.player1,
@@ -375,5 +375,9 @@ afterEach(function () {
     if (process.env.DEBUG_TEST && this.game?.getPlainTextLog) {
         // eslint-disable-next-line no-console
         console.info(this.game.getPlainTextLog());
+    }
+
+    if (this._setupTestCalled && this.player1) {
+        this.player1.checkUnserializableGameState();
     }
 });

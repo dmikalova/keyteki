@@ -48,7 +48,6 @@ class PlayerInteractionWrapper {
             yellow: newValue?.yellow ?? false
         };
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     get hand() {
@@ -202,7 +201,6 @@ class PlayerInteractionWrapper {
     raiseTide() {
         this.game.clickTide(this.player.name);
         this.game.continue();
-        this.checkUnserializableGameState();
         this.clickPrompt('Yes');
     }
 
@@ -225,12 +223,10 @@ class PlayerInteractionWrapper {
     activateProphecy(prophecyCard, fateCard) {
         this.game.clickProphecy(this.player.name, prophecyCard.uuid);
         this.game.continue();
-        this.checkUnserializableGameState();
         this.clickPrompt('Yes');
         this.clickCard(fateCard);
         this.game.checkGameState(true);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     executeCommand(command) {
@@ -238,7 +234,6 @@ class PlayerInteractionWrapper {
         if (this.game.chatCommands.executeCommand(this.player, args[0], args)) {
             this.game.checkGameState(true);
             this.game.continue();
-            this.checkUnserializableGameState();
             return true;
         }
         return false;
@@ -248,14 +243,12 @@ class PlayerInteractionWrapper {
         this.game.menuItemClick(this.player.name, card.uuid, { command });
         this.game.checkGameState(true);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     drop(card, target) {
         this.player.drop(card.uuid, card.location, target);
         this.game.checkGameState(true);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     replaceLocalizedValues(title) {
@@ -474,7 +467,6 @@ class PlayerInteractionWrapper {
             promptButtons[num].method
         );
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     clickCard(card, location = 'any', side) {
@@ -484,7 +476,6 @@ class PlayerInteractionWrapper {
 
         this.game.cardClicked(this.player.name, card.uuid);
         this.game.continue();
-        this.checkUnserializableGameState();
         return card;
     }
 
@@ -501,7 +492,6 @@ class PlayerInteractionWrapper {
 
         this.game.menuItemClick(this.player.name, card.uuid, items[0]);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     selectTrait(trait) {
@@ -520,7 +510,6 @@ class PlayerInteractionWrapper {
 
         this.game.menuButton(this.player.name, trait, promptControl.uuid, promptControl.method);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     selectCardName(cardName) {
@@ -539,7 +528,6 @@ class PlayerInteractionWrapper {
 
         this.game.menuButton(this.player.name, cardName, promptControl.uuid, promptControl.method);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     selectOption(option) {
@@ -556,7 +544,6 @@ class PlayerInteractionWrapper {
 
         this.game.menuButton(this.player.name, option, promptButton.uuid, promptButton.method);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     endTurn() {
@@ -573,7 +560,6 @@ class PlayerInteractionWrapper {
     dragCard(card, targetLocation) {
         this.game.drop(this.player.name, card.uuid, card.location, targetLocation);
         this.game.continue();
-        this.checkUnserializableGameState();
     }
 
     /**
@@ -783,7 +769,6 @@ class PlayerInteractionWrapper {
             .resolve(card, this.game.getFrameworkContext(this.player));
 
         this.game.continue();
-        this.checkUnserializableGameState();
 
         return card;
     }

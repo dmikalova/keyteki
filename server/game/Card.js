@@ -18,6 +18,22 @@ const ReturnToHandFromDiscardAction = require('./BaseActions/ReturnToHandFromDis
 const RemoveStun = require('./BaseActions/RemoveStun');
 const { EVENTS } = require('./Events/types.js');
 
+const DEFAULT_MENU = [
+    { command: 'exhaust', text: 'Exhaust/Ready', menu: 'main' },
+    { command: 'tokens', text: 'Modify Tokens', menu: 'main' },
+    { command: 'control', text: 'Give control', menu: 'main' },
+    { command: 'main', text: 'Back', menu: 'tokens' },
+    { command: 'addDamage', text: 'Add 1 damage', menu: 'tokens' },
+    { command: 'remDamage', text: 'Remove 1 damage', menu: 'tokens' },
+    { command: 'addPower', text: 'Add 1 power token', menu: 'tokens' },
+    { command: 'remPower', text: 'Remove 1 power token', menu: 'tokens' },
+    { command: 'addAmber', text: 'Add 1 amber', menu: 'tokens' },
+    { command: 'remAmber', text: 'Remove 1 amber', menu: 'tokens' },
+    { command: 'stun', text: 'Stun/Remove Stun', menu: 'tokens' },
+    { command: 'ward', text: 'Ward/Remove Ward', menu: 'tokens' },
+    { command: 'enrage', text: 'Enrage/Remove Enrage', menu: 'tokens' }
+];
+
 class Card extends EffectSource {
     constructor(owner, cardData) {
         super(owner.game);
@@ -96,21 +112,7 @@ class Card extends EffectSource {
 
         this.locale = cardData.locale;
 
-        this.menu = [
-            { command: 'exhaust', text: 'Exhaust/Ready', menu: 'main' },
-            { command: 'tokens', text: 'Modify Tokens', menu: 'main' },
-            { command: 'control', text: 'Give control', menu: 'main' },
-            { command: 'main', text: 'Back', menu: 'tokens' },
-            { command: 'addDamage', text: 'Add 1 damage', menu: 'tokens' },
-            { command: 'remDamage', text: 'Remove 1 damage', menu: 'tokens' },
-            { command: 'addPower', text: 'Add 1 power token', menu: 'tokens' },
-            { command: 'remPower', text: 'Remove 1 power token', menu: 'tokens' },
-            { command: 'addAmber', text: 'Add 1 amber', menu: 'tokens' },
-            { command: 'remAmber', text: 'Remove 1 amber', menu: 'tokens' },
-            { command: 'stun', text: 'Stun/Remove Stun', menu: 'tokens' },
-            { command: 'ward', text: 'Ward/Remove Ward', menu: 'tokens' },
-            { command: 'enrage', text: 'Enrage/Remove Enrage', menu: 'tokens' }
-        ];
+        this.menu = DEFAULT_MENU;
 
         this.endRound();
         this.modifiedPower = undefined;
