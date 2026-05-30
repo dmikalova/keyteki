@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const { matchCardByNameAndPack } = require('./cardutil.js');
-
 const PathToSubModulePacks = path.join(__dirname, '../../keyteki-json-data/packs');
 
 const defaultFiller = {
@@ -31,6 +29,21 @@ class DeckBuilder {
     constructor() {
         this.cardsByCode = this.loadCards(PathToSubModulePacks);
         this.cards = Object.values(this.cardsByCode);
+        this.cardsByName = Object.create(null);
+        for (let card of this.cards) {
+            let name = card.name;
+            let existing = this.cardsByName[name];
+            if (existing) {
+                if (!Array.isArray(existing)) {
+                    this.cardsByName[name] = [existing];
+                    existing = this.cardsByName[name];
+                }
+                existing.push(card);
+            } else {
+                this.cardsByName[name] = card;
+            }
+            this.cardsByName[`${name} (${card.pack_code})`] = card;
+        }
     }
 
     loadCards(directory) {
@@ -157,28 +170,25 @@ class DeckBuilder {
     }
 
     getCard(idOrLabelOrName) {
-        if (this.cards[idOrLabelOrName]) {
-            return this.cards[idOrLabelOrName];
+        if (this.cardsByCode[idOrLabelOrName]) {
+            return this.cardsByCode[idOrLabelOrName];
         }
 
-        let cardsByName = this.cards.filter(matchCardByNameAndPack(idOrLabelOrName));
-
-        if (cardsByName.length === 0) {
-            throw new Error(`Unable to find any card matching ${idOrLabelOrName}`);
-        }
-
-        if (cardsByName.length > 1) {
-            let matchingLabels = cardsByName
-                .map((card) => `${card.name} (${card.pack_code})`)
-                .join('\n');
+        let found = this.cardsByName[idOrLabelOrName];
+        if (Array.isArray(found)) {
+            let matchingLabels = found.map((card) => `${card.name} (${card.pack_code})`).join('\n');
             throw new Error(
                 `Multiple cards match the name ${idOrLabelOrName}. Use one of these instead:\n${matchingLabels}`
             );
         }
 
-        cardsByName[0].enhancements = null;
+        if (!found) {
+            throw new Error(`Unable to find any card matching ${idOrLabelOrName}`);
+        }
 
-        return cardsByName[0];
+        found.enhancements = null;
+
+        return found;
     }
 }
 

@@ -112,8 +112,23 @@ class Card extends EffectSource {
 
         this.menu = DEFAULT_MENU;
 
+        this._persistentEffectsCache = null;
+        this._persistentEffectsCacheBlank = null;
+
         this.endRound();
         this.modifiedPower = undefined;
+    }
+
+    addEffect(effect) {
+        super.addEffect(effect);
+        this._persistentEffectsCache = null;
+        this._persistentEffectsCacheBlank = null;
+    }
+
+    removeEffect(effect) {
+        super.removeEffect(effect);
+        this._persistentEffectsCache = null;
+        this._persistentEffectsCacheBlank = null;
     }
 
     getTopCard() {
@@ -239,6 +254,11 @@ class Card extends EffectSource {
             return this.abilities.keywordPersistentEffects;
         }
 
+        let cached = ignoreBlank ? this._persistentEffectsCache : this._persistentEffectsCacheBlank;
+        if (cached) {
+            return cached;
+        }
+
         let persistentEffects = this.abilities.persistentEffects;
         if (this.anyEffect('copyCard')) {
             let copyEffects = this.effects.filter((effect) => effect.type === 'copyCard');
@@ -254,6 +274,12 @@ class Card extends EffectSource {
             this.abilities.keywordPersistentEffects,
             gainedPersistentEffects
         );
+
+        if (ignoreBlank) {
+            this._persistentEffectsCache = result;
+        } else {
+            this._persistentEffectsCacheBlank = result;
+        }
 
         return result;
     }
