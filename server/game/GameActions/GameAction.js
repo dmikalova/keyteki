@@ -129,6 +129,18 @@ class GameAction {
     }
 
     /**
+     * Emit a narration message for this action. Override in subclasses to
+     * provide custom narration that replaces the default effectMsg-based
+     * messaging. Called by CardAbility.displayGameActionMessage before
+     * falling through to the default "uses X to Y" message format.
+     * @param {Object} context - The ability context
+     * @returns {boolean} true if narration was emitted, false to fall through
+     */
+    narrate() {
+        return false;
+    }
+
+    /**
      * @param {import("../Events/types.js").EventName} name
      */
     createEvent(name, params, handler) {

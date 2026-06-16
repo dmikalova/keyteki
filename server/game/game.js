@@ -35,6 +35,7 @@ const MenuCommands = require('./MenuCommands');
 const TimeLimit = require('./TimeLimit');
 const PlainTextGameChatFormatter = require('./PlainTextGameChatFormatter');
 const CardVisibility = require('./CardVisibility');
+const Narration = require('./Narration');
 
 /**
  * @import {EventName} from './Events/types');
@@ -49,6 +50,7 @@ class Game extends EventEmitter {
         this.cancelPromptUsed = false;
         this.challonge = details.challonge;
         this.chatCommands = new ChatCommands(this);
+        this.continuePlaying = false;
         this.createdAt = new Date();
         this.currentAbilityWindow = null;
         this.currentActionWindow = null;
@@ -56,6 +58,7 @@ class Game extends EventEmitter {
         this.currentEventWindow = null;
         this.currentPhase = '';
         this.effectEngine = new EffectEngine(this);
+        this.errorHandling = false;
         this.gameChat = new GameChat(this);
         this.gameFormat = details.gameFormat;
         this.gamePrivate = details.gamePrivate;
@@ -66,21 +69,20 @@ class Game extends EventEmitter {
         this.manualMode = false;
         this.muteSpectators = details.muteSpectators;
         this.name = details.name;
+        this.narration = new Narration(this);
         this.owner = details.owner.username;
         this.password = details.password;
         this.pipeline = new GamePipeline();
-        this.playStarted = false;
         this.playersAndSpectators = {};
+        this.playStarted = false;
         this.previousWinner = details.previousWinner;
         this.savedGameId = details.savedGameId;
         this.showHand = details.showHand;
         this.started = false;
-        this.errorHandling = false;
+        this.startingHandsDrawn = false;
         this.swap = details.swap;
         this.timeLimit = new TimeLimit(this);
         this.useGameTimeLimit = details.useGameTimeLimit;
-        this.startingHandsDrawn = false;
-        this.continuePlaying = false;
 
         this.cardNamesPlayedOrUsed = [];
         this.cardsUsed = [];

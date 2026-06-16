@@ -14,7 +14,7 @@ describe('Amber Messages', function () {
             this.player1.reap(this.gangerChieftain);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Ganger Chieftain to reap with Ganger Chieftain'
+                'player1 reaps with Ganger Chieftain to gain 1 amber'
             ]);
         });
     });
@@ -205,7 +205,7 @@ describe('Amber Messages', function () {
             this.player1.reap(this.dextre);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Dextre to reap with Dextre',
+                'player1 reaps with Dextre to gain 1 amber',
                 'player1 uses Dextre to transfer 1 amber from player1'
             ]);
         });

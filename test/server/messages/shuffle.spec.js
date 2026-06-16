@@ -14,7 +14,7 @@ describe('Shuffle Messages', function () {
             this.player1.reap(this.mabTheMad);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Mab the Mad to reap with Mab the Mad',
+                'player1 reaps with Mab the Mad to gain 1 amber',
                 "player1 uses Mab the Mad to return Mab the Mad to their owner's deck"
             ]);
         });

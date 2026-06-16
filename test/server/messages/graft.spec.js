@@ -45,7 +45,7 @@ describe('Graft Messages', function () {
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player1 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player1 chooses brobnar as their active house this turn',
-                'player1 uses Infomancer to reap with Infomancer',
+                'player1 reaps with Infomancer to gain 1 amber',
                 'player1 uses Infomancer to trigger the play effect of Berserker Slam',
                 'player1 uses Berserker Slam to deal 4 damage to Troll'
             ]);

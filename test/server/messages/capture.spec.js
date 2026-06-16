@@ -39,7 +39,7 @@ describe('Capture Messages', function () {
             this.player1.reap(this.berinon);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Berinon to reap with Berinon',
+                'player1 reaps with Berinon to gain 1 amber',
                 'player1 uses Berinon to capture 2 amber from their opponent, placing it on Berinon'
             ]);
         });

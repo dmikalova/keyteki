@@ -199,6 +199,12 @@ class CardAbility extends ThenAbility {
             return;
         }
 
+        // If any game action provides narration, use it instead of the default
+        // "uses X to Y" message format.
+        if (gameActions.some((ga) => ga.narrate(context))) {
+            return;
+        }
+
         // Skip actions that handle their own messaging during execution
         // (they set `defersMessage = true` and emit their own chat output).
         // Cards that want even the inline chat suppressed pass

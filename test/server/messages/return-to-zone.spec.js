@@ -17,7 +17,7 @@ describe('Return Messages', function () {
             this.player1.clickCard(this.troll);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Snudge to reap with Snudge',
+                'player1 reaps with Snudge to gain 1 amber',
                 'player1 uses Snudge to return Troll to their hand'
             ]);
         });

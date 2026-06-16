@@ -14,7 +14,7 @@ describe('Reap Messages', function () {
             this.player1.reap(this.gangerChieftain);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Ganger Chieftain to reap with Ganger Chieftain'
+                'player1 reaps with Ganger Chieftain to gain 1 amber'
             ]);
         });
     });
@@ -37,8 +37,32 @@ describe('Reap Messages', function () {
             this.player1.clickCard(this.boiler);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Jahneerie to reap with Jahneerie',
+                'player1 reaps with Jahneerie to gain 1 amber',
                 'player1 uses Fading Apparition to take 1 amber from Boiler instead of the common supply'
+            ]);
+        });
+    });
+
+    describe('reap', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'logos',
+                    inPlay: ['infomorph'],
+                    hand: ['dimension-door']
+                },
+                player2: {}
+            });
+        });
+
+        it('should log correct message when reaping', function () {
+            this.player1.play(this.dimensionDoor);
+            this.player1.reap(this.infomorph);
+            expect(this.player1).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 plays Dimension Door',
+                'player1 uses Dimension Door to steal amber instead of gaining it while reaping for the remainder of the turn',
+                'player1 reaps with Infomorph to steal 1 amber'
             ]);
         });
     });

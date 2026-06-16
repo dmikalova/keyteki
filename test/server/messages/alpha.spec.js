@@ -47,7 +47,7 @@ describe('Alpha Messages', function () {
             expect(this.mimicGel.location).toBe('hand');
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Batdrone to reap with Batdrone',
+                'player1 reaps with Batdrone to gain 1 amber',
                 'player1 plays Mimic Gel',
                 'player1 uses Mimic Gel to copy Bumblebird',
                 'player1 is unable to play Mimic Gel as Bumblebird and returns it to hand'

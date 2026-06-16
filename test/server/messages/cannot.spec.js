@@ -52,7 +52,7 @@ describe('Cannot Play Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Library of Babble',
                 'player1 plays Batdrone',
-                'player1 uses Wormhole Technician to reap with Wormhole Technician',
+                'player1 reaps with Wormhole Technician to gain 1 amber',
                 'player1 uses Wormhole Technician to reveal Dextre, which is a Logos card, and play it',
                 'player1 is unable to play a card from deck due to a restriction'
             ]);
@@ -198,7 +198,7 @@ describe('Cannot Play Messages', function () {
             expect(this.zorg.location).toBe('discard');
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Dr. Xyloxxzlphrex to reap with Dr. Xyloxxzlphrex',
+                'player1 reaps with Dr. Xyloxxzlphrex to gain 1 amber',
                 'player1 uses Dr. Xyloxxzlphrex to play Zorg',
                 'player1 is unable to play Zorg and returns it to discard'
             ]);

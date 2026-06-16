@@ -16,7 +16,7 @@ describe('Heal Messages', function () {
             this.player1.clickCard(this.championTabris);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Grey Monk to reap with Grey Monk',
+                'player1 reaps with Grey Monk to gain 1 amber',
                 'player1 uses Grey Monk to heal Champion Tabris for 2 damage'
             ]);
         });
