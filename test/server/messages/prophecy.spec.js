@@ -49,7 +49,13 @@ describe('Prophecy Messages', function () {
             expect(this.player2).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 activates their prophecy Expect the Unexpected',
-                'player1 draws 6 cards to refill their hand to 6 cards',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player2 chooses untamed as their active house this turn',
@@ -84,12 +90,107 @@ describe('Prophecy Messages', function () {
             expect(this.player2).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 activates their prophecy Expect the Unexpected',
-                'player1 draws 6 cards to refill their hand to 6 cards',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player2 chooses untamed as their active house this turn',
                 'player2 plays Spoo-key Charge',
                 'player1 uses Expect the Unexpected to fulfill its prophecy',
+                'player1 resolves the fate effect of Ancient Bear'
+            ]);
+        });
+    });
+
+    describe('timetraveller draw interrupted by expect the unexpected', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'untamed',
+                    prophecies: ['expect-the-unexpected', 'forge-ahead-with-confidence'],
+                    hand: ['ancient-bear']
+                },
+                player2: {
+                    hand: ['timetraveller'],
+                    discard: ['dextre', 'library-of-babble', 'phase-shift']
+                }
+            });
+
+            this.player1.activateProphecy(this.expectTheUnexpected, this.ancientBear);
+            this.player1.endTurn();
+            this.player2.clickPrompt('logos');
+            this.player2.player.deck = [];
+        });
+
+        it('should log one-card draw narration around shuffle interruption', function () {
+            this.player2.play(this.timetraveller);
+            expect(this.player2).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 activates their prophecy Expect the Unexpected',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
+                'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
+                'player2 chooses logos as their active house this turn',
+                'player2 plays Timetraveller',
+                "Timetraveller's bonus icon has player2 gain 1 amber",
+                'player2 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
+                "Timetraveller's play ability has player2 draw 2 cards",
+                'player1 uses Expect the Unexpected to fulfill its prophecy',
+                'player1 resolves the fate effect of Ancient Bear'
+            ]);
+        });
+    });
+
+    describe('timetraveller draw interrupted by the cards will tell', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'untamed',
+                    prophecies: ['the-cards-will-tell', 'expect-the-unexpected'],
+                    hand: ['ancient-bear']
+                },
+                player2: {
+                    hand: ['timetraveller'],
+                    deck: ['dextre', 'library-of-babble', 'phase-shift']
+                }
+            });
+
+            this.player1.activateProphecy(this.theCardsWillTell, this.ancientBear);
+            this.player1.endTurn();
+            this.player2.clickPrompt('logos');
+            this.player2.player.optionSettings.orderForcedAbilities = false;
+        });
+
+        it('should log one-card draw narration around draw interruption', function () {
+            this.player2.play(this.timetraveller);
+            expect(this.player2).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 activates their prophecy The Cards Will Tell',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
+                'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
+                'player2 chooses logos as their active house this turn',
+                'player2 plays Timetraveller',
+                "Timetraveller's bonus icon has player2 gain 1 amber",
+                "Timetraveller's play ability has player2 draw 2 cards",
+                'player1 uses The Cards Will Tell to fulfill its prophecy',
                 'player1 resolves the fate effect of Ancient Bear'
             ]);
         });

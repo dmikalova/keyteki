@@ -19,7 +19,7 @@ describe('Alpha Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Wild Wormhole',
-                "player1 uses Wild Wormhole's amber bonus icon to gain 1 amber",
+                "Wild Wormhole's bonus icon has player1 gain 1 amber",
                 'player1 uses Wild Wormhole to play Eureka!',
                 'player1 is unable to play Eureka! and returns it to deck'
             ]);
@@ -49,8 +49,8 @@ describe('Alpha Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 reaps with Batdrone to gain 1 amber',
                 'player1 plays Mimic Gel',
-                'player1 uses Mimic Gel to copy Bumblebird',
-                "Mimic Gel as Bumblebird's ability changes Mimic Gel as Bumblebird's house to logos",
+                'Mimic Gel enters play as a copy of Bumblebird',
+                "Mimic Gel as Bumblebird's constant ability changes Mimic Gel as Bumblebird's house to logos",
                 'player1 is unable to play Mimic Gel as Bumblebird and returns it to hand'
             ]);
         });

@@ -35,8 +35,8 @@ describe('Amber Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber"
+                "Dust Pixie's bonus icon has player1 gain 1 amber",
+                "Dust Pixie's bonus icon has player1 gain 1 amber"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -64,9 +64,9 @@ describe('Amber Messages', function () {
             this.player1.clickCard(this.ancientBear);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "player1 uses Amphora Captura to resolve Dust Pixie's amber bonus icon as a capture bonus icon",
+                "Amphora Captura's constant ability resolves Dust Pixie's bonus amber as bonus capture",
                 "Dust Pixie's capture bonus icon captures 1 amber from player2 onto Ancient Bear",
-                "player1 uses Amphora Captura to resolve Dust Pixie's amber bonus icon as a capture bonus icon",
+                "Amphora Captura's constant ability resolves Dust Pixie's bonus amber as bonus capture",
                 "Dust Pixie's capture bonus icon captures 1 amber from player2 onto Ancient Bear"
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -93,9 +93,9 @@ describe('Amber Messages', function () {
             this.player1.clickPrompt('Amber');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "player1 uses Whimsical Conjuror to resolve Dust Pixie's amber bonus icon to make a token creature",
+                "Whimsical Conjuror's constant ability resolves Dust Pixie's bonus amber to make a token creature",
                 'player1 puts Niffle Brute into play',
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber"
+                "Dust Pixie's bonus icon has player1 gain 1 amber"
             ]);
         });
     });
@@ -117,8 +117,8 @@ describe('Amber Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
+                "Dust Pixie's bonus icon has player1 gain 1 amber",
+                "Dust Pixie's bonus icon has player1 gain 1 amber",
                 'player1 uses Hunting Witch to gain 1 amber'
             ]);
         });
@@ -150,15 +150,15 @@ describe('Amber Messages', function () {
             this.player1.clickCard(this.batdrone); // discard target
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Manifestation',
-                "player1 uses Manifestation's amber bonus icon to gain 1 amber",
+                "Manifestation's bonus icon has player1 gain 1 amber",
                 "player1 uses Manifestation to resolve Control the Weak's bonus icons",
-                "player1 uses Control the Weak's amber bonus icon to gain 1 amber",
-                "player1 uses Control the Weak's amber bonus icon to gain 1 amber",
+                "Control the Weak's bonus icon has player1 gain 1 amber",
+                "Control the Weak's bonus icon has player1 gain 1 amber",
                 "Control the Weak's capture bonus icon captures 1 amber from player2 onto Echofly",
                 "player1 uses Control the Weak's damage bonus icon to deal 1 damage to Lamindra",
                 'Lamindra is destroyed',
                 "player1 uses Control the Weak's draw bonus icon to draw a card",
-                "player1 uses Control the Weak's discard bonus icon to discard Batdrone"
+                "Control the Weak's discard bonus icon has player1 discard Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -324,8 +324,8 @@ describe('Amber Messages', function () {
                 'player1 uses Fission Bloom to resolve the bonus icons of the next card played an additional time',
                 'player1 plays Neuro Syphon',
                 'player1 uses Fission Bloom to resolve the bonus icons of Neuro Syphon an additional time',
-                "player1 uses Neuro Syphon's amber bonus icon to gain 1 amber",
-                "player1 uses Neuro Syphon's amber bonus icon to gain 1 amber"
+                "Neuro Syphon's bonus icon has player1 gain 1 amber",
+                "Neuro Syphon's bonus icon has player1 gain 1 amber"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -355,9 +355,9 @@ describe('Amber Messages', function () {
                 'player1 uses Fission Bloom to resolve the bonus icons of the next card played an additional time',
                 'player1 plays Neuro Syphon',
                 'player1 uses Fission Bloom to resolve the bonus icons of Neuro Syphon an additional time',
-                "player1 uses Amphora Captura to resolve Neuro Syphon's amber bonus icon as a capture bonus icon",
+                "Amphora Captura's constant ability resolves Neuro Syphon's bonus amber as bonus capture",
                 "Neuro Syphon's capture bonus icon captures 1 amber from player2 onto Batdrone",
-                "player1 uses Neuro Syphon's amber bonus icon to gain 1 amber",
+                "Neuro Syphon's bonus icon has player1 gain 1 amber",
                 'player1 uses Neuro Syphon to steal an amber and draw a card',
                 'player1 draws 1 card'
             ]);
@@ -406,7 +406,7 @@ describe('Amber Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ditch the Loot',
-                "player1 uses Ditch the Loot's amber bonus icon to gain 1 amber",
+                "Ditch the Loot's bonus icon has player1 gain 1 amber",
                 'player1 uses Ditch the Loot to remove all amber from Urchin',
                 'player1 uses Ditch the Loot to move 3 amber from Urchin to Hobnobber'
             ]);

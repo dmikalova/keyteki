@@ -41,7 +41,7 @@ describe('Damage Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Punch',
-                "player1 uses Punch's amber bonus icon to gain 1 amber",
+                "Punch's bonus icon has player1 gain 1 amber",
                 'player1 uses Punch to deal 3 damage to Ember Imp',
                 'Ember Imp is destroyed'
             ]);
@@ -93,7 +93,7 @@ describe('Damage Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Anomaly Exploiter's damage bonus icon to deal 1 damage to Troll",
-                "player1 uses Anomaly Exploiter's amber bonus icon to gain 1 amber",
+                "Anomaly Exploiter's bonus icon has player1 gain 1 amber",
                 "player1 uses Anomaly Exploiter's damage bonus icon to deal 1 damage to Troll"
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -122,7 +122,7 @@ describe('Damage Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Amphora Captura to resolve Anomaly Exploiter's damage bonus icon as a capture bonus icon",
+                "Amphora Captura's constant ability resolves Anomaly Exploiter's bonus damage as bonus capture",
                 "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();

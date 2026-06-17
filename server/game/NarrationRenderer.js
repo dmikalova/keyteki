@@ -101,6 +101,91 @@ function renderControl(narration, frame, clauses) {
     }
 }
 
+function renderCopyCard(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'copyCard');
+    if (!clause) {
+        return;
+    }
+
+    const { card, copiedCard } = clause.args;
+
+    if (frame.source?.id === 'mimic-gel') {
+        const sourceName = card._copyOriginalName || card.name;
+        narration.game.addMessage('{0} enters play as a copy of {1}', sourceName, copiedCard);
+        return;
+    }
+
+    narration.game.addMessage('{0} copies {1}', narration.describeSource(frame), copiedCard);
+}
+
+function renderResolveBonusIconAs(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'resolveBonusIconAs');
+    if (!clause) {
+        return;
+    }
+
+    const { card, fromIcon, replacement, iconReplacement } = clause.args;
+    if (iconReplacement) {
+        narration.game.addMessage(
+            "{0}'s constant ability resolves {1}'s bonus {2} as {3}",
+            frame.source,
+            card,
+            fromIcon,
+            replacement
+        );
+        return;
+    }
+
+    narration.game.addMessage(
+        "{0}'s constant ability resolves {1}'s bonus {2} to {3}",
+        frame.source,
+        card,
+        fromIcon,
+        replacement
+    );
+}
+
+function renderBonusAmber(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'bonusAmber');
+    if (!clause) {
+        return;
+    }
+
+    const { card, player, amount } = clause.args;
+    narration.game.addMessage("{0}'s bonus icon has {1} gain {2} amber", card, player, amount);
+}
+
+function renderBonusDiscard(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'bonusDiscard');
+    if (!clause) {
+        return;
+    }
+
+    const { card, player, discarded } = clause.args;
+    narration.game.addMessage(
+        "{0}'s discard bonus icon has {1} discard {2}",
+        card,
+        player,
+        discarded
+    );
+}
+
+function renderAbilityDraw(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'abilityDraw');
+    if (!clause) {
+        return;
+    }
+
+    const { amount, player } = clause.args;
+    narration.game.addMessage(
+        '{0} has {1} draw {2} card{3}',
+        narration.describeSource(frame),
+        player,
+        amount,
+        amount === 1 ? '' : 's'
+    );
+}
+
 /**
  * Return a duration as a message-safe value for use as a {n} placeholder.
  * Returns a pre-formatted message fragment with leading space when a
@@ -173,6 +258,30 @@ function narrateChangeHouse(context, card, effect, duration) {
     });
 }
 
+function narrateCopyCard(context, card) {
+    // TODO: seems like this could handle this more explicitly than implicitly saying token creatures have no target
+    // Some copyCard flows (e.g. token creature bonus icons) have no explicit
+    // selected target card. Skip narration to avoid emitting an empty
+    // "... copies" line with a missing card name.
+    if (!context.target) {
+        return;
+    }
+
+    context.game.narration.pushFrame({
+        verb: 'copyCard',
+        player: context.player,
+        source: context.source,
+        ability: context.ability
+    });
+    context.game.narration.pushClause({
+        verb: 'copyCard',
+        args: {
+            card: card,
+            copiedCard: context.target
+        }
+    });
+}
+
 /**
  * Effect type → narrator function.
  *
@@ -186,6 +295,7 @@ const effectNarrators = {
     // ── Narrated effects ────────────────────────────────────────────
     takeControl: narrateTakeControl,
     changeHouse: narrateChangeHouse,
+    copyCard: narrateCopyCard,
 
     // ── Card effects — intentionally not narrated ───────────────────
     addHouse: null,
@@ -202,7 +312,6 @@ const effectNarrators = {
     cardLocationAfterPlay: null,
     changeType: null,
     consideredAsFlank: null,
-    copyCard: null,
     customEffect: null,
     doesNotReady: null,
     enterPlayAnywhere: null,
@@ -231,9 +340,7 @@ const effectNarrators = {
     returnToHandFromDiscardAnytime: null,
     setArmor: null,
     setPower: null,
-    takeControlOn: null,
-    takeControlOnLeft: null,
-    takeControlOnRight: null,
+    takeControlPlacement: null,
     entersPlayUnderOpponentsControl: null,
     terminalCondition: null,
     transferDamage: null,
@@ -330,7 +437,12 @@ const renderers = {
     pay: renderTransfer,
     giveAmber: renderTransfer,
     takeControl: renderControl,
-    changeHouse: renderChangeHouse
+    changeHouse: renderChangeHouse,
+    copyCard: renderCopyCard,
+    resolveBonusIconAs: renderResolveBonusIconAs,
+    bonusAmber: renderBonusAmber,
+    bonusDiscard: renderBonusDiscard,
+    abilityDraw: renderAbilityDraw
 };
 
 module.exports = renderers;

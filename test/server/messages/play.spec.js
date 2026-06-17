@@ -33,8 +33,8 @@ describe('Play Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber",
-                "player1 uses Dust Pixie's amber bonus icon to gain 1 amber"
+                "Dust Pixie's bonus icon has player1 gain 1 amber",
+                "Dust Pixie's bonus icon has player1 gain 1 amber"
             ]);
         });
     });
@@ -74,7 +74,7 @@ describe('Play Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Silent Dagger attaching it to Silvertooth',
-                "player1 uses Silent Dagger's amber bonus icon to gain 1 amber"
+                "Silent Dagger's bonus icon has player1 gain 1 amber"
             ]);
         });
     });
@@ -98,7 +98,7 @@ describe('Play Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Punch',
-                "player1 uses Punch's amber bonus icon to gain 1 amber",
+                "Punch's bonus icon has player1 gain 1 amber",
                 'player1 uses Punch to deal 3 damage to Troll'
             ]);
         });
@@ -142,7 +142,7 @@ describe('Play Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ceaseforge',
-                "player1 uses Ceaseforge's amber bonus icon to gain 1 amber",
+                "Ceaseforge's bonus icon has player1 gain 1 amber",
                 'player1 uses Ceaseforge to place 2 time on Ceaseforge'
             ]);
         });
@@ -191,7 +191,7 @@ describe('Play Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Batdrone',
                 'player1 plays Wild Wormhole',
-                "player1 uses Wild Wormhole's amber bonus icon to gain 1 amber",
+                "Wild Wormhole's bonus icon has player1 gain 1 amber",
                 'player1 is unable to play a card from deck due to a restriction'
             ]);
         });

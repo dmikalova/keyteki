@@ -100,38 +100,28 @@ class ResolveBonusIconsAction extends CardGameAction {
                     : baseLabel;
             choices.push(label);
             handlers.push(() => {
-                // Print the replacement message
                 if (replacement.source) {
-                    const bonusIcons = ['amber', 'capture', 'damage', 'draw', 'discard', 'power'];
-                    if (bonusIcons.includes(replacement.newIcon)) {
-                        context.game.addMessage(
-                            "{0} uses {1} to resolve {2}'s {3} bonus icon as {4} {5} bonus icon",
-                            context.player,
-                            replacement.source,
-                            event.card,
-                            currentIcon,
-                            'aeiou'.includes(replacement.newIcon[0].toLowerCase()) ? 'an' : 'a',
-                            replacement.newIcon
-                        );
-                    } else if (this.abilityReplacements[replacement.newIcon]) {
-                        context.game.addMessage(
-                            "{0} uses {1} to resolve {2}'s {3} bonus icon to {4}",
-                            context.player,
-                            replacement.source,
-                            event.card,
-                            currentIcon,
-                            this.abilityReplacements[replacement.newIcon]
-                        );
-                    } else {
-                        context.game.addMessage(
-                            "{0} uses {1} to resolve {2}'s {3} bonus icon as {4}",
-                            context.player,
-                            replacement.source,
-                            event.card,
-                            currentIcon,
-                            replacement.newIcon
-                        );
-                    }
+                    const replacementText = this.abilityReplacements[replacement.newIcon]
+                        ? this.abilityReplacements[replacement.newIcon]
+                        : `bonus ${replacement.newIcon}`;
+
+                    const iconReplacement = !this.abilityReplacements[replacement.newIcon];
+
+                    context.game.narration.pushFrame({
+                        verb: 'resolveBonusIconAs',
+                        player: context.player,
+                        source: replacement.source,
+                        ability: replacement.effect.context?.ability
+                    });
+                    context.game.narration.pushClause({
+                        verb: 'resolveBonusIconAs',
+                        args: {
+                            card: event.card,
+                            fromIcon: currentIcon,
+                            replacement: replacementText,
+                            iconReplacement
+                        }
+                    });
                 }
                 // Mark this source as used so it can't be used again in this chain
                 const newUsedSources = new Set(usedSources);
@@ -187,11 +177,20 @@ class ResolveBonusIconsAction extends CardGameAction {
                 context.game.actions
                     .gainAmber({ bonus: true })
                     .resolve(context.player, this.bonusIconContext(context, event.card, icon));
-                context.game.addMessage(
-                    "{0} uses {1}'s amber bonus icon to gain 1 amber",
-                    context.player,
-                    event.card
-                );
+                context.game.narration.pushFrame({
+                    verb: 'bonusAmber',
+                    player: context.player,
+                    source: context.source,
+                    ability: context.ability
+                });
+                context.game.narration.pushClause({
+                    verb: 'bonusAmber',
+                    args: {
+                        card: event.card,
+                        player: context.player,
+                        amount: 1
+                    }
+                });
                 break;
             case 'capture':
                 if (
@@ -254,12 +253,20 @@ class ResolveBonusIconsAction extends CardGameAction {
                                     card,
                                     this.bonusIconContext(context, event.card, icon, player)
                                 );
-                            context.game.addMessage(
-                                "{0} uses {1}'s discard bonus icon to discard {2}",
-                                player,
-                                event.card,
-                                card
-                            );
+                            context.game.narration.pushFrame({
+                                verb: 'bonusDiscard',
+                                player: context.player,
+                                source: context.source,
+                                ability: context.ability
+                            });
+                            context.game.narration.pushClause({
+                                verb: 'bonusDiscard',
+                                args: {
+                                    card: event.card,
+                                    player: player,
+                                    discarded: card
+                                }
+                            });
                             return true;
                         }
                     });

@@ -76,7 +76,7 @@ describe('Reveal Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Cladogenesis',
-                "player1 uses Cladogenesis's amber bonus icon to gain 1 amber",
+                "Cladogenesis's bonus icon has player1 gain 1 amber",
                 "player1 uses Cladogenesis to discard the top card of each player's deck, reveal each player's hand, and discard cards belonging to each player's discarded card's house",
                 "player1 uses Cladogenesis to discard Anger from the top of player1's deck",
                 "player1 uses Cladogenesis to discard Nerve Blast from the top of player2's deck",
@@ -84,8 +84,19 @@ describe('Reveal Messages', function () {
                 "Cladogenesis reveals Krump from player2's hand",
                 'player1 uses Cladogenesis to discard Troll and Bumpsy',
                 'player1 uses Cladogenesis to have each player refill their hand',
-                'player1 draws 6 cards to refill their hand to 6 cards',
-                'player2 draws 5 cards to refill their hand to 6 cards'
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player2 will draw 5 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card'
             ]);
         });
     });
@@ -116,8 +127,20 @@ describe('Reveal Messages', function () {
                 'player1 uses Trash Heap to discard Troll',
                 'player1 uses Trash Heap to discard Krump',
                 'player1 uses Trash Heap to have each player refill their hand',
-                'player1 draws 6 cards to refill their hand to 6 cards',
-                'player2 draws 6 cards to refill their hand to 6 cards'
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player2 will draw 6 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card'
             ]);
         });
 
@@ -145,8 +168,20 @@ describe('Reveal Messages', function () {
                 'player2 reveals Krump',
                 'player1 uses Trash Heap to discard Krump',
                 'player1 uses Trash Heap to have each player refill their hand',
-                'player1 draws 6 cards to refill their hand to 6 cards',
-                'player2 draws 6 cards to refill their hand to 6 cards'
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player2 will draw 6 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card'
             ]);
         });
 
@@ -174,8 +209,20 @@ describe('Reveal Messages', function () {
                 'player2 reveals nothing',
                 'player1 uses Trash Heap to discard Troll',
                 'player1 uses Trash Heap to have each player refill their hand',
-                'player1 draws 6 cards to refill their hand to 6 cards',
-                'player2 draws 6 cards to refill their hand to 6 cards'
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player2 will draw 6 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card'
             ]);
         });
 
@@ -201,8 +248,20 @@ describe('Reveal Messages', function () {
                 'player1 reveals nothing',
                 'player2 reveals nothing',
                 'player1 uses Trash Heap to have each player refill their hand',
-                'player1 draws 6 cards to refill their hand to 6 cards',
-                'player2 draws 6 cards to refill their hand to 6 cards'
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player2 will draw 6 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card'
             ]);
         });
     });

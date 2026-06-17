@@ -14,8 +14,7 @@ describe('Draw Messages', function () {
             this.player1.useAction(this.libraryOfBabble);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Library of Babble to draw 1 card',
-                'player1 draws 1 card'
+                "Library of Babble's action ability has player1 draw 1 card"
             ]);
         });
     });
@@ -36,9 +35,8 @@ describe('Draw Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timetraveller',
-                "player1 uses Timetraveller's amber bonus icon to gain 1 amber",
-                'player1 uses Timetraveller to draw 2 cards',
-                'player1 draws 2 cards'
+                "Timetraveller's bonus icon has player1 gain 1 amber",
+                "Timetraveller's play ability has player1 draw 2 cards"
             ]);
         });
     });
@@ -60,9 +58,63 @@ describe('Draw Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Phase Shift',
                 'player1 uses Phase Shift to allow them to play one non-Logos card this turn',
-                'player1 draws 6 cards to refill their hand to 6 cards',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber'
+            ]);
+        });
+    });
+
+    describe('refill hand with The Amasser in play', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'logos',
+                    hand: ['phase-shift']
+                },
+                player2: {
+                    token: 'catena-fiend',
+                    inPlay: ['the-amasser']
+                }
+            });
+        });
+
+        it('should log refill draw and The Amasser messages', function () {
+            this.player1.play(this.phaseShift);
+            this.player1.endTurn();
+            this.player2.clickPrompt('dis');
+            expect(this.player2).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 plays Phase Shift',
+                'player1 uses Phase Shift to allow them to play one non-Logos card this turn',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player2 uses The Amasser to make a token creature',
+                'player2 puts Catena Fiend into play',
+                'player1 draws 1 card',
+                'player2 uses The Amasser to make a token creature',
+                'player2 puts Catena Fiend into play',
+                'player1 draws 1 card',
+                'player2 uses The Amasser to make a token creature',
+                'player2 puts Catena Fiend into play',
+                'player1 draws 1 card',
+                'player2 uses The Amasser to make a token creature',
+                'player2 puts Catena Fiend into play',
+                'player1 draws 1 card',
+                'player2 uses The Amasser to make a token creature',
+                'player2 puts Catena Fiend into play',
+                'player1 draws 1 card',
+                'player2 uses The Amasser to make a token creature',
+                'player2 puts Catena Fiend into play',
+                'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
+                'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
+                'player2 chooses dis as their active house this turn'
             ]);
         });
     });
@@ -105,7 +157,7 @@ describe('Draw Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
-                "player1 uses Anomaly Exploiter's amber bonus icon to gain 1 amber",
+                "Anomaly Exploiter's bonus icon has player1 gain 1 amber",
                 "player1 uses Anomaly Exploiter's draw bonus icon to draw a card"
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -133,7 +185,7 @@ describe('Draw Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Amphora Captura to resolve Anomaly Exploiter's draw bonus icon as a capture bonus icon",
+                "Amphora Captura's constant ability resolves Anomaly Exploiter's bonus draw as bonus capture",
                 "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -159,8 +211,8 @@ describe('Draw Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Quantum Mouse to resolve Anomaly Exploiter's draw bonus icon as a discard bonus icon",
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Batdrone"
+                "Quantum Mouse's constant ability resolves Anomaly Exploiter's bonus draw as bonus discard",
+                "Anomaly Exploiter's discard bonus icon has player1 discard Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

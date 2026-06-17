@@ -18,7 +18,7 @@ describe('Search Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Help from Future Self',
-                "player1 uses Help from Future Self's amber bonus icon to gain 1 amber",
+                "Help from Future Self's bonus icon has player1 gain 1 amber",
                 'player1 uses Help from Future Self to search for Timetraveller and shuffle discard into their deck',
                 'player1 takes Timetraveller into their hand'
             ]);

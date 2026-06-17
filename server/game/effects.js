@@ -15,6 +15,7 @@ const GainAbility = require('./Effects/Values/GainAbility');
 const Effects = {
     unblankableEffects: [
         'addHouse',
+        'addHouse',
         'addTrait',
         'blank',
         'changeHouse',
@@ -27,9 +28,7 @@ const Effects = {
         'setArmor',
         'setPower',
         'takeControl',
-        'takeControlOn',
-        'takeControlOnLeft',
-        'takeControlOnRight'
+        'takeControlPlacement'
     ],
 
     // Card effects
@@ -90,9 +89,8 @@ const Effects = {
     setArmor: (amount) => EffectBuilder.card.flexible('setArmor', amount),
     setPower: (amount) => EffectBuilder.card.flexible('setPower', amount),
     takeControl: (player) => EffectBuilder.card.flexible('takeControl', player),
-    takeControlOn: (position) => EffectBuilder.card.static('takeControlOn', position),
-    takeControlOnLeft: () => EffectBuilder.card.static('takeControlOnLeft'),
-    takeControlOnRight: () => EffectBuilder.card.static('takeControlOnRight'),
+    takeControlPlacement: (placement) =>
+        EffectBuilder.card.static('takeControlPlacement', placement),
     entersPlayUnderOpponentsControl: () =>
         EffectBuilder.card.static('entersPlayUnderOpponentsControl'),
     terminalCondition: (properties) =>

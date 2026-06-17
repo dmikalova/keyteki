@@ -62,7 +62,7 @@ describe('Return Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timequake',
-                "player1 uses Timequake's amber bonus icon to gain 1 amber",
+                "Timequake's bonus icon has player1 gain 1 amber",
                 "player1 uses Timequake to return nothing to their owner's deck"
             ]);
         });

@@ -20,7 +20,6 @@ class Mimicry extends Card {
                     return card.owner !== playingPlayer;
                 }
             },
-            effect: 'copy {0}',
             gameAction: ability.actions.cardLastingEffect((context) => ({
                 allowedLocations: 'any',
                 target: context.source,

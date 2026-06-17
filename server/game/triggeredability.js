@@ -186,7 +186,11 @@ class TriggeredAbility extends CardAbility {
             return 'destroyed ability';
         }
 
-        return 'ability';
+        if (this.properties.scrap) {
+            return 'scrap ability';
+        }
+
+        return 'constant ability';
     }
 
     registerEvents() {
