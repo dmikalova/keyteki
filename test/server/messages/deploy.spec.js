@@ -18,7 +18,7 @@ describe('Deploy Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Almsmaster',
-                'player1 uses Almsmaster to capture 1 amber from their opponent, placing it on Troll'
+                "Almsmaster's play ability captures 1 amber from player2 onto Troll"
             ]);
         });
     });

@@ -211,12 +211,6 @@ class ResolveBonusIconsAction extends CardGameAction {
                                     card,
                                     this.bonusIconContext(context, event.card, icon, player)
                                 );
-                            context.game.addMessage(
-                                "{0} uses {1}'s capture bonus icon to capture 1 amber onto {2}",
-                                player,
-                                event.card,
-                                card
-                            );
                             return true;
                         }
                     });

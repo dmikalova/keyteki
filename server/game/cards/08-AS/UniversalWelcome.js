@@ -10,10 +10,7 @@ class UniversalWelcome extends Card {
                 duration: 'lastingEffect',
                 effect: ability.effects.takeControl(context.player),
                 target: context.player.opponent.creaturesInPlay.filter((c) => c.isInCenter())
-            })),
-            effect: 'take control of {1}',
-            effectArgs: (context) =>
-                context.player.opponent.creaturesInPlay.filter((c) => c.isInCenter())
+            }))
         });
     }
 }

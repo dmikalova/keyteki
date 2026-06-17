@@ -17,8 +17,6 @@ class VendorHyertula extends Card {
                         effect: ability.effects.takeControl(context.player)
                     }))
                 },
-                message: '{0} uses {1} to take control of {3}',
-                messageArgs: (context) => [context.target],
                 then: (preThenContext) => ({
                     gameAction: ability.actions.cardLastingEffect({
                         target: preThenContext.target,

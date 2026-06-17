@@ -12,7 +12,6 @@ class Sneklifter extends Card {
                     effect: ability.effects.takeControl(context.player)
                 }))
             },
-            effect: 'take control of {0}',
             then: (preThenContext) => {
                 return {
                     alwaysTriggers: true,

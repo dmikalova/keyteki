@@ -105,6 +105,12 @@ class CardAbility extends ThenAbility {
             context.source
         ];
 
+        if (!previousMessageArgs && this.grantedBy) {
+            const category = this.getCategory();
+            messageArgs.push(`'s ${category} from `);
+            messageArgs.push(this.grantedBy);
+        }
+
         // effectMessage: Player1 plays Assassination
         if (effectMessage) {
             if (extraArgs) {
@@ -248,6 +254,10 @@ class CardAbility extends ThenAbility {
 
     isFight() {
         return false;
+    }
+
+    getCategory() {
+        return null;
     }
 
     isTriggeredAbility() {

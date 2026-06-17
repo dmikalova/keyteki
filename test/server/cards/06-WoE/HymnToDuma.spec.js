@@ -64,7 +64,7 @@ describe('HymnToDuma,', function () {
                     expect(this.flaxia.amber).toBe(2);
                     expect(this.player2.amber).toBe(1);
                     expect(this).toHaveRecentChatMessage(
-                        'player1 uses Hymn to Duma to capture 2 amber, placing it on Flaxia'
+                        "Chelonia's omni ability from Hymn to Duma captures 2 amber from player2 onto Flaxia"
                     );
                 });
             });

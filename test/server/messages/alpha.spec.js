@@ -50,6 +50,7 @@ describe('Alpha Messages', function () {
                 'player1 reaps with Batdrone to gain 1 amber',
                 'player1 plays Mimic Gel',
                 'player1 uses Mimic Gel to copy Bumblebird',
+                "Mimic Gel as Bumblebird's ability changes Mimic Gel as Bumblebird's house to logos",
                 'player1 is unable to play Mimic Gel as Bumblebird and returns it to hand'
             ]);
         });

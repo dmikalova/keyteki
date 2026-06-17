@@ -1,5 +1,6 @@
 const { EVENTS } = require('../Events/types');
 const CardGameAction = require('./CardGameAction');
+const { narrateEffects } = require('../NarrationRenderer');
 
 class CardLastingEffectAction extends CardGameAction {
     setDefaultProperties() {
@@ -55,6 +56,11 @@ class CardLastingEffectAction extends CardGameAction {
         return super.canAffect(card, context);
     }
 
+    narrate() {
+        let effects = Array.isArray(this.effect) ? this.effect : [this.effect];
+        return narrateEffects.hasNarration(effects);
+    }
+
     getEvent(card, context) {
         let { effect } = this.propertyFactory(context);
         let properties = {
@@ -69,7 +75,12 @@ class CardLastingEffectAction extends CardGameAction {
         return super.createEvent(
             EVENTS.onEffectApplied,
             { card: card, context: context },
-            (event) => event.context.source[duration](() => properties)
+            (event) => {
+                event.context.source[duration](() => properties);
+                // TODO: can be removed once narrations are all added via effect narrators
+                let effects = Array.isArray(this.effect) ? this.effect : [this.effect];
+                narrateEffects(context, card, effects, duration);
+            }
         );
     }
 }

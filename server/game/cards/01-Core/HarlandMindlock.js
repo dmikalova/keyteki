@@ -14,8 +14,7 @@ class HarlandMindlock extends Card {
                     },
                     effect: ability.effects.takeControl(context.player)
                 }))
-            },
-            effect: 'take control of {0}'
+            }
         });
     }
 }

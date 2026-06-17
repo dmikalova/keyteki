@@ -16,7 +16,7 @@ describe('Capture Messages', function () {
             this.player1.play(this.dextre);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dextre',
-                'player1 uses Dextre to capture 1 amber from their opponent, placing it on Dextre'
+                "Dextre's play ability captures 1 amber from player2 onto Dextre"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -40,7 +40,7 @@ describe('Capture Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 reaps with Berinon to gain 1 amber',
-                'player1 uses Berinon to capture 2 amber from their opponent, placing it on Berinon'
+                "Berinon's after reap ability captures 2 amber from player2 onto Berinon"
             ]);
         });
     });
@@ -65,7 +65,7 @@ describe('Capture Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone"
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -77,8 +77,8 @@ describe('Capture Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone",
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone"
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone",
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -90,9 +90,9 @@ describe('Capture Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone",
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone",
                 "player1 uses Anomaly Exploiter's amber bonus icon to gain 1 amber",
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone"
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -119,6 +119,31 @@ describe('Capture Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Scrivener Favian to resolve Anomaly Exploiter's capture bonus icon to steal 1 amber"
+            ]);
+            expect(this.player1).isReadyToTakeAction();
+        });
+    });
+
+    describe('capture from omni granted by hymn to duma', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'untamed',
+                    inPlay: ['chelonia', 'flaxia', 'hymn-to-duma']
+                },
+                player2: {
+                    amber: 3
+                }
+            });
+        });
+
+        it('should log correct message when capturing via granted omni', function () {
+            this.player1.useOmni(this.chelonia);
+            this.player1.clickCard(this.flaxia);
+            expect(this).toHaveAllChatMessagesBe([
+                "player1 uses Chelonia's omni ability from Hymn to Duma to destroy Chelonia",
+                'Chelonia is destroyed',
+                "Chelonia's omni ability from Hymn to Duma captures 2 amber from player2 onto Flaxia"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

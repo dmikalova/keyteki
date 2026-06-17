@@ -109,10 +109,6 @@ class Event {
             this.handler(this);
         }
     }
-
-    replaceHandler(newHandler) {
-        this.handler = newHandler;
-    }
 }
 
 module.exports = Event;

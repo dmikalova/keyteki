@@ -18,6 +18,10 @@ class CaptureAction extends CardAction {
         }
     }
 
+    narrate() {
+        return true;
+    }
+
     canAffect(card, context) {
         let player = this.player || context.player.opponent;
         return (
@@ -72,6 +76,21 @@ class CaptureAction extends CardAction {
             }
 
             event.card.addToken('amber', amount);
+
+            context.game.narration.pushFrame({
+                verb: 'capture',
+                player: context.player,
+                source: context.source,
+                ability: context.ability
+            });
+            context.game.narration.pushClause({
+                verb: 'capture',
+                args: {
+                    amount: amount,
+                    card: event.card,
+                    from: player
+                }
+            });
         });
     }
 }

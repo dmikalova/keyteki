@@ -1894,6 +1894,48 @@ Once a verb family is migrated:
 -   `addMessage` for: forge, archive pickup, draw, discard, ready, shuffle, fight resolution, destruction.
 -   `getEffectMessage` on `GameAction` once the action has a `narrate()`.
 -   Custom-message `then: { message, messageArgs }` blocks where the game action already narrates.
+-   `Event.replaceHandler()` — removed. See §9.1.
+
+### 9.1 Decorator → Event Aggregator: `replaceHandler` removal
+
+The old pattern used `replaceHandler` as a **decorator** — wrapping the event handler to observe outcomes and emit ad-hoc messages:
+
+```javascript
+// Old pattern (decorator)
+const captureHandler = captureEvent.handler;
+captureEvent.replaceHandler((event) => {
+    const amberBefore = event.card.amber;
+    captureHandler(event);
+    const amberCaptured = event.card.amber - amberBefore;
+    context.game.addMessage('{0} uses {1} to have {2} capture {3} amber', ...);
+});
+```
+
+The narration system replaces this with an **event aggregator** pattern — actions push structured records during resolution and the renderer materializes them at flush time:
+
+```javascript
+// New pattern (event aggregator)
+captureEvent.handler = (event) => {
+    const amberBefore = event.card.amber;
+    originalHandler(event);
+    const amberCaptured = event.card.amber - amberBefore;
+    if (amberCaptured > 0) {
+        context.game.narration.pushFrame({ verb: 'capture', player, source });
+        context.game.narration.pushClause({ verb: 'capture', args: { amount, card, source } });
+    }
+};
+```
+
+**Why the aggregator is better here:**
+
+| Concern       | Decorator                                | Event Aggregator                                   |
+| ------------- | ---------------------------------------- | -------------------------------------------------- |
+| Composability | Each wrapper only sees its own event     | Multiple actions contribute clauses to one message |
+| Coupling      | Wrapper must know message format strings | Producer only knows its verb + data                |
+| Coalescing    | Cannot merge messages across events      | Renderer sees all clauses, can combine             |
+| Testability   | Must mock or inspect `addMessage` calls  | Assert on structured records before rendering      |
+
+`Event.replaceHandler()` was removed from `Event.js` once `AllocateCaptureAction` (the last caller) switched to narration. The `handler` property remains directly assignable for any code that needs to swap handlers, but the method that existed solely for the decorator pattern is gone.
 
 ---
 

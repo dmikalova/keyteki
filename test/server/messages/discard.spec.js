@@ -307,7 +307,7 @@ describe('Discard Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Amphora Captura to resolve Anomaly Exploiter's discard bonus icon as a capture bonus icon",
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone"
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

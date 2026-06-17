@@ -16,8 +16,8 @@ class KeepTheChange extends Card {
                     return choices;
                 })()
             },
-            effect: 'pay {1} {2} amber and draw {2} cards',
-            effectArgs: (context) => [context.player.opponent, parseInt(context.select)],
+            effect: 'draw {1} cards',
+            effectArgs: (context) => [parseInt(context.select)],
             gameAction: [
                 ability.actions.transferAmber((context) => ({
                     target: context.player,

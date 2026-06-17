@@ -22,6 +22,10 @@ class ThenAbility extends BaseAbility {
         });
     }
 
+    getCategory() {
+        return this.parentCategory ?? null;
+    }
+
     checkThenAbilities() {
         const then = this.properties.then;
         // For function-form `then`, we can't safely inspect `alwaysTriggers`
@@ -125,6 +129,8 @@ class ThenAbility extends BaseAbility {
 
     createAndResolveThenAbility(then, context, events) {
         const thenAbility = new ThenAbility(this.game, this.card, then);
+        thenAbility.parentCategory = this.getCategory?.();
+        thenAbility.grantedBy = this.grantedBy;
         const thenContext = thenAbility.createContext(context.player);
         thenContext.preThenEvents = events;
         thenContext.preThenEvent = events[0];

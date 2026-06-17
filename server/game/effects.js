@@ -14,23 +14,22 @@ const GainAbility = require('./Effects/Values/GainAbility');
 
 const Effects = {
     unblankableEffects: [
-        'modifyPower',
-        'setPower',
-        'modifyArmor',
-        'setArmor',
+        'addHouse',
         'addTrait',
+        'blank',
+        'changeHouse',
+        'changeType',
+        'copyCard',
+        'flipToken',
+        'modifyArmor',
+        'modifyPower',
+        'mustFightIfAble',
+        'setArmor',
+        'setPower',
         'takeControl',
         'takeControlOn',
         'takeControlOnLeft',
-        'takeControlOnRight',
-        'changeType',
-        'changeHouse',
-        'addHouse',
-        'addTrait',
-        'flipToken',
-        'copyCard',
-        'mustFightIfAble',
-        'blank'
+        'takeControlOnRight'
     ],
 
     // Card effects

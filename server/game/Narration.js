@@ -4,6 +4,8 @@
  *
  * See docs/messaging-overhaul.md §6 for the design.
  */
+const renderers = require('./NarrationRenderer');
+
 class Narration {
     constructor(game) {
         this.game = game;
@@ -63,26 +65,42 @@ class Narration {
      * Render a frame + its clauses into a chat message.
      */
     renderFrame(frame, clauses) {
-        if (frame.verb === 'reap') {
-            this.renderReap(frame, clauses);
+        const render = renderers[frame.verb];
+        if (!render) {
+            throw new Error(`Narration: unhandled verb '${frame.verb}'`);
         }
-        // Other verbs (fight, play, etc.) will be added as they're migrated.
+
+        render(this, frame, clauses);
     }
 
-    renderReap(frame, clauses) {
-        const amberClause = clauses.find((c) => c.verb === 'amber');
-        if (amberClause) {
-            const { operation, amount } = amberClause.args;
-            const verb = operation === 'steal' ? 'steal' : 'gain';
-            this.game.addMessage(
-                '{0} reaps with {1} to ' + verb + ' ' + amount + ' amber',
-                frame.player,
-                frame.source
-            );
-        } else {
-            // Fallback — no amber clause (e.g. the gain was prevented entirely)
-            this.game.addMessage('{0} reaps with {1}', frame.player, frame.source);
+    getAbilityCategory(ability) {
+        return ability?.getCategory?.() ?? 'unknown ability';
+    }
+
+    describeSource(frame) {
+        const BonusIconSource = require('./BonusIconSource');
+        if (frame.source instanceof BonusIconSource) {
+            const fmt = this.game.gameChat.formatMessage;
+            return {
+                message: fmt("{0}'s {1} bonus icon", [frame.source.card, frame.source.icon])
+            };
         }
+
+        const category = this.getAbilityCategory(frame.ability);
+        const grantedBy = frame.ability?.grantedBy;
+        if (grantedBy) {
+            return {
+                message: this.game.gameChat.formatMessage("{0}'s {1} from {2}", [
+                    frame.source,
+                    category,
+                    grantedBy
+                ])
+            };
+        }
+
+        return {
+            message: this.game.gameChat.formatMessage("{0}'s {1}", [frame.source, category])
+        };
     }
 }
 

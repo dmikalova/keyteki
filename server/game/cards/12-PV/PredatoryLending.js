@@ -14,7 +14,6 @@ class PredatoryLending extends Card {
         });
 
         this.fate({
-            effect: 'pay their opponent 1 amber for each enemy Shadows creature',
             gameAction: ability.actions.transferAmber((context) => ({
                 amount: context.game.activePlayer.opponent.creaturesInPlay.filter((card) =>
                     card.hasHouse('shadows')

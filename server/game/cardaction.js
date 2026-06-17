@@ -119,6 +119,10 @@ class CardAction extends CardAbility {
     isAction() {
         return true;
     }
+
+    getCategory() {
+        return this.omni ? 'omni ability' : 'action ability';
+    }
 }
 
 module.exports = CardAction;
