@@ -5,11 +5,6 @@ class Scooboo extends Card {
     // during your turn, you may discard the top 3 cards of your deck
     // and return Scooboo from your discard pile to your hand instead.
     setupCardAbilities(ability) {
-        this.persistentEffect({
-            location: 'discard',
-            effect: ability.effects.drawOneAtATimeDuringTurn()
-        });
-
         this.interrupt({
             when: {
                 onDrawCards: (event, context) =>

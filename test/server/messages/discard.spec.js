@@ -290,7 +290,8 @@ describe('Discard Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "Anomaly Exploiter's discard bonus icon has player1 discard Brillix Ponder",
-                "Brillix Ponder's scrap ability has player1 draw 1 card"
+                "Brillix Ponder's scrap ability will have player1 draw 1 card",
+                'player1 draws 1 card'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -371,7 +372,8 @@ describe('Discard Messages', function () {
                 'player1 discards Infernal Terran',
                 "player1 uses Infernal Terran to discard player1's hand",
                 'player1 discards Brillix Ponder from hand',
-                "Brillix Ponder's scrap ability has player1 draw 1 card",
+                "Brillix Ponder's scrap ability will have player1 draw 1 card",
+                'player1 draws 1 card',
                 'player1 discards Hand of Dis from hand'
             ]);
             expect(this.player1).isReadyToTakeAction();

@@ -158,6 +158,7 @@ describe('Amber Messages', function () {
                 "player1 uses Control the Weak's damage bonus icon to deal 1 damage to Lamindra",
                 'Lamindra is destroyed',
                 "player1 uses Control the Weak's draw bonus icon to draw a card",
+                'player1 draws 1 card',
                 "Control the Weak's discard bonus icon has player1 discard Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -358,7 +359,9 @@ describe('Amber Messages', function () {
                 "Amphora Captura's constant ability resolves Neuro Syphon's bonus amber as bonus capture",
                 "Neuro Syphon's capture bonus icon captures 1 amber from player2 onto Batdrone",
                 "Neuro Syphon's bonus icon has player1 gain 1 amber",
+                // TODO:
                 'player1 uses Neuro Syphon to steal an amber and draw a card',
+                "Neuro Syphon's play ability will have player1 draw 1 card",
                 'player1 draws 1 card'
             ]);
             expect(this.player1).isReadyToTakeAction();

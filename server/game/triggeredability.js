@@ -190,6 +190,10 @@ class TriggeredAbility extends CardAbility {
             return 'scrap ability';
         }
 
+        if (this.properties.fate) {
+            return 'fate ability';
+        }
+
         return 'constant ability';
     }
 

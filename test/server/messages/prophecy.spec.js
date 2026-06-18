@@ -42,9 +42,8 @@ describe('Prophecy Messages', function () {
             this.player2.clickPrompt('untamed');
         });
 
-        it('should log correct message when prophecy is fulfilled with fate effect', function () {
+        it('should log correct message when prophecy is fulfilled with fate effect and no change happens', function () {
             this.player2.play(this.spooKeyCharge);
-            // Prophecy triggers, select creature for fate effect
             this.player2.clickCard(this.umbra);
             expect(this.player2).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
@@ -60,8 +59,31 @@ describe('Prophecy Messages', function () {
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player2 chooses untamed as their active house this turn',
                 'player2 plays Spoo-key Charge',
-                'player1 uses Expect the Unexpected to fulfill its prophecy',
-                'player1 resolves the fate effect of Parasitic Arachnoid'
+                "Expect the Unexpected's prophecy is fulfilled and Parasitic Arachnoid is revealed"
+            ]);
+        });
+
+        it('should log correct message when prophecy is fulfilled with fate effect and a change happens', function () {
+            this.player2.amber = 2;
+            this.player2.play(this.spooKeyCharge);
+            this.player2.clickCard(this.umbra);
+            expect(this.umbra.amber).toBe(2);
+            expect(this.player2).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 activates their prophecy Expect the Unexpected',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
+                'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
+                'player2 chooses untamed as their active house this turn',
+                'player2 plays Spoo-key Charge',
+                "Expect the Unexpected's prophecy is fulfilled and Parasitic Arachnoid is revealed",
+                "Parasitic Arachnoid's fate ability captures 2 amber from player2 onto Umbra"
             ]);
         });
     });
@@ -101,8 +123,7 @@ describe('Prophecy Messages', function () {
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player2 chooses untamed as their active house this turn',
                 'player2 plays Spoo-key Charge',
-                'player1 uses Expect the Unexpected to fulfill its prophecy',
-                'player1 resolves the fate effect of Ancient Bear'
+                "Expect the Unexpected's prophecy is fulfilled and Ancient Bear is revealed"
             ]);
         });
     });
@@ -120,14 +141,13 @@ describe('Prophecy Messages', function () {
                     discard: ['dextre', 'library-of-babble', 'phase-shift']
                 }
             });
+        });
 
+        it('should log one-card draw narration around shuffle interruption', function () {
             this.player1.activateProphecy(this.expectTheUnexpected, this.ancientBear);
             this.player1.endTurn();
             this.player2.clickPrompt('logos');
             this.player2.player.deck = [];
-        });
-
-        it('should log one-card draw narration around shuffle interruption', function () {
             this.player2.play(this.timetraveller);
             expect(this.player2).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
@@ -144,10 +164,11 @@ describe('Prophecy Messages', function () {
                 'player2 chooses logos as their active house this turn',
                 'player2 plays Timetraveller',
                 "Timetraveller's bonus icon has player2 gain 1 amber",
+                "Timetraveller's play ability will have player2 draw 2 cards",
                 'player2 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
-                "Timetraveller's play ability has player2 draw 2 cards",
-                'player1 uses Expect the Unexpected to fulfill its prophecy',
-                'player1 resolves the fate effect of Ancient Bear'
+                'player2 draws 1 card',
+                "Expect the Unexpected's prophecy is fulfilled and Ancient Bear is revealed",
+                'player2 draws 1 card'
             ]);
         });
     });
@@ -165,14 +186,12 @@ describe('Prophecy Messages', function () {
                     deck: ['dextre', 'library-of-babble', 'phase-shift']
                 }
             });
-
-            this.player1.activateProphecy(this.theCardsWillTell, this.ancientBear);
-            this.player1.endTurn();
-            this.player2.clickPrompt('logos');
-            this.player2.player.optionSettings.orderForcedAbilities = false;
         });
 
         it('should log one-card draw narration around draw interruption', function () {
+            this.player1.activateProphecy(this.theCardsWillTell, this.ancientBear);
+            this.player1.endTurn();
+            this.player2.clickPrompt('logos');
             this.player2.play(this.timetraveller);
             expect(this.player2).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
@@ -189,9 +208,10 @@ describe('Prophecy Messages', function () {
                 'player2 chooses logos as their active house this turn',
                 'player2 plays Timetraveller',
                 "Timetraveller's bonus icon has player2 gain 1 amber",
-                "Timetraveller's play ability has player2 draw 2 cards",
-                'player1 uses The Cards Will Tell to fulfill its prophecy',
-                'player1 resolves the fate effect of Ancient Bear'
+                "Timetraveller's play ability will have player2 draw 2 cards",
+                'player2 draws 1 card',
+                "The Cards Will Tell's prophecy is fulfilled and Ancient Bear is revealed",
+                'player2 draws 1 card'
             ]);
         });
     });

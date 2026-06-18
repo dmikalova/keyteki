@@ -16,7 +16,7 @@ describe('Ezra Paws', function () {
             this.player1.playCreature(this.ezraPaws);
             expect(this).toHaveRecentChatMessage(
                 'player1 uses Ezra Paws to reveal Anger and Pelf',
-                2
+                3
             );
             expect(this.player1.player.hand.length).toBe(1);
             expect(this.player1).isReadyToTakeAction();
@@ -28,7 +28,7 @@ describe('Ezra Paws', function () {
             this.player1.reap(this.ezraPaws);
             expect(this).toHaveRecentChatMessage(
                 'player1 uses Ezra Paws to reveal Anger and Pelf',
-                2
+                4
             );
             expect(this.player1.player.hand.length).toBe(2);
             expect(this.player1).isReadyToTakeAction();

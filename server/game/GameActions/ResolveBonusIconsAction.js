@@ -276,11 +276,6 @@ class ResolveBonusIconsAction extends CardGameAction {
                 context.game.actions
                     .draw({ bonus: true })
                     .resolve(context.player, this.bonusIconContext(context, event.card, icon));
-                context.game.addMessage(
-                    "{0} uses {1}'s draw bonus icon to draw a card",
-                    context.player,
-                    event.card
-                );
                 break;
             case 'steal':
                 if (context.player.opponent && context.player.opponent.amber > 0) {

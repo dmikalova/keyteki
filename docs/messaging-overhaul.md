@@ -39,6 +39,8 @@
 
 ## 2. Style principles
 
+Top guiding principles for all messaging changes in this overhaul are consistency and simplicity. If two designs are both accurate, prefer the one that keeps message shapes consistent across actions and uses the simpler, more predictable implementation. In situations where you see a simpler implementation that isn't strictly what the user asked for, either go with the simpler implementation if its clearly an improvement or ask for clarification on the desired shape and why.
+
 ### 2.1 Speak the game's verbs
 
 KeyForge verbs head every log line. The verb is the action that just resolved or that the player just took. Connective prose (`and`, `but`, `to`, `from`, `due to`) wraps the verbs together into one sentence per resolved beat.

@@ -14,7 +14,8 @@ describe('Draw Messages', function () {
             this.player1.useAction(this.libraryOfBabble);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                "Library of Babble's action ability has player1 draw 1 card"
+                "Library of Babble's action ability will have player1 draw 1 card",
+                'player1 draws 1 card'
             ]);
         });
     });
@@ -36,7 +37,33 @@ describe('Draw Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timetraveller',
                 "Timetraveller's bonus icon has player1 gain 1 amber",
-                "Timetraveller's play ability has player1 draw 2 cards"
+                "Timetraveller's play ability will have player1 draw 2 cards",
+                'player1 draws 1 card',
+                'player1 draws 1 card'
+            ]);
+        });
+    });
+
+    describe('opponent draws a card', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'dis',
+                    inPlay: ['dust-imp']
+                },
+                player2: {
+                    inPlay: ['cændle-unit']
+                }
+            });
+        });
+
+        it('should log correct message when opponent draws from C.Æ.N.D.L.E. Unit', function () {
+            this.player1.reap(this.dustImp);
+            expect(this.player1).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 reaps with Dust Imp to gain 1 amber',
+                "C.Æ.N.D.L.E. Unit's constant ability will have player2 draw 1 card",
+                'player2 draws 1 card'
             ]);
         });
     });
@@ -135,7 +162,8 @@ describe('Draw Messages', function () {
             this.player1.play(this.anomalyExploiter);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's draw bonus icon to draw a card"
+                "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
+                'player1 draws 1 card'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -146,7 +174,9 @@ describe('Draw Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
-                "player1 uses Anomaly Exploiter's draw bonus icon to draw a card"
+                'player1 draws 1 card',
+                "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
+                'player1 draws 1 card'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -157,8 +187,10 @@ describe('Draw Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
+                'player1 draws 1 card',
                 "Anomaly Exploiter's bonus icon has player1 gain 1 amber",
-                "player1 uses Anomaly Exploiter's draw bonus icon to draw a card"
+                "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
+                'player1 draws 1 card'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });

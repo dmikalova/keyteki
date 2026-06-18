@@ -39,6 +39,7 @@ describe('Reveal Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ezra Paws',
                 'player1 uses Ezra Paws to reveal Troll and Krump',
+                "Ezra Paws's play ability will have player1 draw 1 card",
                 'player1 draws 1 card'
             ]);
         });
@@ -49,6 +50,7 @@ describe('Reveal Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ezra Paws',
+                "Ezra Paws's play ability will have player1 draw 1 card",
                 'player1 draws 1 card'
             ]);
         });

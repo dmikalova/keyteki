@@ -170,19 +170,86 @@ function renderBonusDiscard(narration, frame, clauses) {
     );
 }
 
-function renderAbilityDraw(narration, frame, clauses) {
-    const clause = clauses.find((c) => c.verb === 'abilityDraw');
+function renderDrawAnnouncement(narration, frame, clauses) {
+    const clause = clauses.find(
+        (c) => c.verb === 'refillDraw' || c.verb === 'abilityDraw' || c.verb === 'bonusDraw'
+    );
     if (!clause) {
         return;
     }
 
     const { amount, player } = clause.args;
+
+    if (clause.verb === 'abilityDraw') {
+        const category = frame.ability?.getCategory ? frame.ability.getCategory() : 'ability';
+        narration.game.addMessage(
+            "{0}'s {1} will have {2} draw {3} card{4}",
+            frame.source,
+            category,
+            player,
+            amount,
+            amount === 1 ? '' : 's'
+        );
+        return;
+    }
+
+    if (clause.verb === 'bonusDraw') {
+        narration.game.addMessage('{0} uses {1} to draw a card', player, frame.source);
+        return;
+    }
+
+    if (clause.verb === 'refillDraw') {
+        const targetHandSize = player.hand.length + amount;
+        narration.game.addMessage(
+            '{0} will draw {1} card{2} to refill their hand to {3} cards',
+            player,
+            amount,
+            amount === 1 ? '' : 's',
+            targetHandSize
+        );
+        return;
+    }
+
+    throw new Error(`NarrationRenderer: unsupported draw clause '${clause.verb}'`);
+}
+
+function renderFulfillProphecy(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'fulfillProphecy');
+    if (!clause) {
+        return;
+    }
+
+    const { card, childCard } = clause.args;
     narration.game.addMessage(
-        '{0} has {1} draw {2} card{3}',
-        narration.describeSource(frame),
-        player,
-        amount,
-        amount === 1 ? '' : 's'
+        "{0}'s prophecy is fulfilled and {1} is revealed",
+        card,
+        childCard ? childCard : 'nothing'
+    );
+}
+
+function renderResolveFate(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'resolveFate');
+    if (!clause) {
+        return;
+    }
+
+    narration.game.addMessage(
+        '{0} resolves the fate effect of {1}',
+        frame.player,
+        clause.args.card
+    );
+}
+
+function renderShedChains(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'shedChains');
+    if (!clause) {
+        return;
+    }
+
+    narration.game.addMessage(
+        '{0} sheds 1 chain to {1} chains',
+        clause.args.player,
+        clause.args.chains
     );
 }
 
@@ -368,7 +435,6 @@ const effectNarrators = {
     chooseCardsFromArchives: null,
     countPurgedForHaunted: null,
     delayedEffect: null,
-    drawOneAtATimeDuringTurn: null,
     mayResolveBonusIconsAs: null,
     modifyHandSize: null,
     modifyKeyCost: null,
@@ -442,7 +508,12 @@ const renderers = {
     resolveBonusIconAs: renderResolveBonusIconAs,
     bonusAmber: renderBonusAmber,
     bonusDiscard: renderBonusDiscard,
-    abilityDraw: renderAbilityDraw
+    bonusDraw: renderDrawAnnouncement,
+    abilityDraw: renderDrawAnnouncement,
+    refillDraw: renderDrawAnnouncement,
+    fulfillProphecy: renderFulfillProphecy,
+    resolveFate: renderResolveFate,
+    shedChains: renderShedChains
 };
 
 module.exports = renderers;

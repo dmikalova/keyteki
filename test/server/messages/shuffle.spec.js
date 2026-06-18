@@ -66,8 +66,10 @@ describe('Shuffle Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timetraveller',
                 "Timetraveller's bonus icon has player1 gain 1 amber",
+                "Timetraveller's play ability will have player1 draw 2 cards",
                 'player1 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
-                "Timetraveller's play ability has player1 draw 2 cards"
+                'player1 draws 1 card',
+                'player1 draws 1 card'
             ]);
         });
     });

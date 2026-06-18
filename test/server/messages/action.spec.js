@@ -14,7 +14,8 @@ describe('Action Ability Messages', function () {
             this.player1.useAction(this.libraryOfBabble);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                "Library of Babble's action ability has player1 draw 1 card"
+                "Library of Babble's action ability will have player1 draw 1 card",
+                'player1 draws 1 card'
             ]);
         });
     });
