@@ -61,12 +61,10 @@ class MulliganPrompt extends AllPlayerPrompt {
     }
 
     logMulligan(player, arg) {
-        if (arg === 'keep') {
-            this.game.addMessage('{0} keeps their starting hand', player);
-        }
-        if (arg === 'mulligan') {
-            this.game.addMessage('{0} mulligans their starting hand', player);
-        }
+        this.game.narration
+            .pushFrame({ verb: 'mulligan', player })
+            .pushClause({ verb: 'mulligan', args: { player, choice: arg } })
+            .flush();
     }
 }
 

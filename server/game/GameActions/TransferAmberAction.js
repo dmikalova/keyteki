@@ -37,20 +37,21 @@ class TransferAmberAction extends PlayerAction {
                 .gainAmber({ amount: event.amount })
                 .resolve(event.player.opponent, context);
 
-            context.game.narration.pushFrame({
-                verb: this.verb,
-                player: context.player,
-                source: context.source,
-                ability: context.ability
-            });
-            context.game.narration.pushClause({
-                verb: this.verb,
-                args: {
-                    amount: event.amount,
-                    from: event.player,
-                    to: event.player.opponent
-                }
-            });
+            context.game.narration
+                .pushFrame({
+                    verb: this.verb,
+                    player: context.player,
+                    source: context.source,
+                    ability: context.ability
+                })
+                .pushClause({
+                    verb: this.verb,
+                    args: {
+                        amount: event.amount,
+                        from: event.player,
+                        to: event.player.opponent
+                    }
+                });
         });
     }
 }

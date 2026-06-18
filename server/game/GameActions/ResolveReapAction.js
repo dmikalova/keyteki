@@ -26,20 +26,21 @@ class ResolveReapAction extends CardGameAction {
 
             // Push narration records now — after preResolution effects have
             // had a chance to mutate the amber descriptor.
-            context.game.narration.pushFrame({
-                verb: 'reap',
-                player: context.player,
-                source: card
-            });
-            context.game.narration.pushClause({
-                verb: 'amber',
-                args: {
-                    operation: amber.operation,
-                    amount: amber.amount,
-                    from: amber.from,
-                    to: amber.to
-                }
-            });
+            context.game.narration
+                .pushFrame({
+                    verb: 'reap',
+                    player: context.player,
+                    source: card
+                })
+                .pushClause({
+                    verb: 'amber',
+                    args: {
+                        operation: amber.operation,
+                        amount: amber.amount,
+                        from: amber.from,
+                        to: amber.to
+                    }
+                });
 
             if (amber.operation === 'steal') {
                 context.game.actions.steal({ amount: amber.amount }).resolve(amber.from, context);

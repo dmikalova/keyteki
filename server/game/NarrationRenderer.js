@@ -253,6 +253,20 @@ function renderShedChains(narration, frame, clauses) {
     );
 }
 
+function renderMulligan(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'mulligan');
+    if (!clause) {
+        return;
+    }
+
+    const { player, choice } = clause.args;
+    if (choice === 'keep') {
+        narration.game.addMessage('{0} keeps their starting hand', player);
+    } else {
+        narration.game.addMessage('{0} mulligans their starting hand', player);
+    }
+}
+
 /**
  * Return a duration as a message-safe value for use as a {n} placeholder.
  * Returns a pre-formatted message fragment with leading space when a
@@ -291,38 +305,40 @@ function describeDuration(narration, duration, player) {
 
 function narrateTakeControl(context, card, effect, duration) {
     let newController = effect.getValue();
-    context.game.narration.pushFrame({
-        verb: 'takeControl',
-        player: context.player,
-        source: context.source,
-        ability: context.ability
-    });
-    context.game.narration.pushClause({
-        verb: 'takeControl',
-        args: {
-            card: card,
-            newController: newController,
-            duration: duration
-        }
-    });
+    context.game.narration
+        .pushFrame({
+            verb: 'takeControl',
+            player: context.player,
+            source: context.source,
+            ability: context.ability
+        })
+        .pushClause({
+            verb: 'takeControl',
+            args: {
+                card: card,
+                newController: newController,
+                duration: duration
+            }
+        });
 }
 
 function narrateChangeHouse(context, card, effect, duration) {
     let house = effect.getValue();
-    context.game.narration.pushFrame({
-        verb: 'changeHouse',
-        player: context.player,
-        source: context.source,
-        ability: context.ability
-    });
-    context.game.narration.pushClause({
-        verb: 'changeHouse',
-        args: {
-            card: card,
-            house: house,
-            duration: duration
-        }
-    });
+    context.game.narration
+        .pushFrame({
+            verb: 'changeHouse',
+            player: context.player,
+            source: context.source,
+            ability: context.ability
+        })
+        .pushClause({
+            verb: 'changeHouse',
+            args: {
+                card: card,
+                house: house,
+                duration: duration
+            }
+        });
 }
 
 function narrateCopyCard(context, card) {
@@ -334,19 +350,20 @@ function narrateCopyCard(context, card) {
         return;
     }
 
-    context.game.narration.pushFrame({
-        verb: 'copyCard',
-        player: context.player,
-        source: context.source,
-        ability: context.ability
-    });
-    context.game.narration.pushClause({
-        verb: 'copyCard',
-        args: {
-            card: card,
-            copiedCard: context.target
-        }
-    });
+    context.game.narration
+        .pushFrame({
+            verb: 'copyCard',
+            player: context.player,
+            source: context.source,
+            ability: context.ability
+        })
+        .pushClause({
+            verb: 'copyCard',
+            args: {
+                card: card,
+                copiedCard: context.target
+            }
+        });
 }
 
 /**
@@ -513,7 +530,8 @@ const renderers = {
     refillDraw: renderDrawAnnouncement,
     fulfillProphecy: renderFulfillProphecy,
     resolveFate: renderResolveFate,
-    shedChains: renderShedChains
+    shedChains: renderShedChains,
+    mulligan: renderMulligan
 };
 
 module.exports = renderers;

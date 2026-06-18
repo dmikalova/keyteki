@@ -77,20 +77,21 @@ class CaptureAction extends CardAction {
 
             event.card.addToken('amber', amount);
 
-            context.game.narration.pushFrame({
-                verb: 'capture',
-                player: context.player,
-                source: context.source,
-                ability: context.ability
-            });
-            context.game.narration.pushClause({
-                verb: 'capture',
-                args: {
-                    amount: amount,
-                    card: event.card,
-                    from: player
-                }
-            });
+            context.game.narration
+                .pushFrame({
+                    verb: 'capture',
+                    player: context.player,
+                    source: context.source,
+                    ability: context.ability
+                })
+                .pushClause({
+                    verb: 'capture',
+                    args: {
+                        amount: amount,
+                        card: event.card,
+                        from: player
+                    }
+                });
         });
     }
 }

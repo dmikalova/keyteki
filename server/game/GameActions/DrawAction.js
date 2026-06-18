@@ -45,19 +45,20 @@ class DrawAction extends PlayerAction {
 
     getDrawAnnouncementEvent(context, player, drawVerb, amount) {
         return context.game.getEvent(EVENTS.unnamedEvent, {}, () => {
-            context.game.narration.pushFrame({
-                verb: drawVerb,
-                player: context.player,
-                source: drawVerb === 'refillDraw' ? null : context.source,
-                ability: drawVerb === 'refillDraw' ? null : context.ability
-            });
-            context.game.narration.pushClause({
-                verb: drawVerb,
-                args: {
-                    player,
-                    amount
-                }
-            });
+            context.game.narration
+                .pushFrame({
+                    verb: drawVerb,
+                    player: context.player,
+                    source: drawVerb === 'refillDraw' ? null : context.source,
+                    ability: drawVerb === 'refillDraw' ? null : context.ability
+                })
+                .pushClause({
+                    verb: drawVerb,
+                    args: {
+                        player,
+                        amount
+                    }
+                });
         });
     }
 
@@ -95,17 +96,18 @@ class DrawAction extends PlayerAction {
 
                 if (shedChains) {
                     event.player.modifyChains(-1);
-                    context.game.narration.pushFrame({
-                        verb: 'shedChains',
-                        player: event.player
-                    });
-                    context.game.narration.pushClause({
-                        verb: 'shedChains',
-                        args: {
-                            player: event.player,
-                            chains: event.player.chains
-                        }
-                    });
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'shedChains',
+                            player: event.player
+                        })
+                        .pushClause({
+                            verb: 'shedChains',
+                            args: {
+                                player: event.player,
+                                chains: event.player.chains
+                            }
+                        });
                 }
             }
         );

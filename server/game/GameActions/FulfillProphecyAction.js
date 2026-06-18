@@ -35,23 +35,24 @@ class FulfillProphecyAction extends PlayerAction {
             return false;
         }
 
-        context.game.narration.pushFrame({
-            verb: 'fulfillProphecy',
-            player: context.player,
-            source: this.card,
-            ability: context.ability
-        });
         const childCard =
             this.card.childCards && this.card.childCards.length > 0
                 ? this.card.childCards[0]
                 : null;
-        context.game.narration.pushClause({
-            verb: 'fulfillProphecy',
-            args: {
-                card: this.card,
-                childCard
-            }
-        });
+        context.game.narration
+            .pushFrame({
+                verb: 'fulfillProphecy',
+                player: context.player,
+                source: this.card,
+                ability: context.ability
+            })
+            .pushClause({
+                verb: 'fulfillProphecy',
+                args: {
+                    card: this.card,
+                    childCard
+                }
+            });
 
         return true;
     }

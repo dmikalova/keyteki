@@ -107,21 +107,22 @@ class ResolveBonusIconsAction extends CardGameAction {
 
                     const iconReplacement = !this.abilityReplacements[replacement.newIcon];
 
-                    context.game.narration.pushFrame({
-                        verb: 'resolveBonusIconAs',
-                        player: context.player,
-                        source: replacement.source,
-                        ability: replacement.effect.context?.ability
-                    });
-                    context.game.narration.pushClause({
-                        verb: 'resolveBonusIconAs',
-                        args: {
-                            card: event.card,
-                            fromIcon: currentIcon,
-                            replacement: replacementText,
-                            iconReplacement
-                        }
-                    });
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'resolveBonusIconAs',
+                            player: context.player,
+                            source: replacement.source,
+                            ability: replacement.effect.context?.ability
+                        })
+                        .pushClause({
+                            verb: 'resolveBonusIconAs',
+                            args: {
+                                card: event.card,
+                                fromIcon: currentIcon,
+                                replacement: replacementText,
+                                iconReplacement
+                            }
+                        });
                 }
                 // Mark this source as used so it can't be used again in this chain
                 const newUsedSources = new Set(usedSources);
@@ -177,20 +178,21 @@ class ResolveBonusIconsAction extends CardGameAction {
                 context.game.actions
                     .gainAmber({ bonus: true })
                     .resolve(context.player, this.bonusIconContext(context, event.card, icon));
-                context.game.narration.pushFrame({
-                    verb: 'bonusAmber',
-                    player: context.player,
-                    source: context.source,
-                    ability: context.ability
-                });
-                context.game.narration.pushClause({
-                    verb: 'bonusAmber',
-                    args: {
-                        card: event.card,
+                context.game.narration
+                    .pushFrame({
+                        verb: 'bonusAmber',
                         player: context.player,
-                        amount: 1
-                    }
-                });
+                        source: context.source,
+                        ability: context.ability
+                    })
+                    .pushClause({
+                        verb: 'bonusAmber',
+                        args: {
+                            card: event.card,
+                            player: context.player,
+                            amount: 1
+                        }
+                    });
                 break;
             case 'capture':
                 if (
@@ -253,20 +255,21 @@ class ResolveBonusIconsAction extends CardGameAction {
                                     card,
                                     this.bonusIconContext(context, event.card, icon, player)
                                 );
-                            context.game.narration.pushFrame({
-                                verb: 'bonusDiscard',
-                                player: context.player,
-                                source: context.source,
-                                ability: context.ability
-                            });
-                            context.game.narration.pushClause({
-                                verb: 'bonusDiscard',
-                                args: {
-                                    card: event.card,
-                                    player: player,
-                                    discarded: card
-                                }
-                            });
+                            context.game.narration
+                                .pushFrame({
+                                    verb: 'bonusDiscard',
+                                    player: context.player,
+                                    source: context.source,
+                                    ability: context.ability
+                                })
+                                .pushClause({
+                                    verb: 'bonusDiscard',
+                                    args: {
+                                        card: event.card,
+                                        player: player,
+                                        discarded: card
+                                    }
+                                });
                             return true;
                         }
                     });

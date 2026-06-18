@@ -22,6 +22,7 @@ class Narration {
      */
     pushFrame(frame) {
         this.buffer.push({ type: 'frame', ...frame });
+        return this;
     }
 
     /**
@@ -32,6 +33,7 @@ class Narration {
      */
     pushClause(clause) {
         this.buffer.push({ type: 'clause', ...clause });
+        return this;
     }
 
     /**
