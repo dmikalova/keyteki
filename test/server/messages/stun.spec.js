@@ -17,7 +17,7 @@ describe('Stun Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Radiant Truth',
-                "Radiant Truth's bonus icon has player1 gain 1 amber",
+                "Radiant Truth's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Radiant Truth to stun Ganger Chieftain'
             ]);
         });

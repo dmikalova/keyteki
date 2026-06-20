@@ -55,12 +55,18 @@ class ResolveBonusIconsAction extends CardGameAction {
         return replacements;
     }
 
-    promptForIconResolution(context, event, currentIcon, usedSources = new Set()) {
+    promptForIconResolution(
+        context,
+        event,
+        currentIcon,
+        usedSources = new Set(),
+        additionalSource = null
+    ) {
         // Terminal replacements are actions, not icons and can no longer be
         // chained - eg Amphora Capture can be replaced by Scrivener Favian, but
         // not vice versa
         if (currentIcon in this.abilityReplacements) {
-            this.resolveIcon(context, event, currentIcon);
+            this.resolveIcon(context, event, currentIcon, additionalSource);
             return;
         }
 
@@ -72,7 +78,7 @@ class ResolveBonusIconsAction extends CardGameAction {
 
         if (replacements.length === 0) {
             // No more replacements available, resolve the icon
-            this.resolveIcon(context, event, currentIcon);
+            this.resolveIcon(context, event, currentIcon, additionalSource);
             return;
         }
 
@@ -83,7 +89,7 @@ class ResolveBonusIconsAction extends CardGameAction {
         // which source to spend, since usedSources tracking affects which
         // further chained replacements remain available downstream.
         const choices = [this.getDisplayName(currentIcon)];
-        const handlers = [() => this.resolveIcon(context, event, currentIcon)];
+        const handlers = [() => this.resolveIcon(context, event, currentIcon, additionalSource)];
 
         // Count how many replacements target each newIcon so we only
         // disambiguate the label with the source name when needed.
@@ -144,7 +150,7 @@ class ResolveBonusIconsAction extends CardGameAction {
             });
         } else {
             // Only one choice (no valid replacements), just resolve
-            this.resolveIcon(context, event, currentIcon);
+            this.resolveIcon(context, event, currentIcon, additionalSource);
         }
     }
 
@@ -172,7 +178,7 @@ class ResolveBonusIconsAction extends CardGameAction {
         });
     }
 
-    resolveIcon(context, event, icon) {
+    resolveIcon(context, event, icon, additionalSource = null) {
         switch (icon) {
             case 'amber':
                 context.game.actions
@@ -190,7 +196,9 @@ class ResolveBonusIconsAction extends CardGameAction {
                         args: {
                             card: event.card,
                             player: context.player,
-                            amount: 1
+                            amount: 1,
+                            icon,
+                            additionalSource
                         }
                     });
                 break;
@@ -343,12 +351,26 @@ class ResolveBonusIconsAction extends CardGameAction {
             EVENTS.onResolveBonusIcons,
             { card: card, context: context },
             (event) => {
-                for (let icon of event.card.getResolvableBonusIcons()) {
-                    const resolveCount = card.sumEffects('resolveBonusIconsAdditionalTime') + 1;
+                const additionalEffects = card.effects.filter(
+                    (e) => e.type === 'resolveBonusIconsAdditionalTime'
+                );
 
-                    for (let rc = 0; rc < resolveCount; ++rc) {
+                for (let icon of event.card.getResolvableBonusIcons()) {
+                    // Normal resolution (1x)
+                    context.game.queueSimpleStep(() => {
+                        this.promptForIconResolution(context, event, icon);
+                    });
+
+                    // Additional resolutions from effects (e.g. Fission Bloom)
+                    for (const effect of additionalEffects) {
                         context.game.queueSimpleStep(() => {
-                            this.promptForIconResolution(context, event, icon);
+                            this.promptForIconResolution(
+                                context,
+                                event,
+                                icon,
+                                new Set(),
+                                effect.context?.source
+                            );
                         });
                     }
                 }

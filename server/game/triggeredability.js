@@ -194,6 +194,10 @@ class TriggeredAbility extends CardAbility {
             return 'fate ability';
         }
 
+        if (!this.printedAbility) {
+            return 'lasting effect';
+        }
+
         return 'constant ability';
     }
 

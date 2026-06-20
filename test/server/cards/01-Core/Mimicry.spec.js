@@ -141,6 +141,35 @@ describe('Mimicry', function () {
         });
     });
 
+    describe('Mimicry with Wild Wormhole copying alpha card', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    amber: 2,
+                    house: 'logos',
+                    hand: ['wild-wormhole'],
+                    discard: ['mimicry']
+                },
+                player2: {
+                    amber: 5,
+                    discard: ['binate-rupture']
+                }
+            });
+            this.player1.moveCard(this.mimicry, 'deck');
+        });
+
+        it('should return Mimicry to top of deck when alpha-blocked', function () {
+            this.player1.play(this.wildWormhole);
+            expect(this.player1).toHavePrompt('Mimicry');
+            this.player1.clickCard(this.binateRupture);
+            expect(this.mimicry.location).toBe('deck');
+            expect(this.player1.player.deck[0]).toBe(this.mimicry);
+            expect(this.player1.amber).toBe(3);
+            expect(this.player2.amber).toBe(5);
+            expect(this.player1).isReadyToTakeAction();
+        });
+    });
+
     describe('Mimicry with Information Exchange', function () {
         beforeEach(function () {
             this.setupTest({

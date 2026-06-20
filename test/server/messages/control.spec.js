@@ -73,7 +73,7 @@ describe('Control Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Exile',
-                "Exile's bonus icon has player1 gain 1 amber",
+                "Exile's amber bonus icon has player1 gain 1 amber",
                 "Exile's play ability gives control of Senator Shrix to player2"
             ]);
         });

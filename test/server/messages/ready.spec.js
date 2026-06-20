@@ -18,7 +18,7 @@ describe('Ready Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ghoul-keeping',
-                "Ghoul-keeping's bonus icon has player1 gain 1 amber",
+                "Ghoul-keeping's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Ghoul-keeping to ready a friendly Geistoid creature.'
             ]);
         });

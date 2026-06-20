@@ -1874,6 +1874,24 @@ The work splits into **two tracks with a one-directional dependency**, and they 
 
 That is the whole of it — there is nothing more to do beyond (a) carving the message-neutral engine refactors into their own PRs, (b) keeping the feature branch rebased on top, and (c) giving each early PR its own test so it justifies itself.
 
+### 8.0.1 Implementation patterns for narration code
+
+**Exhaustive switch/case with throwing default.** Every `switch` statement in narration helpers (renderers, describers, effect narrators) must explicitly handle every expected case and `throw` in the `default` branch. This ensures new cases are caught immediately rather than silently producing empty or wrong output.
+
+```js
+switch (location) {
+    case 'hand':
+        return ''; // explicitly empty — no location text needed
+    case 'deck':
+        return { message: fmt(" from the top of {0}'s deck", [owner]) };
+    // …
+    default:
+        throw new Error(`describeLocation: unhandled location '${location}'`);
+}
+```
+
+When a case legitimately produces no output (e.g. `'hand'` — playing from hand needs no location qualifier), add it as an explicit case returning `''` so that the throwing default remains reachable only for truly unexpected values.
+
 ### 8.1 Narration phases (Track B)
 
 **Phase 1 — Narration records, no UI change.** Add `narrate()` to a single GameAction (reap is the pilot). Keep today's messages flowing alongside the new records. Verify records contain enough context to render today's lines.

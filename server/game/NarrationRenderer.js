@@ -151,8 +151,23 @@ function renderBonusAmber(narration, frame, clauses) {
         return;
     }
 
-    const { card, player, amount } = clause.args;
-    narration.game.addMessage("{0}'s bonus icon has {1} gain {2} amber", card, player, amount);
+    const { card, player, amount, additionalSource } = clause.args;
+    if (additionalSource) {
+        narration.game.addMessage(
+            "{0}'s lasting effect resolves {1}'s amber bonus icon an additional time to have {2} gain {3} amber",
+            additionalSource,
+            card,
+            player,
+            amount
+        );
+    } else {
+        narration.game.addMessage(
+            "{0}'s amber bonus icon has {1} gain {2} amber",
+            card,
+            player,
+            amount
+        );
+    }
 }
 
 function renderBonusDiscard(narration, frame, clauses) {
@@ -292,6 +307,58 @@ function describeDuration(narration, duration, player) {
     }
 }
 
+/**
+ * Map a CannotRestriction type to a human-readable verb phrase.
+ * The default branch throws so new restriction types must be explicitly added.
+ */
+function describeRestrictionAction(type) {
+    switch (type) {
+        case 'play':
+            return 'playing';
+        case 'fight':
+            return 'fighting with';
+        case 'reap':
+            return 'reaping with';
+        case 'use':
+            return 'using';
+        case 'attack':
+        case 'attackDueToTaunt':
+            return 'attacking with';
+        case 'damage':
+            return 'damaging';
+        case 'dealFightDamage':
+        case 'dealFightDamageWhenDefending':
+            return 'dealing fight damage with';
+        case 'destroy':
+            return 'destroying';
+        case 'exhaust':
+            return 'exhausting';
+        case 'ready':
+            return 'readying';
+        case 'sacrifice':
+            return 'sacrificing';
+        case 'steal':
+            return 'stealing';
+        case 'forge':
+            return 'forging';
+        case 'raiseTide':
+            return 'raising the tide';
+        case 'resolveBonusIcons':
+            return 'resolving bonus icons';
+        case 'resolveActionPlayEffects':
+            return 'resolving play effects';
+        case 'takeArchives':
+            return 'taking archives';
+        case 'discardExceptCardAbilities':
+            return 'discarding';
+        default:
+            throw new Error(
+                `describeRestrictionAction: unknown restriction type '${type}' — ` +
+                    'add it to describeRestrictionAction in NarrationRenderer.js'
+            );
+    }
+}
+
 // ── Effect narrators ────────────────────────────────────────────────
 //
 // Registry of effect-type → narration function for CardLastingEffectAction.
@@ -394,6 +461,7 @@ const effectNarrators = {
     canAttachToArtifacts: null,
     abilityRestrictions: null,
     cardLocationAfterPlay: null,
+    playBlockedByAlpha: null,
     changeType: null,
     consideredAsFlank: null,
     customEffect: null,
@@ -420,7 +488,7 @@ const effectNarrators = {
     removeAllTraits: null,
     removeKeyword: null,
     replaceDamage: null,
-    resolveBonusIconsAdditionalTime: null,
+    resolveBonusIconsAdditionalTime: () => {},
     returnToHandFromDiscardAnytime: null,
     setArmor: null,
     setPower: null,
@@ -514,24 +582,153 @@ narrateEffects.hasNarration = function (effects) {
 };
 
 /** Map of frame verb → render function */
+
+function renderAbilityPlay(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'abilityPlay');
+    if (!clause) {
+        return;
+    }
+
+    const { card, location, owner } = clause.args;
+    const locationText = describeLocation(narration, location, owner);
+    narration.game.addMessage(
+        '{0} plays {1}{2}',
+        narration.describeSource(frame),
+        card,
+        locationText
+    );
+}
+
+function describeLocation(narration, location, owner) {
+    const fmt = narration.game.gameChat.formatMessage;
+    switch (location) {
+        case 'hand':
+            return '';
+        case 'deck':
+            return { message: fmt(" from the top of {0}'s deck", [owner]) };
+        case 'discard':
+            return { message: fmt(" from {0}'s discard", [owner]) };
+        case 'archives':
+            return { message: fmt(" from {0}'s archives", [owner]) };
+        case 'under':
+            return { message: fmt(' from under {0}', [owner]) };
+        case 'purged':
+            return { message: fmt(' from purged', []) };
+        default:
+            throw new Error(`describeLocation: unhandled location '${location}'`);
+    }
+}
+
+function renderLastingAbilityTrigger(narration, frame) {
+    narration.game.addMessage('{0} uses {1}', frame.player, narration.describeSource(frame));
+}
+
+function describeReturnLocation(narration, location, owner) {
+    const fmt = narration.game.gameChat.formatMessage;
+    switch (location) {
+        case 'hand':
+            return { message: fmt("{0}'s hand", [owner]) };
+        case 'deck':
+            return { message: fmt("the top of {0}'s deck", [owner]) };
+        case 'discard':
+            return { message: fmt("{0}'s discard", [owner]) };
+        case 'archives':
+            return { message: fmt("{0}'s archives", [owner]) };
+        case 'under':
+            return { message: fmt('under {0}', [owner]) };
+        case 'purged':
+            return { message: fmt('purged', []) };
+        default:
+            throw new Error(`describeReturnLocation: unhandled location '${location}'`);
+    }
+}
+
+function renderCannotPlayHidden(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'cannotPlayHidden');
+    if (!clause) {
+        return;
+    }
+
+    const { location, owner, restrictor, restrictionType } = clause.args;
+    const returnLoc = describeReturnLocation(narration, location, owner);
+    if (restrictor) {
+        const action = describeRestrictionAction(restrictionType);
+        narration.game.addMessage(
+            "{0}'s constant ability restricts {1} from {2} a card from {3}",
+            restrictor,
+            frame.source,
+            action,
+            returnLoc
+        );
+    } else {
+        narration.game.addMessage(
+            '{0} cannot play a card from {1} due to a restriction',
+            frame.player,
+            returnLoc
+        );
+    }
+}
+
+function renderCannotPlay(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'cannotPlay');
+    if (!clause) {
+        return;
+    }
+
+    const { card, location, owner, restrictor, restrictionType } = clause.args;
+    const returnLoc = describeReturnLocation(narration, location, owner);
+    if (restrictor) {
+        const action = describeRestrictionAction(restrictionType);
+        narration.game.addMessage(
+            "{0}'s constant ability restricts {1} from {2} {3} and returns it to {4}",
+            restrictor,
+            frame.player,
+            action,
+            card,
+            returnLoc
+        );
+    } else {
+        narration.game.addMessage(
+            '{0} cannot play {1} and returns it to {2}',
+            frame.player,
+            card,
+            returnLoc
+        );
+    }
+}
+
+function renderPutIntoPlay(narration, frame, clauses) {
+    const clause = clauses.find((c) => c.verb === 'putIntoPlay');
+    if (!clause) {
+        return;
+    }
+
+    narration.game.addMessage('{0} puts {1} into play', clause.args.player, clause.args.card);
+}
+
 const renderers = {
-    reap: renderReap,
-    capture: renderCapture,
-    pay: renderTransfer,
-    giveAmber: renderTransfer,
-    takeControl: renderControl,
-    changeHouse: renderChangeHouse,
-    copyCard: renderCopyCard,
-    resolveBonusIconAs: renderResolveBonusIconAs,
+    abilityDraw: renderDrawAnnouncement,
+    abilityPlay: renderAbilityPlay,
     bonusAmber: renderBonusAmber,
     bonusDiscard: renderBonusDiscard,
     bonusDraw: renderDrawAnnouncement,
-    abilityDraw: renderDrawAnnouncement,
-    refillDraw: renderDrawAnnouncement,
+    cannotPlay: renderCannotPlay,
+    cannotPlayHidden: renderCannotPlayHidden,
+    capture: renderCapture,
+    changeHouse: renderChangeHouse,
+    copyCard: renderCopyCard,
     fulfillProphecy: renderFulfillProphecy,
+    giveAmber: renderTransfer,
+    lastingAbilityTrigger: renderLastingAbilityTrigger,
+    mulligan: renderMulligan,
+    pay: renderTransfer,
+    putIntoPlay: renderPutIntoPlay,
+    reap: renderReap,
+    refillDraw: renderDrawAnnouncement,
+    resolveBonusIconAs: renderResolveBonusIconAs,
     resolveFate: renderResolveFate,
     shedChains: renderShedChains,
-    mulligan: renderMulligan
+    takeControl: renderControl
 };
 
 module.exports = renderers;

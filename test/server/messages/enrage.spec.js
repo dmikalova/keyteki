@@ -18,7 +18,7 @@ describe('Enrage Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Pestering Blow',
-                "Pestering Blow's bonus icon has player1 gain 1 amber",
+                "Pestering Blow's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Pestering Blow to deal 1 damage and enrage Troll'
             ]);
         });

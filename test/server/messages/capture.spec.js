@@ -91,7 +91,7 @@ describe('Capture Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone",
-                "Anomaly Exploiter's bonus icon has player1 gain 1 amber",
+                "Anomaly Exploiter's amber bonus icon has player1 gain 1 amber",
                 "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();

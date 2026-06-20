@@ -62,8 +62,37 @@ describe('Return Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timequake',
-                "Timequake's bonus icon has player1 gain 1 amber",
+                "Timequake's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Timequake to return nothing to their owner's deck"
+            ]);
+        });
+    });
+
+    describe('High Priest Torvus returning action to hand', function () {
+        beforeEach(function () {
+            this.setupTest({
+                player1: {
+                    house: 'saurian',
+                    inPlay: ['high-priest-torvus'],
+                    hand: ['triumph']
+                },
+                player2: {
+                    inPlay: ['troll']
+                }
+            });
+        });
+
+        it('should not log a cannot play message when action is returned to hand', function () {
+            this.player1.reap(this.highPriestTorvus);
+            this.player1.clickCard(this.highPriestTorvus);
+            this.player1.play(this.triumph);
+            expect(this.player1).isReadyToTakeAction();
+            expect(this).toHaveAllChatMessagesBe([
+                'player1 reaps with High Priest Torvus to gain 1 amber',
+                'player1 uses High Priest Torvus to exalt High Priest Torvus',
+                'player1 plays Triumph',
+                "Triumph's amber bonus icon has player1 gain 1 amber",
+                'player1 uses High Priest Torvus to apply a lasting effect to Triumph'
             ]);
         });
     });

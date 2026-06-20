@@ -35,8 +35,8 @@ describe('Amber Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "Dust Pixie's bonus icon has player1 gain 1 amber",
-                "Dust Pixie's bonus icon has player1 gain 1 amber"
+                "Dust Pixie's amber bonus icon has player1 gain 1 amber",
+                "Dust Pixie's amber bonus icon has player1 gain 1 amber"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -95,7 +95,7 @@ describe('Amber Messages', function () {
                 'player1 plays Dust Pixie',
                 "Whimsical Conjuror's constant ability resolves Dust Pixie's bonus amber to make a token creature",
                 'player1 puts Niffle Brute into play',
-                "Dust Pixie's bonus icon has player1 gain 1 amber"
+                "Dust Pixie's amber bonus icon has player1 gain 1 amber"
             ]);
         });
     });
@@ -117,8 +117,8 @@ describe('Amber Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Dust Pixie',
-                "Dust Pixie's bonus icon has player1 gain 1 amber",
-                "Dust Pixie's bonus icon has player1 gain 1 amber",
+                "Dust Pixie's amber bonus icon has player1 gain 1 amber",
+                "Dust Pixie's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Hunting Witch to gain 1 amber'
             ]);
         });
@@ -150,10 +150,10 @@ describe('Amber Messages', function () {
             this.player1.clickCard(this.batdrone); // discard target
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Manifestation',
-                "Manifestation's bonus icon has player1 gain 1 amber",
+                "Manifestation's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Manifestation to resolve Control the Weak's bonus icons",
-                "Control the Weak's bonus icon has player1 gain 1 amber",
-                "Control the Weak's bonus icon has player1 gain 1 amber",
+                "Control the Weak's amber bonus icon has player1 gain 1 amber",
+                "Control the Weak's amber bonus icon has player1 gain 1 amber",
                 "Control the Weak's capture bonus icon captures 1 amber from player2 onto Echofly",
                 "player1 uses Control the Weak's damage bonus icon to deal 1 damage to Lamindra",
                 'Lamindra is destroyed',
@@ -298,9 +298,8 @@ describe('Amber Messages', function () {
             this.player1.useAction(this.fissionBloom);
             this.player1.play(this.neuroSyphon);
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Fission Bloom to resolve the bonus icons of the next card played an additional time',
-                'player1 plays Neuro Syphon',
-                'player1 uses Fission Bloom to resolve the bonus icons of Neuro Syphon an additional time'
+                "player1 uses Fission Bloom's action ability",
+                'player1 plays Neuro Syphon'
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -322,11 +321,10 @@ describe('Amber Messages', function () {
             this.player1.useAction(this.fissionBloom);
             this.player1.play(this.neuroSyphon);
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Fission Bloom to resolve the bonus icons of the next card played an additional time',
+                "player1 uses Fission Bloom's action ability",
                 'player1 plays Neuro Syphon',
-                'player1 uses Fission Bloom to resolve the bonus icons of Neuro Syphon an additional time',
-                "Neuro Syphon's bonus icon has player1 gain 1 amber",
-                "Neuro Syphon's bonus icon has player1 gain 1 amber"
+                "Neuro Syphon's amber bonus icon has player1 gain 1 amber",
+                "Fission Bloom's lasting effect resolves Neuro Syphon's amber bonus icon an additional time to have player1 gain 1 amber"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -353,13 +351,11 @@ describe('Amber Messages', function () {
             this.player1.clickCard(this.batdrone);
             this.player1.clickPrompt('amber');
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Fission Bloom to resolve the bonus icons of the next card played an additional time',
+                "player1 uses Fission Bloom's action ability",
                 'player1 plays Neuro Syphon',
-                'player1 uses Fission Bloom to resolve the bonus icons of Neuro Syphon an additional time',
                 "Amphora Captura's constant ability resolves Neuro Syphon's bonus amber as bonus capture",
                 "Neuro Syphon's capture bonus icon captures 1 amber from player2 onto Batdrone",
-                "Neuro Syphon's bonus icon has player1 gain 1 amber",
-                // TODO:
+                "Fission Bloom's lasting effect resolves Neuro Syphon's amber bonus icon an additional time to have player1 gain 1 amber",
                 'player1 uses Neuro Syphon to steal an amber and draw a card',
                 "Neuro Syphon's play ability will have player1 draw 1 card",
                 'player1 draws 1 card'
@@ -409,7 +405,7 @@ describe('Amber Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Ditch the Loot',
-                "Ditch the Loot's bonus icon has player1 gain 1 amber",
+                "Ditch the Loot's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Ditch the Loot to remove all amber from Urchin',
                 'player1 uses Ditch the Loot to move 3 amber from Urchin to Hobnobber'
             ]);

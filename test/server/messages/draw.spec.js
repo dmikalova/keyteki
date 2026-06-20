@@ -36,7 +36,7 @@ describe('Draw Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timetraveller',
-                "Timetraveller's bonus icon has player1 gain 1 amber",
+                "Timetraveller's amber bonus icon has player1 gain 1 amber",
                 "Timetraveller's play ability will have player1 draw 2 cards",
                 'player1 draws 1 card',
                 'player1 draws 1 card'
@@ -188,7 +188,7 @@ describe('Draw Messages', function () {
                 'player1 plays Anomaly Exploiter',
                 "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
                 'player1 draws 1 card',
-                "Anomaly Exploiter's bonus icon has player1 gain 1 amber",
+                "Anomaly Exploiter's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Anomaly Exploiter's draw bonus icon to draw a card",
                 'player1 draws 1 card'
             ]);

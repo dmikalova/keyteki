@@ -78,7 +78,7 @@ describe('Discard Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Mind Barb',
-                "Mind Barb's bonus icon has player1 gain 1 amber",
+                "Mind Barb's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Mind Barb to randomly discard 1 card from player2's hand",
                 'player2 randomly discards Troll from hand'
             ]);
@@ -277,7 +277,7 @@ describe('Discard Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
                 "Anomaly Exploiter's discard bonus icon has player1 discard Dextre",
-                "Anomaly Exploiter's bonus icon has player1 gain 1 amber",
+                "Anomaly Exploiter's amber bonus icon has player1 gain 1 amber",
                 "Anomaly Exploiter's discard bonus icon has player1 discard Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -401,7 +401,7 @@ describe('Discard Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Brine Reckoning',
-                "Brine Reckoning's bonus icon has player1 gain 1 amber",
+                "Brine Reckoning's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Brine Reckoning to discard Urchin, Urchin, Urchin, Urchin, and Urchin from the top of player1's deck",
                 "player1 uses Brine Reckoning to discard Troll, Troll, Troll, Troll, and Troll from the top of player2's deck"
             ]);
@@ -478,7 +478,7 @@ describe('Discard Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Haunting Measures',
-                "Haunting Measures's bonus icon has player1 gain 1 amber",
+                "Haunting Measures's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Haunting Measures to discard Troll, Anger, Krump, Punch, Tremor, and Pelf',
                 'player1 uses Haunting Measures to return Troll to hand'
             ]);

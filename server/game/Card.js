@@ -972,6 +972,15 @@ class Card extends EffectSource {
         );
     }
 
+    findRestriction(actionType, context = null, event = null) {
+        return (
+            super.findRestriction(actionType, context, event) ||
+            (context &&
+                context.player &&
+                context.player.findRestriction(actionType, context, event))
+        );
+    }
+
     addToken(type, number = 1) {
         if (!number || !Number.isInteger(number)) {
             return;

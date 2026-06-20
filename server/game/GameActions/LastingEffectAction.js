@@ -32,6 +32,25 @@ class LastingEffectAction extends GameAction {
         this.effectMsg = 'apply a lasting effect';
     }
 
+    narrate(context) {
+        if (this.when) {
+            context.game.narration
+                .pushFrame({
+                    verb: 'lastingAbilityTrigger',
+                    player: context.player,
+                    source: context.source,
+                    ability: context.ability
+                })
+                .pushClause({
+                    verb: 'lastingAbilityTrigger',
+                    args: {}
+                })
+                .flush();
+        }
+
+        return true;
+    }
+
     hasLegalTarget(context) {
         this.update(context);
         return !!this.effect.length || (this.when && !!this.gameAction);

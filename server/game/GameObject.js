@@ -76,6 +76,15 @@ class GameObject {
         );
     }
 
+    findRestriction(actionType, context, event) {
+        const effect = this.effects.find(
+            (effect) =>
+                effect.type === 'abilityRestrictions' &&
+                effect.getValue(this).checkRestriction(actionType, context, event, effect.context)
+        );
+        return effect ? { source: effect.context.source, type: actionType } : null;
+    }
+
     isUnique() {
         return false;
     }

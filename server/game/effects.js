@@ -46,6 +46,7 @@ const Effects = {
         EffectBuilder.card.static('abilityRestrictions', new CannotRestriction(type, condition)),
     cardLocationAfterPlay: (location) =>
         EffectBuilder.card.static('cardLocationAfterPlay', location),
+    playBlockedByAlpha: () => EffectBuilder.card.static('playBlockedByAlpha', true),
     changeHouse: (house) => EffectBuilder.card.static('changeHouse', house),
     changeType: (type) => EffectBuilder.card.static('changeType', type),
     consideredAsFlank: () => EffectBuilder.card.static('consideredAsFlank'),
