@@ -6,26 +6,38 @@ class PlayAction extends BasePlayAction {
         this.title = 'Play this action';
     }
 
-    displayMessage(context) {
-        super.displayMessage(context);
-
-        // Check if card is restricted from being played
-        const location = context.source.mostRecentEffect('cardLocationAfterPlay') || 'discard';
-        if (location !== 'discard') {
-            context.game.addMessage(
-                '{0} is unable to play {1} and returns it to {2}',
-                context.player,
-                context.source,
-                location
-            );
-        }
-    }
-
     executeHandler(context) {
+        const originLocation = context.source.location;
+        const originOwner =
+            originLocation === 'under' ? context.source.parent : context.source.owner;
+
         context.player.moveCard(context.source, 'being played');
         super.executeHandler(context);
         context.game.queueSimpleStep(() => {
             if (context.source.location === 'being played') {
+                // Check if the play was blocked by an alpha restriction
+                // on a copied card (e.g. Mimicry copying an alpha action).
+                if (context.source.mostRecentEffect('playBlockedByAlpha')) {
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'cannotPlay',
+                            player: context.player,
+                            source: context.source,
+                            ability: context.ability
+                        })
+                        .pushClause({
+                            verb: 'cannotPlay',
+                            args: {
+                                card: context.source,
+                                location: originLocation,
+                                owner: originOwner
+                            }
+                        });
+                    originOwner.moveCard(context.source, originLocation);
+                    return;
+                }
+
+                // Legitimate redirect (e.g. High Priest Torvus) or default discard.
                 const location =
                     context.source.mostRecentEffect('cardLocationAfterPlay') || 'discard';
                 context.source.owner.moveCard(context.source, location);

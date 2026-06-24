@@ -15,7 +15,7 @@ describe('Battleline Position Messages', function () {
             this.player1.clickCard(this.dextre);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Sanctum Guardian to reap with Sanctum Guardian',
+                'player1 reaps with Sanctum Guardian to gain 1 amber',
                 'player1 uses Sanctum Guardian to swap the position of Dextre and Sanctum Guardian'
             ]);
         });

@@ -13,24 +13,8 @@ class PlayCardAction extends CardGameAction {
         this.effectMsg = 'play {0}';
     }
 
-    update(context) {
-        super.update(context);
-        // Suppress the standard "uses {source} to play {target}" effectMsg
-        // when every target is blocked by a card-independent player-level
-        // restriction (e.g. Ember Imp), since revealing the card name
-        // would leak hidden information. The generic "unable to play a
-        // card from {location}" message is emitted by getEvent instead.
-        // Card-specific restrictions (Quixxle Stone, Traumatic Echo) and
-        // card-self/cost restrictions (Kelifi Dragon, alpha) still reveal
-        // the card via the standard messaging flow.
-        this.defersMessage =
-            this.target.length > 0 &&
-            this.target.every(
-                (target) =>
-                    target.location !== 'hand' &&
-                    !this.hasLegalPlayAction(target, context) &&
-                    this.isBlockedWithoutReveal(target, context)
-            );
+    narrate() {
+        return true;
     }
 
     canAffect(card, context) {
@@ -88,10 +72,29 @@ class PlayCardAction extends CardGameAction {
             this.actionMeetsRequirement(context, action)
         );
 
+        // Capture location before event resolution may move the card.
+        const originLocation = card.location;
+        const originOwner = card.location === 'under' ? card.parent : card.owner;
+        const isHidden = playActions.length === 0 && this.isBlockedWithoutReveal(card, context);
+
         return super.createEvent(
             EVENTS.playCardEvent,
             { card: card, context: context, player: context.player },
             (event) => {
+                if (!isHidden) {
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'abilityPlay',
+                            player: context.player,
+                            source: context.source,
+                            ability: context.ability
+                        })
+                        .pushClause({
+                            verb: 'abilityPlay',
+                            args: { card, location: originLocation, owner: originOwner }
+                        });
+                }
+
                 if (playActions.length > 1) {
                     context.game.promptWithHandlerMenu(context.player, {
                         activePromptTitle: 'Play ' + card.name + ':',
@@ -105,22 +108,61 @@ class PlayCardAction extends CardGameAction {
                     this.resolveAction(context, playActions[0]);
                 } else {
                     event.illegalTarget = true;
-                    if (this.isBlockedWithoutReveal(card, context)) {
-                        context.game.addMessage(
-                            '{0} is unable to play a card from {1} due to a restriction',
-                            context.player,
-                            card.location
-                        );
+                    // Find what imposed the restriction so we can name it in
+                    // the message (e.g. "Ember Imp's constant ability restricts…").
+                    const restriction = this.findPlayRestriction(card, context);
+                    if (isHidden) {
+                        context.game.narration
+                            .pushFrame({
+                                verb: 'cannotPlayHidden',
+                                player: context.player,
+                                source: context.source,
+                                ability: context.ability
+                            })
+                            .pushClause({
+                                verb: 'cannotPlayHidden',
+                                args: {
+                                    location: originLocation,
+                                    owner: originOwner,
+                                    restrictor: restriction && restriction.source,
+                                    restrictionType: restriction && restriction.type
+                                }
+                            });
                     } else {
-                        context.game.addMessage(
-                            '{0} is unable to play {1} and returns it to {2}',
-                            context.player,
-                            card,
-                            card.location
-                        );
+                        context.game.narration
+                            .pushFrame({
+                                verb: 'cannotPlay',
+                                player: context.player,
+                                source: context.source,
+                                ability: context.ability
+                            })
+                            .pushClause({
+                                verb: 'cannotPlay',
+                                args: {
+                                    card,
+                                    location: originLocation,
+                                    owner: originOwner,
+                                    restrictor: restriction && restriction.source,
+                                    restrictionType: restriction && restriction.type
+                                }
+                            });
                     }
                 }
             }
+        );
+    }
+
+    findPlayRestriction(card, context) {
+        const actions = this.getPlayActions(card);
+        if (actions.length === 0) {
+            return null;
+        }
+
+        const actionContext = actions[0].createContext(context.player);
+        actionContext.ignoreHouse = true;
+        return (
+            card.findRestriction('play', actionContext) ||
+            context.player.findRestriction('play', actionContext)
         );
     }
 }

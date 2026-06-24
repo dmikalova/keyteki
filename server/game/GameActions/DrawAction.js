@@ -39,10 +39,35 @@ class DrawAction extends PlayerAction {
         return context.player;
     }
 
+    narrate() {
+        return true;
+    }
+
+    getDrawAnnouncementEvent(context, player, drawVerb, amount) {
+        return context.game.getEvent(EVENTS.unnamedEvent, {}, () => {
+            context.game.narration
+                .pushFrame({
+                    verb: drawVerb,
+                    player: context.player,
+                    source: drawVerb === 'refillDraw' ? null : context.source,
+                    ability: drawVerb === 'refillDraw' ? null : context.ability
+                })
+                .pushClause({
+                    verb: drawVerb,
+                    args: {
+                        player,
+                        amount
+                    }
+                });
+        });
+    }
+
     getAmountAndShedChains(player) {
         let shedChains = false;
         let amount = 0;
-        if (this.refill) {
+        if (this.bonus) {
+            amount = 1;
+        } else if (this.refill) {
             if (player.maxHandSize > player.hand.length) {
                 amount =
                     player.maxHandSize - player.hand.length - Math.floor((player.chains + 5) / 6);
@@ -54,7 +79,7 @@ class DrawAction extends PlayerAction {
         return [amount, shedChains];
     }
 
-    getEventWithAmount(player, context, amount, refill, shedChains) {
+    getEventWithAmount(player, context, amount, shedChains) {
         return super.createEvent(
             EVENTS.onDrawCards,
             {
@@ -66,58 +91,69 @@ class DrawAction extends PlayerAction {
             },
             (event) => {
                 if (event.amount > 0) {
-                    const logDraw = !this.bonus;
-                    const refillSuffix = refill
-                        ? ` to refill their hand to ${player.hand.length + amount} cards`
-                        : '';
-                    event.player.drawCardsToHand(amount, { logDraw, refillSuffix });
+                    event.player.drawCardsToHand(amount, { logDraw: true });
                 }
 
                 if (shedChains) {
                     event.player.modifyChains(-1);
-                    context.game.addMessage(
-                        '{0} sheds 1 chain to {1} chains',
-                        event.player,
-                        event.player.chains
-                    );
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'shedChains',
+                            player: event.player
+                        })
+                        .pushClause({
+                            verb: 'shedChains',
+                            args: {
+                                player: event.player,
+                                chains: event.player.chains
+                            }
+                        });
                 }
             }
         );
     }
 
     getEventArray(context) {
-        // If any player has to draw one at a time during their turn,
-        // split them up and make individual events for each draw.
-        let oneAtATimeTargets = this.target.filter(
-            (p) => p.anyEffect('drawOneAtATimeDuringTurn') && context.game.activePlayer === p
-        );
-        let events = this.target
-            .filter((p) => !oneAtATimeTargets.includes(p))
-            .filter((target) => this.canAffect(target, context))
-            .map((target) => this.getEvent(target, context));
-
-        for (let player of oneAtATimeTargets) {
+        // Resolve refill and ability-driven draws as one-card events so
+        // draw-triggered reactions can naturally interleave between cards.
+        let events = [];
+        for (let player of this.target.filter((target) => this.canAffect(target, context))) {
             let [amount, shedChains] = this.getAmountAndShedChains(player);
-            let event = null;
-            let prevEvent = null;
-            for (let i = 0; i < amount; i++) {
-                let nextDrawEvent = this.getEventWithAmount(
-                    player,
-                    context,
-                    1,
-                    i === amount - 1 ? this.refill : false,
-                    i === amount - 1 ? shedChains : false
-                );
-                if (event === null) {
-                    event = nextDrawEvent;
-                } else {
-                    prevEvent.addSubEvent(nextDrawEvent);
-                }
-                prevEvent = nextDrawEvent;
-            }
-            if (event !== null) {
-                events = events.concat(event);
-            }
+            const drawCount = Math.max(0, amount);
+            const drawVerb = this.bonus
+                ? 'bonusDraw'
+                : this.refill
+                ? 'refillDraw'
+                : context?.ability
+                ? 'abilityDraw'
+                : null;
+
+            events.push(
+                context.game.getEvent(EVENTS.unnamedEvent, { drawEvents: [] }, (event) => {
+                    const announcementEvent = this.getDrawAnnouncementEvent(
+                        context,
+                        player,
+                        drawVerb,
+                        drawCount
+                    );
+
+                    event.drawEvents.push(announcementEvent);
+                    context.game.openEventWindow([announcementEvent]);
+
+                    // Split multi-card draws into single-card events so reactions can interleave.
+                    const drawAmounts = drawCount > 1 ? new Array(drawCount).fill(1) : [amount];
+                    for (let i = 0; i < drawAmounts.length; i++) {
+                        const drawEvent = this.getEventWithAmount(
+                            player,
+                            context,
+                            drawAmounts[i],
+                            i === drawAmounts.length - 1 ? shedChains : false
+                        );
+                        event.drawEvents.push(drawEvent);
+                        context.game.openEventWindow([drawEvent]);
+                    }
+                })
+            );
         }
 
         return events;
@@ -125,7 +161,7 @@ class DrawAction extends PlayerAction {
 
     getEvent(player, context) {
         let [amount, shedChains] = this.getAmountAndShedChains(player);
-        return this.getEventWithAmount(player, context, amount, this.refill, shedChains);
+        return this.getEventWithAmount(player, context, amount, shedChains);
     }
 }
 

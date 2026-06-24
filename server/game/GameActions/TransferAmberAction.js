@@ -4,12 +4,16 @@ const PlayerAction = require('./PlayerAction');
 class TransferAmberAction extends PlayerAction {
     setDefaultProperties() {
         this.amount = 1;
+        this.verb = 'pay';
     }
 
     setup() {
         super.setup();
-        this.name = 'transfer';
-        this.effectMsg = 'transfer ' + this.amount + ' amber from {0}';
+        this.name = this.verb;
+    }
+
+    narrate() {
+        return true;
     }
 
     canAffect(player, context) {
@@ -32,6 +36,22 @@ class TransferAmberAction extends PlayerAction {
             context.game.actions
                 .gainAmber({ amount: event.amount })
                 .resolve(event.player.opponent, context);
+
+            context.game.narration
+                .pushFrame({
+                    verb: this.verb,
+                    player: context.player,
+                    source: context.source,
+                    ability: context.ability
+                })
+                .pushClause({
+                    verb: this.verb,
+                    args: {
+                        amount: event.amount,
+                        from: event.player,
+                        to: event.player.opponent
+                    }
+                });
         });
     }
 }

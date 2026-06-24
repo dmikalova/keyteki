@@ -83,6 +83,12 @@ class PutIntoPlayAction extends CardGameAction {
             return;
         }
 
+        // Check if the card is blocked by an alpha restriction on a copied
+        // card (e.g. Mimic Gel copying an alpha creature).
+        if (card.mostRecentEffect('playBlockedByAlpha')) {
+            return;
+        }
+
         // Abducted cards return to owner's hand when leaving archives - skip flank selection
         if (card.abducted && card.location === 'archives') {
             return;
@@ -290,11 +296,17 @@ class PutIntoPlayAction extends CardGameAction {
     }
 
     getEvent(card, context) {
+        // Capture origin before event resolution may move the card.
+        const originalLocation = card.location;
+        const originalOwner = card.location === 'under' ? card.parent : card.owner;
+
         const event = super.createEvent(
             EVENTS.onCardEntersPlay,
             {
                 card: card,
-                context: context
+                context: context,
+                originalLocation: originalLocation,
+                originalOwner: originalOwner
             },
             (event) => {
                 if (this.cancelled) {
@@ -395,24 +407,53 @@ class PutIntoPlayAction extends CardGameAction {
 
                 // Show play message for tokens only - non-tokens are handled by BasePlayAction
                 if (card.isToken()) {
-                    context.game.addMessage('{0} puts {1} into play', player, card);
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'putIntoPlay',
+                            player: player,
+                            source: context.source,
+                            ability: context.ability
+                        })
+                        .pushClause({
+                            verb: 'putIntoPlay',
+                            args: { player, card }
+                        });
+                }
+
+                // Check if the card is blocked by an alpha restriction on a
+                // copied card (e.g. Mimic Gel copying an alpha creature).
+                // Return to origin rather than hardcoding 'hand'.
+                if (card.mostRecentEffect('playBlockedByAlpha')) {
+                    const originLocation = event.originalLocation || 'hand';
+                    const originOwner = event.originalOwner || card.owner;
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'cannotPlay',
+                            player: context.player,
+                            source: context.source,
+                            ability: context.ability
+                        })
+                        .pushClause({
+                            verb: 'cannotPlay',
+                            args: { card, location: originLocation, owner: originOwner }
+                        });
+                    return card.owner.moveCard(card, originLocation);
                 }
 
                 // Check if creature should go to a different location instead of play area
                 let location = card.mostRecentEffect('cardLocationAfterPlay') || 'play area';
                 if (location !== 'play area') {
-                    // Use context.player (the player attempting to play the
-                    // card) rather than the locally-computed `player` (which
-                    // is the new controller for treachery cards). The
-                    // attempting player is the one whose play is being
-                    // refused, and matches the player referenced by
-                    // BasePlayAction.displayMessage's "X plays Y" message.
-                    context.game.addMessage(
-                        '{0} is unable to play {1} and returns it to {2}',
-                        context.player,
-                        card,
-                        location
-                    );
+                    context.game.narration
+                        .pushFrame({
+                            verb: 'cannotPlay',
+                            player: context.player,
+                            source: context.source,
+                            ability: context.ability
+                        })
+                        .pushClause({
+                            verb: 'cannotPlay',
+                            args: { card, location, owner: context.player }
+                        });
                     return card.owner.moveCard(card, location);
                 }
 

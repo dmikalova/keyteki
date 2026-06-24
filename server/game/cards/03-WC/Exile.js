@@ -12,9 +12,7 @@ class Exile extends Card {
                     duration: 'lastingEffect',
                     effect: ability.effects.takeControl(context.player.opponent)
                 }))
-            },
-            effect: 'give control of {0} to {1}',
-            effectArgs: (context) => context.player.opponent
+            }
         });
     }
 }

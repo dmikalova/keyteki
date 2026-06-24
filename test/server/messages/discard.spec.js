@@ -78,7 +78,7 @@ describe('Discard Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Mind Barb',
-                "player1 uses Mind Barb's amber bonus icon to gain 1 amber",
+                "Mind Barb's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Mind Barb to randomly discard 1 card from player2's hand",
                 'player2 randomly discards Troll from hand'
             ]);
@@ -216,8 +216,20 @@ describe('Discard Messages', function () {
                 'player1 discards Flaxia from hand',
                 `player2 randomly discards ${this.player2.discard[1].name} from hand`,
                 `player2 randomly discards ${this.player2.discard[0].name} from hand`,
-                'player1 draws 6 cards to refill their hand to 6 cards',
-                'player2 draws 6 cards to refill their hand to 6 cards'
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player2 will draw 6 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card'
             ]);
         });
     });
@@ -239,7 +251,7 @@ describe('Discard Messages', function () {
             this.player1.clickCard(this.dextre);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Dextre"
+                "Anomaly Exploiter's discard bonus icon has player1 discard Dextre"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -251,8 +263,8 @@ describe('Discard Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Dextre",
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Batdrone"
+                "Anomaly Exploiter's discard bonus icon has player1 discard Dextre",
+                "Anomaly Exploiter's discard bonus icon has player1 discard Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -264,9 +276,9 @@ describe('Discard Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Dextre",
-                "player1 uses Anomaly Exploiter's amber bonus icon to gain 1 amber",
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Batdrone"
+                "Anomaly Exploiter's discard bonus icon has player1 discard Dextre",
+                "Anomaly Exploiter's amber bonus icon has player1 gain 1 amber",
+                "Anomaly Exploiter's discard bonus icon has player1 discard Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -277,8 +289,8 @@ describe('Discard Messages', function () {
             this.player1.clickCard(this.brillixPonder);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Anomaly Exploiter's discard bonus icon to discard Brillix Ponder",
-                'player1 uses Brillix Ponder to draw 1 card',
+                "Anomaly Exploiter's discard bonus icon has player1 discard Brillix Ponder",
+                "Brillix Ponder's scrap ability will have player1 draw 1 card",
                 'player1 draws 1 card'
             ]);
             expect(this.player1).isReadyToTakeAction();
@@ -306,8 +318,8 @@ describe('Discard Messages', function () {
             this.player1.clickCard(this.batdrone);
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Anomaly Exploiter',
-                "player1 uses Amphora Captura to resolve Anomaly Exploiter's discard bonus icon as a capture bonus icon",
-                "player1 uses Anomaly Exploiter's capture bonus icon to capture 1 amber onto Batdrone"
+                "Amphora Captura's constant ability resolves Anomaly Exploiter's bonus discard as bonus capture",
+                "Anomaly Exploiter's capture bonus icon captures 1 amber from player2 onto Batdrone"
             ]);
             expect(this.player1).isReadyToTakeAction();
         });
@@ -360,7 +372,7 @@ describe('Discard Messages', function () {
                 'player1 discards Infernal Terran',
                 "player1 uses Infernal Terran to discard player1's hand",
                 'player1 discards Brillix Ponder from hand',
-                'player1 uses Brillix Ponder to draw 1 card',
+                "Brillix Ponder's scrap ability will have player1 draw 1 card",
                 'player1 draws 1 card',
                 'player1 discards Hand of Dis from hand'
             ]);
@@ -389,7 +401,7 @@ describe('Discard Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Brine Reckoning',
-                "player1 uses Brine Reckoning's amber bonus icon to gain 1 amber",
+                "Brine Reckoning's amber bonus icon has player1 gain 1 amber",
                 "player1 uses Brine Reckoning to discard Urchin, Urchin, Urchin, Urchin, and Urchin from the top of player1's deck",
                 "player1 uses Brine Reckoning to discard Troll, Troll, Troll, Troll, and Troll from the top of player2's deck"
             ]);
@@ -418,11 +430,22 @@ describe('Discard Messages', function () {
             this.player1.clickPrompt('geistoid');
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 draws 5 cards to refill their hand to 6 cards',
+                'player1 will draw 5 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player2 chooses brobnar as their active house this turn',
-                'player2 draws 6 cards to refill their hand to 6 cards',
+                'player2 will draw 6 cards to refill their hand to 6 cards',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
+                'player2 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player1 uses Wraith Construct to discard Troll',
                 'player1 does not forge a key. They have 0 amber. The current cost is 6 amber',
@@ -455,7 +478,7 @@ describe('Discard Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Haunting Measures',
-                "player1 uses Haunting Measures's amber bonus icon to gain 1 amber",
+                "Haunting Measures's amber bonus icon has player1 gain 1 amber",
                 'player1 uses Haunting Measures to discard Troll, Anger, Krump, Punch, Tremor, and Pelf',
                 'player1 uses Haunting Measures to return Troll to hand'
             ]);

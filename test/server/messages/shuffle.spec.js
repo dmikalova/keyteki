@@ -14,7 +14,7 @@ describe('Shuffle Messages', function () {
             this.player1.reap(this.mabTheMad);
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Mab the Mad to reap with Mab the Mad',
+                'player1 reaps with Mab the Mad to gain 1 amber',
                 "player1 uses Mab the Mad to return Mab the Mad to their owner's deck"
             ]);
         });
@@ -35,8 +35,11 @@ describe('Shuffle Messages', function () {
             this.player1.player.deck = [];
             this.player1.endTurn();
             expect(this).toHaveAllChatMessagesBe([
+                'player1 will draw 6 cards to refill their hand to 6 cards',
                 'player1 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
-                'player1 draws 3 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber'
             ]);
@@ -62,10 +65,11 @@ describe('Shuffle Messages', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Timetraveller',
-                "player1 uses Timetraveller's amber bonus icon to gain 1 amber",
-                'player1 uses Timetraveller to draw 2 cards',
+                "Timetraveller's amber bonus icon has player1 gain 1 amber",
+                "Timetraveller's play ability will have player1 draw 2 cards",
                 'player1 attempts to draw with an empty deck, so they shuffle their discard pile to reset their deck',
-                'player1 draws 2 cards'
+                'player1 draws 1 card',
+                'player1 draws 1 card'
             ]);
         });
     });

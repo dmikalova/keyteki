@@ -35,22 +35,6 @@ class AllocateCaptureAction extends GameAction {
                                 const captureEvent = context.game.actions
                                     .capture({ amount: amount, player: this.player })
                                     .getEvent(card, context);
-                                const captureHandler = captureEvent.handler;
-                                captureEvent.replaceHandler((event) => {
-                                    const amberBefore = event.card.amber;
-                                    captureHandler(event);
-                                    const amberCaptured = event.card.amber - amberBefore;
-                                    if (amberCaptured > 0) {
-                                        context.game.addMessage(
-                                            '{0} uses {1} to have {2} capture {3} amber',
-                                            context.player,
-                                            context.source,
-                                            event.card,
-                                            amberCaptured
-                                        );
-                                    }
-                                });
-
                                 this.events.push(captureEvent);
                             }
                         }

@@ -22,8 +22,8 @@ describe('Cannot Play Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Archimedes',
                 'player1 plays Wild Wormhole',
-                "player1 uses Wild Wormhole's amber bonus icon to gain 1 amber",
-                'player1 is unable to play a card from deck due to a restriction'
+                "Wild Wormhole's amber bonus icon has player1 gain 1 amber",
+                "Ember Imp's constant ability restricts Wild Wormhole from playing a card from the top of player1's deck"
             ]);
         });
     });
@@ -52,9 +52,9 @@ describe('Cannot Play Messages', function () {
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Library of Babble',
                 'player1 plays Batdrone',
-                'player1 uses Wormhole Technician to reap with Wormhole Technician',
+                'player1 reaps with Wormhole Technician to gain 1 amber',
                 'player1 uses Wormhole Technician to reveal Dextre, which is a Logos card, and play it',
-                'player1 is unable to play a card from deck due to a restriction'
+                "Ember Imp's constant ability restricts Wormhole Technician from playing a card from the top of player1's deck"
             ]);
         });
     });
@@ -81,9 +81,9 @@ describe('Cannot Play Messages', function () {
             expect(this.snufflegator.location).toBe('deck');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Wild Wormhole',
-                "player1 uses Wild Wormhole's amber bonus icon to gain 1 amber",
-                'player1 uses Wild Wormhole to play Snufflegator',
-                'player1 is unable to play Snufflegator and returns it to deck'
+                "Wild Wormhole's amber bonus icon has player1 gain 1 amber",
+                "Wild Wormhole's play ability plays Snufflegator from the top of player1's deck",
+                "Quixxle Stone's constant ability restricts player1 from playing Snufflegator and returns it to the top of player1's deck"
             ]);
         });
     });
@@ -106,9 +106,9 @@ describe('Cannot Play Messages', function () {
             expect(this.kelifiDragon.location).toBe('deck');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Wild Wormhole',
-                "player1 uses Wild Wormhole's amber bonus icon to gain 1 amber",
-                'player1 uses Wild Wormhole to play Kelifi Dragon',
-                'player1 is unable to play Kelifi Dragon and returns it to deck'
+                "Wild Wormhole's amber bonus icon has player1 gain 1 amber",
+                "Wild Wormhole's play ability plays Kelifi Dragon from the top of player1's deck",
+                "Kelifi Dragon's constant ability restricts player1 from playing Kelifi Dragon and returns it to the top of player1's deck"
             ]);
         });
     });
@@ -131,9 +131,9 @@ describe('Cannot Play Messages', function () {
             expect(this.wayOfTheBear.location).toBe('deck');
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Wild Wormhole',
-                "player1 uses Wild Wormhole's amber bonus icon to gain 1 amber",
-                'player1 uses Wild Wormhole to play Way of the Bear',
-                'player1 is unable to play Way of the Bear and returns it to deck'
+                "Wild Wormhole's amber bonus icon has player1 gain 1 amber",
+                "Wild Wormhole's play ability plays Way of the Bear from the top of player1's deck",
+                "player1 cannot play Way of the Bear and returns it to the top of player1's deck"
             ]);
         });
     });
@@ -167,14 +167,20 @@ describe('Cannot Play Messages', function () {
                 'player1 plays Traumatic Echo',
                 'player1 uses Traumatic Echo to purge Searine',
                 'player1 uses Traumatic Echo to prevent player2 from playing creature cards next turn',
-                'player1 draws 6 cards to refill their hand to 6 cards',
+                'player1 will draw 6 cards to refill their hand to 6 cards',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 'player1: 0 amber (0 keys) player2: 0 amber (0 keys)',
                 'player2 does not forge a key. They have 0 amber. The current cost is 6 amber',
                 'player2 chooses logos as their active house this turn',
                 'player2 plays Wild Wormhole',
-                "player2 uses Wild Wormhole's amber bonus icon to gain 1 amber",
-                'player2 uses Wild Wormhole to play Dextre',
-                'player2 is unable to play Dextre and returns it to deck'
+                "Wild Wormhole's amber bonus icon has player2 gain 1 amber",
+                "Wild Wormhole's play ability plays Dextre from the top of player2's deck",
+                "Traumatic Echo's constant ability restricts player2 from playing Dextre and returns it to the top of player2's deck"
             ]);
         });
     });
@@ -198,9 +204,9 @@ describe('Cannot Play Messages', function () {
             expect(this.zorg.location).toBe('discard');
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
-                'player1 uses Dr. Xyloxxzlphrex to reap with Dr. Xyloxxzlphrex',
-                'player1 uses Dr. Xyloxxzlphrex to play Zorg',
-                'player1 is unable to play Zorg and returns it to discard'
+                'player1 reaps with Dr. Xyloxxzlphrex to gain 1 amber',
+                "Dr. Xyloxxzlphrex's after reap ability plays Zorg from player1's discard",
+                "Elite Disruptzord's constant ability restricts player1 from playing Zorg and returns it to player1's discard"
             ]);
         });
     });

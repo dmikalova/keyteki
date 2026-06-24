@@ -13,8 +13,7 @@ class EnlistNumeri extends Card {
                         duration: 'lastingEffect',
                         effect: ability.effects.takeControl(context.player)
                     }))
-                ],
-                effect: 'take control of {0}'
+                ]
             },
             then: (preThenContext) => ({
                 gameAction: ability.actions.cardLastingEffect({

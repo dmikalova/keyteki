@@ -30,8 +30,7 @@ class MimicGel extends Card {
                         additionalEffects: [ability.effects.changeHouse('logos')]
                     })
                 }))
-            },
-            effect: 'copy {0}'
+            }
         });
     }
 }

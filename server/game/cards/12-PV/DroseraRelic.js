@@ -29,9 +29,7 @@ class DroseraRelic extends Card {
                 gameAction: ability.actions.destroy()
             },
             then: {
-                gameAction: ability.actions.transferAmber({ amount: 2 }),
-                message: '{0} uses {1} to get paid 2 amber from {3}',
-                messageArgs: (context) => [context.game.activePlayer]
+                gameAction: ability.actions.transferAmber({ amount: 2 })
             }
         });
     }

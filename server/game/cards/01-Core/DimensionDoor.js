@@ -22,14 +22,8 @@ class DimensionDoor extends Card {
 
     onReap(event) {
         if (this.enabledForPlayers[event.card.controller.uuid]) {
-            this.game.addMessage(
-                "{0} steals 1 amber instead of gaining it due to {1}'s effect",
-                event.card.controller,
-                this
-            );
-            event.replaceHandler((event) =>
-                this.game.actions.steal().resolve(event.context.player.opponent, event.context)
-            );
+            event.amber.operation = 'steal';
+            event.amber.from = event.context.player.opponent;
         }
     }
 }

@@ -12,8 +12,6 @@ class PiedViper extends Card {
                     context.player.opponent.creaturesInPlay.length >
                         context.player.creaturesInPlay.length
             },
-            effect: 'gain control of {1}',
-            effectArgs: (context) => context.event.card,
             gameAction: ability.actions.cardLastingEffect((context) => ({
                 duration: 'lastingEffect',
                 target: context.event.card,

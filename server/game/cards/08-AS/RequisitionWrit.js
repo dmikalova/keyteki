@@ -18,9 +18,7 @@ class RequisitionWrit extends Card {
                             duration: 'lastingEffect',
                             effect: ability.effects.takeControl(context.player)
                         }))
-                    },
-                    message: '{0} uses {1} to take control of {3}',
-                    messageArgs: (context) => [context.target]
+                    }
                 }
             })
         });

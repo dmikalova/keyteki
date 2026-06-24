@@ -12,9 +12,7 @@ class MaquiExpedition extends Card {
                     duration: 'lastingEffect',
                     effect: ability.effects.takeControl(context.player)
                 }))
-            },
-            effect: 'take control of {1}',
-            effectArgs: (context) => [context.target]
+            }
         });
     }
 }

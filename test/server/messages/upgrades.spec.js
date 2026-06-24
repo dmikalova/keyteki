@@ -21,9 +21,10 @@ describe('Upgrade Messages (manual mode)', function () {
             expect(this.player1).isReadyToTakeAction();
             expect(this).toHaveAllChatMessagesBe([
                 'player1 plays Kirby’s Blaster attaching it to Com. Officer Kirby',
-                "player1 uses Kirby’s Blaster's amber bonus icon to gain 1 amber",
-                'player1 uses Kirby’s Blaster to draw 2 cards',
-                'player1 draws 2 cards',
+                "Kirby’s Blaster's amber bonus icon has player1 gain 1 amber",
+                "Kirby’s Blaster's constant ability will have player1 draw 2 cards",
+                'player1 draws 1 card',
+                'player1 draws 1 card',
                 "player1 manually returns Kirby’s Blaster to its owner's hand"
             ]);
         });

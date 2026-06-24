@@ -16,8 +16,7 @@ class ImperialRoad extends Card {
                     }),
                     ability.actions.playCard()
                 ])
-            },
-            effect: 'play {0}'
+            }
         });
     }
 }

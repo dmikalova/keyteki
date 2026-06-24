@@ -163,9 +163,9 @@ function buildPlayAsCopyEffects({ context, ability, additionalEffects = [] }) {
         })
     );
 
-    // If alpha restriction applies, add location redirect effect
+    // If alpha restriction applies, mark the card as blocked.
     if (hasAlphaRestriction) {
-        effects.push(ability.effects.cardLocationAfterPlay('hand'));
+        effects.push(ability.effects.playBlockedByAlpha());
     }
 
     return effects;

@@ -30,6 +30,33 @@ class FulfillProphecyAction extends PlayerAction {
         );
     }
 
+    narrate(context) {
+        if (!this.card || !this.canAffect(context.game.activePlayer, context)) {
+            return false;
+        }
+
+        const childCard =
+            this.card.childCards && this.card.childCards.length > 0
+                ? this.card.childCards[0]
+                : null;
+        context.game.narration
+            .pushFrame({
+                verb: 'fulfillProphecy',
+                player: context.player,
+                source: this.card,
+                ability: context.ability
+            })
+            .pushClause({
+                verb: 'fulfillProphecy',
+                args: {
+                    card: this.card,
+                    childCard
+                }
+            });
+
+        return true;
+    }
+
     getEvent(player, context) {
         return super.createEvent(
             EVENTS.onFulfillProphecy,

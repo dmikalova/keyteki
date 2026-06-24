@@ -27,8 +27,12 @@ describe('Gilded Burden', function () {
             expect(this.bumpsy.amber).toBe(2);
             expect(this.player2.amber).toBe(1);
             const logs = this.getChatLogs(10);
-            expect(logs).toContain('player1 uses Gilded Burden to have Troll capture 2 amber');
-            expect(logs).toContain('player1 uses Gilded Burden to have Bumpsy capture 2 amber');
+            expect(logs).toContain(
+                "Gilded Burden's play ability captures 2 amber from player2 onto Troll"
+            );
+            expect(logs).toContain(
+                "Gilded Burden's play ability captures 2 amber from player2 onto Bumpsy"
+            );
             expect(this.player1).isReadyToTakeAction();
         });
 
@@ -43,8 +47,12 @@ describe('Gilded Burden', function () {
             expect(this.bumpsy.amber).toBe(1);
             expect(this.player2.amber).toBe(0);
             const logs = this.getChatLogs(10);
-            expect(logs).toContain('player1 uses Gilded Burden to have Troll capture 2 amber');
-            expect(logs).toContain('player1 uses Gilded Burden to have Bumpsy capture 1 amber');
+            expect(logs).toContain(
+                "Gilded Burden's play ability captures 2 amber from player2 onto Troll"
+            );
+            expect(logs).toContain(
+                "Gilded Burden's play ability captures 1 amber from player2 onto Bumpsy"
+            );
             expect(this.player1).isReadyToTakeAction();
         });
 
@@ -57,7 +65,9 @@ describe('Gilded Burden', function () {
             expect(this.troll.amber).toBe(4);
             expect(this.player2.amber).toBe(1);
             const logs = this.getChatLogs(10);
-            expect(logs).toContain('player1 uses Gilded Burden to have Troll capture 4 amber');
+            expect(logs).toContain(
+                "Gilded Burden's play ability captures 4 amber from player2 onto Troll"
+            );
             expect(this.player1).isReadyToTakeAction();
         });
 

@@ -951,6 +951,18 @@ The same rule applies to prompt titles (see [`activePromptTitle`](#using-target)
 
 ## Best Practices
 
+-   **Always use indexed `{0}` placeholders** - Message templates must use `{0}`, `{1}`, `{2}`, etc. for all dynamic values, passing them as arguments to `addMessage`. Never use JavaScript template literal interpolation (`${variable}`) inside message format strings — the client-side message renderer only understands the `{N}` notation and needs the positional arguments to render cards as hoverable links, players as styled names, etc. Plain `${variable}` interpolation bypasses the renderer and produces raw text.
+
+    ```javascript
+    // Bad - template literal interpolation bypasses the message renderer
+    this.game.addMessage(`{0}'s ${category} captures ${amount} amber`, source, from);
+
+    // Good - all values passed as indexed arguments
+    this.game.addMessage("{0}'s {1} captures {2} amber", source, category, amount);
+    ```
+
+    Use string concatenation or template literals only for constructing the format string itself when no dynamic values are involved, or for error messages that don't go through the message renderer.
+
 -   **Pass card objects, not `.name`** - In `messageArgs`/`effectArgs`, always pass `context.source` (the card object), never `context.source.name` (a plain string). Card objects render as hoverable links in the game log; strings render as plain text. If you need the card name in a string concatenation, split the message template into separate placeholders instead:
 
     ```javascript

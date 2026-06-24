@@ -46,12 +46,14 @@ describe('Even Swap', function () {
             expect(this.exeldonYash.controller).toBe(this.player1.player);
 
             const logs = this.getChatLogs(10);
-            expect(logs).toContain('player1 uses Even Swap to give control of Urchin to player2');
+            expect(logs).toContain("Even Swap's play ability gives control of Urchin to player2");
             expect(logs).toContain(
-                'player1 uses Even Swap to give control of Snufflegator to player2'
+                "Even Swap's play ability gives control of Snufflegator to player2"
             );
-            expect(logs).toContain('player1 uses Even Swap to take control of Flaxia');
-            expect(logs).toContain('player1 uses Even Swap to take control of Exeldon Yash');
+            expect(logs).toContain("Even Swap's play ability has player1 take control of Flaxia");
+            expect(logs).toContain(
+                "Even Swap's play ability has player1 take control of Exeldon Yash"
+            );
 
             expect(this.player1).isReadyToTakeAction();
             this.player1.endTurn();
@@ -94,7 +96,7 @@ describe('Even Swap', function () {
             this.player1.endTurn();
 
             const logs = this.getChatLogs(10);
-            expect(logs).toContain('player1 uses Even Swap to give control of Urchin to player2');
+            expect(logs).toContain("Even Swap's play ability gives control of Urchin to player2");
 
             this.player2.clickPrompt('untamed');
             expect(this.urchin.controller).toBe(this.player2.player);

@@ -169,6 +169,38 @@ class TriggeredAbility extends CardAbility {
         );
     }
 
+    getCategory() {
+        if (this.isPlay()) {
+            return 'play ability';
+        }
+
+        if (this.isReap()) {
+            return 'after reap ability';
+        }
+
+        if (this.isFight()) {
+            return 'after fight ability';
+        }
+
+        if (this.properties.destroyed) {
+            return 'destroyed ability';
+        }
+
+        if (this.properties.scrap) {
+            return 'scrap ability';
+        }
+
+        if (this.properties.fate) {
+            return 'fate ability';
+        }
+
+        if (!this.printedAbility) {
+            return 'lasting effect';
+        }
+
+        return 'constant ability';
+    }
+
     registerEvents() {
         if (this.events) {
             return;

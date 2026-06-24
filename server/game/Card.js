@@ -475,6 +475,7 @@ class Card extends EffectSource {
                         onFate: (event, context) => event.card === context.source
                     },
                     name: 'Fate',
+                    fate: true,
                     location: 'any',
                     effectAlert: true
                 },
@@ -968,6 +969,15 @@ class Card extends EffectSource {
             (!context ||
                 !context.player ||
                 context.player.checkRestrictions(actionType, context, event))
+        );
+    }
+
+    findRestriction(actionType, context = null, event = null) {
+        return (
+            super.findRestriction(actionType, context, event) ||
+            (context &&
+                context.player &&
+                context.player.findRestriction(actionType, context, event))
         );
     }
 

@@ -14,23 +14,21 @@ const GainAbility = require('./Effects/Values/GainAbility');
 
 const Effects = {
     unblankableEffects: [
-        'modifyPower',
-        'setPower',
-        'modifyArmor',
-        'setArmor',
-        'addTrait',
-        'takeControl',
-        'takeControlOn',
-        'takeControlOnLeft',
-        'takeControlOnRight',
-        'changeType',
-        'changeHouse',
+        'addHouse',
         'addHouse',
         'addTrait',
-        'flipToken',
+        'blank',
+        'changeHouse',
+        'changeType',
         'copyCard',
+        'flipToken',
+        'modifyArmor',
+        'modifyPower',
         'mustFightIfAble',
-        'blank'
+        'setArmor',
+        'setPower',
+        'takeControl',
+        'takeControlPlacement'
     ],
 
     // Card effects
@@ -48,6 +46,7 @@ const Effects = {
         EffectBuilder.card.static('abilityRestrictions', new CannotRestriction(type, condition)),
     cardLocationAfterPlay: (location) =>
         EffectBuilder.card.static('cardLocationAfterPlay', location),
+    playBlockedByAlpha: () => EffectBuilder.card.static('playBlockedByAlpha', true),
     changeHouse: (house) => EffectBuilder.card.static('changeHouse', house),
     changeType: (type) => EffectBuilder.card.static('changeType', type),
     consideredAsFlank: () => EffectBuilder.card.static('consideredAsFlank'),
@@ -91,9 +90,8 @@ const Effects = {
     setArmor: (amount) => EffectBuilder.card.flexible('setArmor', amount),
     setPower: (amount) => EffectBuilder.card.flexible('setPower', amount),
     takeControl: (player) => EffectBuilder.card.flexible('takeControl', player),
-    takeControlOn: (position) => EffectBuilder.card.static('takeControlOn', position),
-    takeControlOnLeft: () => EffectBuilder.card.static('takeControlOnLeft'),
-    takeControlOnRight: () => EffectBuilder.card.static('takeControlOnRight'),
+    takeControlPlacement: (placement) =>
+        EffectBuilder.card.static('takeControlPlacement', placement),
     entersPlayUnderOpponentsControl: () =>
         EffectBuilder.card.static('entersPlayUnderOpponentsControl'),
     terminalCondition: (properties) =>
@@ -151,7 +149,6 @@ const Effects = {
             unapply: (player, context, effect) =>
                 context.game.effectEngine.removeDelayedEffect(effect)
         }),
-    drawOneAtATimeDuringTurn: () => EffectBuilder.player.static('drawOneAtATimeDuringTurn'),
     mayResolveBonusIconsAs: (newIcon, icon = 'any') =>
         EffectBuilder.player.static('mayResolveBonusIconsAs', { newIcon: newIcon, icon: icon }),
     modifyKeyCost: (amount) => EffectBuilder.player.flexible('modifyKeyCost', amount),
